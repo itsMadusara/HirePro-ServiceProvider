@@ -1,2 +1,3 @@
-# HirePro-SP-Server
-HirePro 3Y1S Project Server
+# HirePro-ServiceProvider
+HirePro 3Y1S Project Service Provider
+CLient and server
