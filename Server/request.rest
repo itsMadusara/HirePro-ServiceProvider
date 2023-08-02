@@ -1,0 +1,22 @@
+POST http://localhost:5000/registerSP
+Content-Type: application/json
+
+{
+  "contact" : "0771234567",
+  "name" : "John Doe",
+  "email" : "john3@gmail.com", 
+  "nic" : "123456893434", 
+  "password" : "example123"
+}
+
+###
+POST http://localhost:5000/loginSP
+Content-Type: application/json
+
+{
+  "email" : "john3@gmail.com", 
+  "password" : "example123"
+}
+
+###
+POST http://localhost:5000/logoutSP
