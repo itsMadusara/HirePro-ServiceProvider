@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import userReg from "./routes/authentication/user-register.js";
 import userLogin from "./routes/authentication/user-login.js";
 import userLogout from "./routes/authentication/user-logout.js";
+import getUserTest from "./routes/profileManagement/get-user-test.js";
 import { dirname,join } from "path";
 import {fileURLToPath} from "url";
 
@@ -24,6 +25,8 @@ app.use(express.static(join(__dirname, "public")));
 app.use("/registerSP", userReg);
 app.use("/loginSP", userLogin);
 app.use("/logoutSP", userLogout);
+
+app.use("/testGet", getUserTest);
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`)
