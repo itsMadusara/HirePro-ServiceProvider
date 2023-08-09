@@ -35,7 +35,7 @@ function authRefresh(req, res, next) {
             if (err) {
                 return res.status(403).json({error: 'Invalid token.'});
             }
-            const userLoginAttri = { user_name: user.user_name, user_email: user.user_email};
+            const userLoginAttri = { user_id: user.user_id, user_name: user.user_name, user_email: user.user_email};
             const tokens = jwtTokens(userLoginAttri);
             res.cookie('refresh_token', tokens.refreshToken, {httpOnly: true});
             res.cookie('access_token', tokens.accessToken, {httpOnly: true});

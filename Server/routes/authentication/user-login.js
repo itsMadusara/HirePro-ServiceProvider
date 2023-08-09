@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
       }
 
       // Generate tokens
-      const userLoginAttri = { user_name: user.rows[0].name, user_email: user.rows[0].email};
+      const userLoginAttri = { user_id: user.rows[0].id, user_name: user.rows[0].name, user_email: user.rows[0].email};
       const tokens = jwtTokens(userLoginAttri);
       res.cookie('refresh_token', tokens.refreshToken, {httpOnly: true});
       res.cookie('access_token', tokens.accessToken, {httpOnly: true});

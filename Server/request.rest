@@ -14,7 +14,7 @@ POST http://localhost:5000/loginSP
 Content-Type: application/json
 
 {
-  "email" : "john3@gmail.com", 
+  "email" : "newmail@gmail.com", 
   "password" : "example123"
 }
 
@@ -23,3 +23,16 @@ POST http://localhost:5000/logoutSP
 
 ###
 GET http://localhost:5000/testGet
+
+###
+GET http://localhost:5000/getUser
+
+###
+POST http://localhost:5000/editUser
+Content-Type: application/json
+
+{
+  "name" : "John Doe",
+  "email" : "newmail@gmail.com",
+  "intro" : "New new intro"
+}
