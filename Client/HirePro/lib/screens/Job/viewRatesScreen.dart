@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/CheckIconLarge.dart';
+import 'package:hire_pro/widgets/StarRatingIndicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hire_pro/widgets/SmallArrowButton.dart';
 
@@ -32,21 +33,14 @@ class _ViewRatedScreenState extends State<ViewRatedScreen> {
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 15,),
-                    RatingBarIndicator(
-                      rating: 3,    // send the rating value to this parameter
-                      itemBuilder: (context, index) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      direction: Axis.horizontal,
-                    ),
-                    SizedBox(height: 80),
+                    StarRatingIndicator(3, 40),
 
+                    SizedBox(height: 80),
                   ],
                 ),
               ),
-            )));
+            )
+        )
+    );
   }
 }
