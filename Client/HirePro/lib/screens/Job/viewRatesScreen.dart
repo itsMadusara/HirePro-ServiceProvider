@@ -6,7 +6,6 @@ import 'package:hire_pro/widgets/SmallArrowButton.dart';
 
 class ViewRatedScreen extends StatefulWidget {
   const ViewRatedScreen({super.key});
-
   @override
   State<ViewRatedScreen> createState() => _ViewRatedScreenState();
 }

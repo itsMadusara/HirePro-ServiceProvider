@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/FormFieldRegular.dart';
@@ -5,6 +7,8 @@ import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/GoogleLogin.dart';
 import 'package:hire_pro/widgets/LineDivider.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -14,6 +18,14 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController contactController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController rePasswordController = TextEditingController();
+  TextEditingController nicController = TextEditingController();
+  late SharedPreferences preferences;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,12 +60,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          FormFieldRegular('Name'),
-                          FormFieldRegular('Email'),
-                          FormFieldRegular('Mobile Number'),
-                          FormFieldRegular('Password'),
-                          FormFieldRegular('Re-Enter Password'),
-                          FormFieldRegular('NIC Number'),
+                          FormFieldRegular('Name', nameController, false),
+                          FormFieldRegular('Email', emailController, false),
+                          FormFieldRegular('Mobile Number', contactController, false),
+                          FormFieldRegular('Password', passwordController, true),
+                          FormFieldRegular('Re-Enter Password', rePasswordController, true),
+                          FormFieldRegular('NIC Number', nicController, false),
                         ],
                       ),
                     ),
@@ -62,7 +74,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          MainButton('Next', () {}),
+                          MainButton('Sign Up', () {
+                            signUpUser();
+                          }),
                         ],
                       ),
                     ),
@@ -78,4 +92,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ));
   }
 
+  void signUpUser() async {
+    if (passwordController.text.isNotEmpty && rePasswordController.text.isNotEmpty && nameController.text.isNotEmpty && emailController.text.isNotEmpty && contactController.text.isNotEmpty && nicController.text.isNotEmpty) {
+      if (passwordController.text == rePasswordController.text) {
+        var reqBody = {
+          "contact" : contactController.text,
+          "name" : nameController.text,
+          "email" : emailController.text,
+          "nic" : nicController.text,
+          "password" : passwordController.text
+        };
+        var response = await http.post(Uri.parse("http://192.168.56.1:5000/registerSP"),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(reqBody));
+        var jsonResponse = jsonDecode(response.body);
+        // print(jsonResponse);
+        if(jsonResponse['status'] == "True"){
+          print("Signed Successfully");
+          Navigator.pushNamed(context, '/');
+        } else {
+          print("Sign Up Failed");
+        }
+      }
+    }
+  }
 }

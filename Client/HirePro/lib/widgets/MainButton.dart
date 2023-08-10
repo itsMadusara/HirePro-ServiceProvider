@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class MainButton extends StatelessWidget {
   MainButton(this.buttonText, this.navigation);
- final String buttonText;
- final VoidCallback navigation;
+  final String buttonText;
+  final VoidCallback navigation;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

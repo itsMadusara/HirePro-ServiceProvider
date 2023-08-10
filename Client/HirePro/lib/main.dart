@@ -19,7 +19,6 @@ void main() {
 
 class HirePro extends StatelessWidget {
   const HirePro({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,9 +37,10 @@ class HirePro extends StatelessWidget {
               ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B))),
       initialRoute: '/',
       routes: {
-        '/': (context) => ViewRatedScreen(),
-        // '/': (context) => LoginScreen(),
+        // '/': (context) => ViewRatedScreen(),
+        '/': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
+        '/sign_up': (context) => SignUpScreen(),
       },
     );
   }

@@ -11,6 +11,10 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  TextEditingController contactController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,9 +26,9 @@ class _OtpScreenState extends State<OtpScreen> {
           children: [
             Column(children: [
               Image.asset('images/hireProWithoutBG.png'),
-              FormFieldRegular('Phone Number'),
-              FormFieldRegular('Your Email'),
-              FormFieldRegular('Password'),
+              FormFieldRegular('Phone Number', contactController, false),
+              FormFieldRegular('Your Email', emailController, false),
+              FormFieldRegular('Password', emailController, true),
               MainButton('Send OTP', () {})
             ]),
             TermsAndPolicy(),
