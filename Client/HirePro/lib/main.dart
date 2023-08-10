@@ -12,6 +12,16 @@ import 'package:hire_pro/screens/Job/rateCustomerScreen.dart';
 import 'package:hire_pro/screens/waitingScreen.dart';
 import 'package:hire_pro/screens/Job/biddingSuccessfulScreen.dart';
 import 'package:hire_pro/screens/Job/viewRatesScreen.dart';
+import 'package:hire_pro/screens/Profile/userProfile.dart';
+import 'package:hire_pro/screens/Profile/customerProfile.dart';
+import 'package:hire_pro/screens/Profile/editProfile.dart';
+import 'package:hire_pro/screens/emailcodereqScreen.dart';
+import 'package:hire_pro/screens/Profile/changePassword.dart';
+import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
+import 'package:hire_pro/screens/Profile/changePassword.dart';
+import 'package:hire_pro/screens/Profile/reviews.dart';
+import 'package:hire_pro/widgets/TopNavigation.dart';
+import 'package:hire_pro/screens/agreement.dart';
 
 void main() {
   runApp(const HirePro());
@@ -38,9 +48,13 @@ class HirePro extends StatelessWidget {
               ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B))),
       initialRoute: '/',
       routes: {
-        '/': (context) => ViewRatedScreen(),
+        '/': (context) => EditProfile(),
         // '/': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
+        '/profile': (context) => UserProfile(),
+        '/emailcoderequest': (context) => EmailcodereqScreen(),
+        '/emailcodeverify': (context) => EmailCodeVerifyScreen(),
+        '/changePassword': (context) => ChangePassword(),
       },
     );
   }
