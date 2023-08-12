@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/services/urlCreator.dart';
 import 'package:hire_pro/widgets/FormFieldRegular.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/GoogleLogin.dart';
@@ -38,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'email': usernameController.text,
         'password': passwordController.text,
       };
-      var response = await http.post(Uri.parse("http://10.22.167.193:5001/loginSP"),
+      var response = await http.post(Uri.parse(urlCreate('loginSP')),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(reqBody));
       var jsonResponse = jsonDecode(response.body);
