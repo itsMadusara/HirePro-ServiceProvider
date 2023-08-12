@@ -7,15 +7,16 @@ import 'package:hire_pro/widgets/MediumButton.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 
-class EmailcodereqScreen extends StatefulWidget {
-  const EmailcodereqScreen({super.key});
+class OTPPhone extends StatefulWidget {
+  const OTPPhone({super.key});
 
   @override
-  State<EmailcodereqScreen> createState() => _EmailcodereqScreenState();
+  State<OTPPhone> createState() => _OTPPhoneState();
 }
 
-class _EmailcodereqScreenState extends State<EmailcodereqScreen> {
-  Email email = Email();
+class _OTPPhoneState extends State<OTPPhone> {
+  // Phone phoneNumber = Email();
+  String phoneNumber = '';
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _EmailcodereqScreenState extends State<EmailcodereqScreen> {
 
     return SafeArea(
         child: Scaffold(
-          appBar: AppBarBackAndMore(),
+          appBar: AppBarBackButton(),
           bottomNavigationBar: BottomNavBar(),
           body: SingleChildScrollView(
             child: Container(
@@ -34,18 +35,18 @@ class _EmailcodereqScreenState extends State<EmailcodereqScreen> {
                 children: [
                   Image.asset('images/hireProWithoutBG.png'),
                   Text(
-                    'Press "Continue" to receive a 5-digit code to your email address \n' + userData['email'],
+                    'Press "Continue" to receive a 4-digit OTP to your phone Number \n' + userData['phone_number'],
                     style: kHeading1.copyWith(fontWeight: FontWeight.w400),
                   ),
                   SizedBox(
                     height: 40,
                   ),
-                  Image.asset('images/email.png', height: 250),
+                  Image.asset('images/otp_phone.png', height: 250),
                   SizedBox(
                     height: 50,
                   ),
                   MediumButton('Continue', () {
-                    Navigator.pushNamed(context, '/emailcodeverify',
+                    Navigator.pushNamed(context, '/otp_enter',
                         arguments: userData['email']);
                   }, kMainYellow, Colors.white),
                 ],

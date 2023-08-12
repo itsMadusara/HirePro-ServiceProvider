@@ -38,14 +38,15 @@ class _LoginScreenState extends State<LoginScreen> {
         'email': usernameController.text,
         'password': passwordController.text,
       };
-      var response = await http.post(Uri.parse("http://192.168.56.1:5000/loginSP"),
+      var response = await http.post(Uri.parse("http://10.22.167.193:5001/loginSP"),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(reqBody));
       var jsonResponse = jsonDecode(response.body);
       print(jsonResponse['tokens']['status']);
       if (jsonResponse['tokens']['status'] == "True") {
-        print(jsonResponse);
+        // print(jsonResponse);
         var myTokens = jsonResponse['tokens'];
+        print(myTokens);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('tokens', jsonEncode(myTokens));
         // var sesstionToken = myTokens;

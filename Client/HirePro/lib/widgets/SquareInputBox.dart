@@ -1,8 +1,5 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:emailjs/emailjs.dart';
-
+// import 'package:emailjs/emailjs.dart';
 
 class SquareInputBox extends StatefulWidget {
   @override
@@ -26,6 +23,8 @@ class _SquareInputBoxState extends State<SquareInputBox> {
         ),
       ),
       child: TextFormField(
+        textAlign: TextAlign.center,
+        style: TextStyle(fontWeight: FontWeight.w800),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(10),
           border: InputBorder.none,

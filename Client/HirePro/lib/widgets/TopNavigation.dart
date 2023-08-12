@@ -141,8 +141,11 @@ class AppBarBackAndMore extends StatelessWidget implements PreferredSizeWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           onSelected: (value) {
-            // Handle the selected menu item
-            print(value);
+            if (value == 'edit') {
+              Navigator.pushNamed(context, '/edit_profile');
+            } else if (value == 'sign-out') {
+              Navigator.pushNamed(context, '');
+            }
           },
           itemBuilder: (BuildContext context) => [
             PopupMenuItem<String>(
@@ -171,6 +174,7 @@ class AppBarBackAndMore extends StatelessWidget implements PreferredSizeWidget {
             // Add more menu items as needed
           ],
         ),
+
       ],
     );
   }

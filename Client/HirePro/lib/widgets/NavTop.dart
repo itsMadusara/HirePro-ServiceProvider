@@ -26,9 +26,9 @@ class NavTop extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        NavButton("Hire", nav1, button1, textColor(button1)),
-        NavButton("Ongoing", nav2, button2, textColor(button2)),
-        NavButton("Categories", nav3, button3, textColor(button3)),
+        NavButton("Ongoing", nav1, button1, textColor(button1)),
+        NavButton("Upcoming", nav2, button2, textColor(button2)),
+        NavButton("Completed", nav3, button3, textColor(button3)),
       ],
     );
   }

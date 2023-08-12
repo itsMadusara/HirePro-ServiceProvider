@@ -60,7 +60,7 @@ class _EarnedStarsScreenState extends State<EarnedStarsScreen> {
                                 ),
                               ),
                               SizedBox(height: 20,),
-                              StarRatingIndicator(4, 30)
+                              StarRatingIndicator(4, 30,Colors.amber)
                             ],
                           ),
                         ),

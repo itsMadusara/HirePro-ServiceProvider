@@ -25,7 +25,7 @@ class _EmailCodeVerifyScreenState extends State<EmailCodeVerifyScreen> {
         email: '$args',
         subject: 'Email Verification Code',
         message:
-            'To change your email address please verify with the 5 digit code $code');
+            'Please verify with the 5 digit code $code');
     return SafeArea(
         child: Scaffold(
           appBar: AppBarBackAndMore(),

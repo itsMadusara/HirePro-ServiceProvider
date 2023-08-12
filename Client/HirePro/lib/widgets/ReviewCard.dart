@@ -63,7 +63,7 @@ class ReviewCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            StarRatingIndicator(review.rating, 20),
+                            StarRatingIndicator(review.rating, 20, Colors.amber),
                             Text(review.rating.toString()),
                           ],
                         ),

@@ -2,15 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
-import 'package:hire_pro/services/imageUpload.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -23,23 +20,6 @@ var userData = jsonDecode(jsondata);
 
 class _EditProfileState extends State<EditProfile> {
   final keyCounter = GlobalKey<_EditFieldState>();
-  String defaultImage = 'images/profile_pic.png';
-  final imageUpload = ImageUpload();
-  File? _image;
-  void changeProfilePicture(ImageSource source) async {
-    final file = await imageUpload.pickImage(source);
-    if (file != null) {
-      final croppedImage =
-          await imageUpload.crop(file: file, cropStyle: CropStyle.circle);
-      if (croppedImage != null) {
-        setState(() {
-          _image = File(
-            croppedImage.path,
-          );
-        });
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,33 +56,11 @@ class _EditProfileState extends State<EditProfile> {
                                   child: CircleAvatar(
                                     radius: 72,
                                     backgroundColor: kMainGrey,
-                                    foregroundImage: _image != null
-                                        ? FileImage(_image!)
-                                        : null,
-                                    child: Text(
-                                      'HS',
-                                      style: TextStyle(
-                                          fontSize: 48, color: kMainYellow),
-                                    ),
+                                    foregroundImage: AssetImage('images/profile_pic.png'),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            top: 100,
-                            left: 105,
-                            child: FloatingActionButton.small(
-                                backgroundColor: kMainYellow,
-                                child: Icon(
-                                  FontAwesomeIcons.camera,
-                                  size: 15,
-                                ),
-                                onPressed: () => showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          Popup(),
-                                    )),
                           ),
                         ],
                       ),
@@ -135,7 +93,9 @@ class _EditProfileState extends State<EditProfile> {
                               label: 'Mobile Number',
                               value: '0761232323',
                               edit: () {
-                                print('pressed');
+                                Navigator.pushNamed(
+                                    context, '/otp_phone',
+                                    arguments: userData['phone_number']);
                               }),
                           EditField(
                               // key: keyCounter,
@@ -163,29 +123,6 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
             )));
-  }
-
-  AlertDialog Popup() {
-    return AlertDialog(
-      title: const Text(
-        'Change profile picture using,',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-      ),
-      content: const Text(''),
-      actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SmallButton('Camera', () async {
-              changeProfilePicture(ImageSource.camera);
-            }, kMainYellow, Colors.white),
-            SmallButton('Gallery', () async {
-              changeProfilePicture(ImageSource.gallery);
-            }, kMainYellow, Colors.white)
-          ],
-        )
-      ],
-    );
   }
 }
 

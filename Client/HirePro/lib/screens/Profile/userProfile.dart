@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:hire_pro/widgets/LineDivider.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
-import 'package:hire_pro/widgets/smallButton.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -31,12 +29,7 @@ class _UserProfileState extends State<UserProfile> {
         appBar: AppBarBackAndMore(),
         bottomNavigationBar: BottomNavBar(),
         resizeToAvoidBottomInset: false,
-        body: Scrollbar(
-          thickness:8,
-          thumbVisibility: true,
-          radius: Radius.circular(8),
-          trackVisibility: true,
-          controller: controller,
+        body: Center(
           child: SingleChildScrollView(
             child: Container(
               height: 850,

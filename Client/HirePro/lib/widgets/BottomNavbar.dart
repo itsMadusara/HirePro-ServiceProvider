@@ -11,31 +11,27 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
 
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Search',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Schedule',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Profile',
-      style: optionStyle,
-    ),
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+
+    // Use Navigator to navigate based on the selected index
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/ongoing_tasks');
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context, '/profile');
+        break;
+    }
   }
 
   @override
@@ -50,8 +46,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         label: 'Search',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.calendar_today),
-        label: 'Schedule',
+        icon: Icon(Icons.handyman),
+        label: 'Tasks',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.supervised_user_circle_rounded),

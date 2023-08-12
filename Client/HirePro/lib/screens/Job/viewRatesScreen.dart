@@ -32,7 +32,7 @@ class _ViewRatedScreenState extends State<ViewRatedScreen> {
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 15,),
-                    StarRatingIndicator(3, 40),
+                    StarRatingIndicator(3, 40, Colors.amber),
 
                     SizedBox(height: 80),
                   ],
