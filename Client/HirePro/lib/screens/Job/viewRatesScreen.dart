@@ -33,7 +33,6 @@ class _ViewRatedScreenState extends State<ViewRatedScreen> {
                     ),
                     SizedBox(height: 15,),
                     StarRatingIndicator(3, 40, Colors.amber),
-
                     SizedBox(height: 80),
                   ],
                 ),

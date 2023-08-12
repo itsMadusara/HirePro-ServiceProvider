@@ -24,44 +24,43 @@ class _EmailCodeVerifyScreenState extends State<EmailCodeVerifyScreen> {
         name: 'Harini Samaliarachchi',
         email: '$args',
         subject: 'Email Verification Code',
-        message:
-            'Please verify with the 5 digit code $code');
+        message: 'Please verify with the 5 digit code $code');
     return SafeArea(
         child: Scaffold(
           appBar: AppBarBackAndMore(),
           bottomNavigationBar: BottomNavBar(),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(40),
-          child: Column(
-            children: [
-              Image.asset('images/hireProWithoutBG.png'),
-              Text(
-                'Enter the code sent to your email: $args',
-                style: kHeading1.copyWith(fontWeight: FontWeight.w400),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          body: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.all(40),
+              child: Column(
                 children: [
-                  SquareInputBox(),
-                  SquareInputBox(),
-                  SquareInputBox(),
-                  SquareInputBox(),
-                  SquareInputBox(),
+                  Image.asset('images/hireProWithoutBG.png'),
+                  Text(
+                    'Enter the code sent to your email: $args',
+                    style: kHeading1.copyWith(fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SquareInputBox(),
+                      SquareInputBox(),
+                      SquareInputBox(),
+                      SquareInputBox(),
+                      SquareInputBox(),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  MediumButton('Continue', () {}, kMainYellow, Colors.white),
                 ],
               ),
-              SizedBox(
-                height: 50,
-              ),
-              MediumButton('Continue', () {}, kMainYellow, Colors.white),
-            ],
+            ),
           ),
-        ),
-      ),
-    ));
-    ;
+        )
+    );
   }
 }

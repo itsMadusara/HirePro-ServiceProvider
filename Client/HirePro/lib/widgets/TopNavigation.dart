@@ -174,7 +174,6 @@ class AppBarBackAndMore extends StatelessWidget implements PreferredSizeWidget {
             // Add more menu items as needed
           ],
         ),
-
       ],
     );
   }

@@ -9,6 +9,7 @@ import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
+
 class EditProfile extends StatefulWidget {
   @override
   State<EditProfile> createState() => _EditProfileState();
