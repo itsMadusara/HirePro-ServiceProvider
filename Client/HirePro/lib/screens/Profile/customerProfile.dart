@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:hire_pro/widgets/LineDivider.dart';
-import 'package:hire_pro/widgets/MainButton.dart';
-import 'package:hire_pro/widgets/SmallArrowButton.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
+import 'package:hire_pro/widgets/TopNavigation.dart';
 
 class CustomerProfile extends StatefulWidget {
   const CustomerProfile({super.key});
@@ -18,8 +16,9 @@ class _CustomerProfileState extends State<CustomerProfile> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          appBar: AppBarBackButton(),
           bottomNavigationBar: BottomNavBar(),
-            resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: false,
             body: Center(
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 40),
@@ -53,22 +52,30 @@ class _CustomerProfileState extends State<CustomerProfile> {
                               ),
                             ),
                           ),
-                          Text(
-                            "Harini Samaliarachchi",
-                            style: TextStyle(
-                              fontSize: 30,
-                              overflow: TextOverflow.ellipsis,
+
+                          Container(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Harini Samaliarachchi",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                SizedBox(height: 20,),
+                                RatingBarIndicator(
+                                  rating: 3.35,
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 30.0,
+                                  direction: Axis.horizontal,
+                                ),
+                              ],
                             ),
-                          ),
-                          RatingBarIndicator(
-                            rating: 3.35,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            itemCount: 5,
-                            itemSize: 30.0,
-                            direction: Axis.horizontal,
                           ),
                           Container(
                             decoration: BoxDecoration(
@@ -124,19 +131,6 @@ class _CustomerProfileState extends State<CustomerProfile> {
                           ProfileSummary('15', 'Total no of jobs'),
                         ],
                       ),
-                    ),
-
-                    Expanded(
-                      flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                child: SmallArrowButton(
-                                    kSecondaryYellow, Icons.arrow_back, () {})
-                            ),
-                          ],
-                        )
                     ),
                     SizedBox(
                       height: 10,

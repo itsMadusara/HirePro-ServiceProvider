@@ -22,7 +22,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 size: 30,
                 color: Colors.black,
               ),
-              hintText: 'What\'s in your to-do list?',
+              hintText: 'Find Tasks',
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide(

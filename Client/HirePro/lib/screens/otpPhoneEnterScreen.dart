@@ -73,7 +73,7 @@ class _OtpEnterScreen extends State<OtpEnterScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SmallArrowButton(
-                                  kMainYellow, Icons.arrow_forward, () {Navigator.pushNamed(context, '/upload_verified_documents');}),
+                                  kMainYellow, Icons.arrow_forward, () {Navigator.pushNamed(context, '/emailcoderequest');}),
                             ],
                           ),
                         ),

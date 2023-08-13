@@ -104,11 +104,15 @@ class UpcomingTaskCard extends StatelessWidget {
                   flex: 3,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(18.0), // Adjust the radius as needed
-                    child: Image.asset(image, // Replace with your image asset path
-                      fit: BoxFit.cover,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        image, // Your image asset path
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

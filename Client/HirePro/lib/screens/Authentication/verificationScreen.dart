@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hire_pro/constants.dart';
-import 'package:hire_pro/widgets/FormFieldRegular.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
@@ -14,6 +12,7 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -98,7 +97,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ],
             ),
           ),
-        ));
+        )
+    );
   }
 
 }
