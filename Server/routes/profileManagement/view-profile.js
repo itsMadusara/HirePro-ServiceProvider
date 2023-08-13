@@ -7,7 +7,7 @@ const router = exprees.Router();
 router.get('/', authTocken, async (req, res) => {
     try {
         const query = {
-            text: 'SELECT ( name, email, intro ) FROM public."ServiceProvider" WHERE id = $1',
+            text: 'SELECT id, name, email, intro FROM public."ServiceProvider" WHERE id = $1',
             values: [req.user.user_id]
         }
         const user = await pool.query(query);

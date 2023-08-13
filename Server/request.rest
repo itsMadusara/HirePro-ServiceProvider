@@ -1,4 +1,4 @@
-POST http://localhost:5001/registerSP
+POST http://localhost:5000/registerSP
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5001/loginSP
+POST http://localhost:5000/loginSP
 Content-Type: application/json
 
 {
@@ -26,6 +26,7 @@ GET http://localhost:5000/testGet
 
 ###
 GET http://localhost:5000/getUser
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMyIsInVzZXJfbmFtZSI6IkpvaG4gRG9lIiwidXNlcl9lbWFpbCI6ImpvaG4zQGdtYWlsLmNvbSIsImlhdCI6MTY5MTkyNDg5MiwiZXhwIjoxNjkzMTM0NDkyfQ.xOsNBrbnBIYGrGEimttYCt1OYGmeVIkjGCSF40X8HkU
 
 ###
 POST http://localhost:5000/editUser
@@ -38,10 +39,5 @@ Content-Type: application/json
 }
 
 ###
-POST http://10.22.167.193:5001/loginSP
-Content-Type: application/json
-
-{
-  "email" : "john3@gmail.com", 
-  "password" : "example123"
-}
+GET http://localhost:5000/getBiddingTasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMyIsInVzZXJfbmFtZSI6IkpvaG4gRG9lIiwidXNlcl9lbWFpbCI6ImpvaG4zQGdtYWlsLmNvbSIsImlhdCI6MTY5MTkyNDg5MiwiZXhwIjoxNjkzMTM0NDkyfQ.xOsNBrbnBIYGrGEimttYCt1OYGmeVIkjGCSF40X8HkU

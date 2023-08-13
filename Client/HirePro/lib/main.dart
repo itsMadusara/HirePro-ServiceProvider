@@ -60,8 +60,8 @@ class HirePro extends StatelessWidget {
               ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B))),
       initialRoute: '/',
       routes: {
-        '/': (context) => VerificationScreen(),
-        // '/': (context) => LoginScreen(),
+        // '/': (context) => VerificationScreen(),
+        '/': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/sign_up': (context) => SignUpScreen(),
         '/registrationSuccess': (context) => RegisterSuccess(),
