@@ -110,7 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         // print(jsonResponse);
         if(jsonResponse['status'] == "True"){
           print("Signed Successfully");
-          Navigator.pushNamed(context, '/');
+          Navigator.pushNamed(context, '/otp_mobile');
         } else {
           print("Sign Up Failed");
         }

@@ -8,16 +8,16 @@ import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:flutter/services.dart';
 
 
-class BiddingRequest extends StatefulWidget {
+class StartJob extends StatefulWidget {
   @override
-  State<BiddingRequest> createState() => _BiddingRequestState();
+  State<StartJob> createState() => _StartJobState();
 }
 
 String jsondata =
     '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
 var userData = jsonDecode(jsondata);
 
-class _BiddingRequestState extends State<BiddingRequest> {
+class _StartJobState extends State<StartJob> {
 
   @override
   Widget build(BuildContext context) {
@@ -35,34 +35,6 @@ class _BiddingRequestState extends State<BiddingRequest> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TaskDetails(),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: TextFormField(
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.grey[300],
-                                    hintText: 'Enter your bid',
-                                    hintStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-                                    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(35.0), // Set the border radius
-                                      borderSide: BorderSide.none, // Remove the bottom line
-                                    ),
-                                  )
-                              ),
-                            ),
-                            SizedBox(width: 10,),
-                            Expanded(
-                                flex: 1,
-                                child: MainButton('Bid',(){Navigator.pushNamed(context, '/bidding_successful');})
-                            ),
-                          ],
-                        ),
-                      ),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -121,9 +93,12 @@ class _BiddingRequestState extends State<BiddingRequest> {
                                   ),
                                 )
                             ),
-                        ],
+                          ],
                         ),
-                      )
+                      ),
+                      Container(
+                        child: MainButton('Start',(){Navigator.pushNamed(context, '/progress_step_two');}),
+                      ),
                     ],
                   ),
                 ),

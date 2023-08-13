@@ -55,7 +55,7 @@ class _EmailCodeVerifyScreenState extends State<EmailCodeVerifyScreen> {
                   SizedBox(
                     height: 50,
                   ),
-                  MediumButton('Continue', () {}, kMainYellow, Colors.white),
+                  MediumButton('Continue', () {Navigator.pushNamed(context, '/upload_verified_documents');}, kMainYellow, Colors.white),
                 ],
               ),
             ),

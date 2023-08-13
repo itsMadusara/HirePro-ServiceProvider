@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hire_pro/screens/Job/stepper.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/otpPhoneEnterScreen.dart';
 import 'package:hire_pro/screens/Authentication/registerSuccess.dart';
@@ -11,10 +12,15 @@ import 'package:hire_pro/screens/Job/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/Job/earnedStarsScreen.dart';
 import 'package:hire_pro/screens/Job/rateCustomerScreen.dart';
 import 'package:hire_pro/screens/Job/biddingRequestScreen.dart';
+import 'package:hire_pro/screens/Job/biddingTasks.dart';
+import 'package:hire_pro/screens/Job/startJobScreen.dart';
 import 'package:hire_pro/screens/waitingScreen.dart';
 import 'package:hire_pro/screens/Job/biddingSuccessfulScreen.dart';
 import 'package:hire_pro/screens/Job/viewRatesScreen.dart';
 import 'package:hire_pro/screens/Job/biddingRequestScreen.dart';
+import 'package:hire_pro/screens/Job/progressStepOne.dart';
+import 'package:hire_pro/screens/Job/progressStepTwo.dart';
+import 'package:hire_pro/screens/Job/progressStepThree.dart';
 import 'package:hire_pro/screens/Profile/userProfile.dart';
 import 'package:hire_pro/screens/Profile/customerProfile.dart';
 import 'package:hire_pro/screens/Profile/editProfile.dart';
@@ -54,7 +60,7 @@ class HirePro extends StatelessWidget {
               ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B))),
       initialRoute: '/',
       routes: {
-        '/': (context) => UserProfile(),
+        '/': (context) => VerificationScreen(),
         // '/': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/sign_up': (context) => SignUpScreen(),
@@ -72,6 +78,14 @@ class HirePro extends StatelessWidget {
         '/ongoing_tasks': (context) => OngoingTasks(),
         '/upcoming_tasks': (context) => UpcomingTasks(),
         '/completed_tasks': (context) => CompletedTasks(),
+        '/bidding_request': (context) => BiddingRequest(),
+        '/bidding_successful': (context) => BiddingSuccessfulScreen(),
+        '/customer_profile': (context) => CustomerProfile(),
+        '/bidding_tasks': (context) => BiddingTasks(),
+        '/start_job': (context) => StartJob(),
+        '/progress_step_one': (context) => ProgressStepOne(),
+        '/progress_step_two': (context) => ProgressStepTwo(),
+        '/progress_step_three': (context) => ProgressStepThree(),
 
       },
     );
