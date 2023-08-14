@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hire_pro/services/urlCreator.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -19,8 +24,82 @@ List<String> images = [
   'images/male3.jpg'
 ];
 
+// class serviceProvider {
+//   final String name;
+//   final String id;
+//   final String email;
+//   final String intro;
+//
+//   const serviceProvider({
+//     required this.name,
+//     required this.id,
+//     required this.email,
+//     required this.intro,
+//   });
+//
+//   factory serviceProvider.fromJson(Map<String, dynamic> json) {
+//     return serviceProvider(
+//       name: json['id'].toString(),
+//       id: json['name'].toString(),
+//       email: json['email'].toString(),
+//       intro: json['intro'].toString(),
+//     );
+//   }
+// }
 
 class _UserProfileState extends State<UserProfile> {
+
+  Future<String> fetchSP() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.get(Uri.parse(urlCreate('getUser')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']});
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        fetchSP();
+      }
+      throw Exception('Failed to load album');
+    }
+  }
+
+  bool isLoading = true; // Set initial loading state to true
+  String name = '';
+  String id = '';
+  String email = '';
+  String intro = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData(); // Call an asynchronous method to load user data
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final userData = await fetchSP();
+      print(userData);
+      Map<String, dynamic> userDataMap = jsonDecode(userData);
+      setState(() {
+        name = userDataMap['name'];
+        id = userDataMap['id'];
+        email = userDataMap['email'];
+        intro = userDataMap['intro'] ?? '';
+        isLoading = false; // Set isLoading to false after data is loaded
+      });
+    } catch (error) {
+      print('Error fetching user data: $error');
+      setState(() {
+        isLoading = false; // Set isLoading to false even in case of error
+      });
+    }
+  }
+
   final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -31,124 +110,125 @@ class _UserProfileState extends State<UserProfile> {
         resizeToAvoidBottomInset: false,
         body: Center(
           child: SingleChildScrollView(
-            child: Container(
-              height: 850,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: kMainYellow,
-                          width: 2,
-                        ),
-                      ),
-                      child: Hero(
-                        tag: "image",
-                        child: ClipOval(
-                          child: Image.asset(
-                            'images/profile_pic.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "Sachini Muthugala",
-                      style: TextStyle(
-                        fontSize: 30,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    RatingBarIndicator(
-                      rating: 3.35,
-                      itemBuilder: (context, index) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      itemCount: 5,
-                      itemSize: 30.0,
-                      direction: Axis.horizontal,
-                    ),
-                    Text('HirePro ID - 2002076',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-
-                    SizedBox(height: 15,),
-                    ProfileSummary('LKR 120,000', 'Revenue Earned'),
-                    SizedBox(height: 5,),
-                    Row(
+            child: isLoading
+                ? CircularProgressIndicator()
+                : Container(
+                  height: 850,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ProfileWidgets(TextButton(  onPressed: () { },
-                          child: Text('15', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w800),),), 'Completed'),
-                        ProfileWidgets(IconButton.filled(
-                          icon: const Icon(Icons.attach_money),
-                          onPressed: () {},), 'Wallet'),
-                        ProfileWidgets(IconButton(icon: Icon(Icons.help), onPressed: (){},), 'Help')
-                      ],
-                    ),
+                        Container(
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: kMainYellow,
+                              width: 2,
+                            ),
+                          ),
+                          child: Hero(
+                            tag: "image",
+                            child: ClipOval(
+                              child: Image.asset(
+                                'images/profile_pic.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          name,
+                          style: TextStyle(
+                            fontSize: 30,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        RatingBarIndicator(
+                          rating: 3.35,
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: 5,
+                          itemSize: 30.0,
+                          direction: Axis.horizontal,
+                        ),
+                        Text('HirePro ID - $id',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[700],
+                          ),
+                        ),
 
-                    const Divider(
-                      height: 2,
-                      thickness: 1,
-                      indent: 0,
-                      endIndent: 0,
-                      color: Colors.grey,
-                    ),
+                        SizedBox(height: 15,),
+                        ProfileSummary('LKR 120,000', 'Revenue Earned'),
+                        SizedBox(height: 5,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ProfileWidgets(TextButton(  onPressed: () { },
+                              child: Text('15', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w800),),), 'Completed'),
+                            ProfileWidgets(IconButton.filled(
+                              icon: const Icon(Icons.attach_money),
+                              onPressed: () {},), 'Wallet'),
+                            ProfileWidgets(IconButton(icon: Icon(Icons.help), onPressed: (){},), 'Help')
+                          ],
+                        ),
 
-                    SizedBox(height: 5,),
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 6,),
-                          Text('HandyNYC (Insured) - We are a Handyman Company Based in NYC That Presenting Home Owners - Renters and Business Solutions For Maintaining and Remodeling Their Property'),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 12,),
-                    Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Row(
-                              children: [
-                                Text('Featured Projects',
-                                  style: TextStyle(
+                        const Divider(
+                          height: 2,
+                          thickness: 1,
+                          indent: 0,
+                          endIndent: 0,
+                          color: Colors.grey,
+                        ),
+
+                        SizedBox(height: 5,),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 6,),
+                              Text(intro),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 12,),
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Text('Featured Projects',
+                                      style: TextStyle(
                                       color: kMainYellow,
                                       fontSize: 17,
                                       fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Icon(Icons.edit,)
+                                  ],
                                 ),
-                                SizedBox(width: 5,),
-                                Icon(Icons.edit,)
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+
+                        Gallery(),
+                        MainButton('My Reviews', () {}),
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
                     ),
-
-                    Gallery(),
-
-                    MainButton('My Reviews', () {}),
-                    SizedBox(
-                      height: 10,
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ),
           ),
         ),
       ),
