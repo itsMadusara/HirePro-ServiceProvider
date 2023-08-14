@@ -2,22 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/Job/progressStepOne.dart';
 import 'package:hire_pro/screens/Job/progressStepTwo.dart';
 import 'package:hire_pro/screens/Job/progressStepThree.dart';
+import 'package:hire_pro/screens/homeScreen.dart';
+import 'package:hire_pro/widgets/BottomNavbar.dart';
+import 'package:hire_pro/screens/Job/earnedStarsScreen.dart';
+import 'package:hire_pro/widgets/TopNavigation.dart';
 
-class JobRequestScreen extends StatefulWidget {
-  const JobRequestScreen({super.key});
+class ProgressStart extends StatefulWidget {
+  const ProgressStart({super.key});
 
   @override
-  State<JobRequestScreen> createState() => _JobRequestScreenState();
+  State<ProgressStart> createState() => _ProgressStartState();
 }
 
-class _JobRequestScreenState extends State<JobRequestScreen> {
+class _ProgressStartState extends State<ProgressStart> {
   int currentStep = 0;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            // resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: false,
+          appBar: AppBarTitle(title: 'Progress',),
+          bottomNavigationBar: BottomNavBar(),
             body: Stepper(
                 elevation: 0,
                 type: StepperType.horizontal,
@@ -25,7 +31,7 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
                 onStepContinue: () {
                   setState(() {
                     if (currentStep == 2) {
-                      Navigator.pushNamed(context, '/biddings');
+                      Navigator.pushNamed(context, '/job_completed');
                     } else {
                       currentStep += 1;
                     }
@@ -49,16 +55,18 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
   List<Step> getSteps() => [
         Step(
           isActive: currentStep >= 0,
-          title: Text('Task'),
+          title: Text('Start'),
           content: ProgressStepOne(),
         ),
         Step(
             isActive: currentStep >= 1,
-            title: Text('Confirm'),
-            content: ProgressStepTwo()),
+            title: Text('Arrived'),
+            content: ProgressStepTwo()
+        ),
         Step(
             isActive: currentStep >= 2,
-            title: Text('Bidding'),
-            content: ProgressStepThree())
+            title: Text('Completed'),
+            content: ProgressStepThree()
+        )
       ];
 }
