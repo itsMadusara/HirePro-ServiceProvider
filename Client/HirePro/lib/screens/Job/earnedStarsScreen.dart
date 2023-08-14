@@ -3,6 +3,7 @@ import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/StarRatingIndicator.dart';
 import 'package:hire_pro/widgets/SmallArrowButton.dart';
+import 'package:hire_pro/widgets/TopNavigation.dart';
 
 class EarnedStarsScreen extends StatefulWidget {
   const EarnedStarsScreen({super.key});
@@ -17,6 +18,7 @@ class _EarnedStarsScreenState extends State<EarnedStarsScreen> {
     return SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
+          appBar: AppBarBackButton(),
           bottomNavigationBar: BottomNavBar(),
           body: Center(
             child: Column(
@@ -87,7 +89,7 @@ class _EarnedStarsScreenState extends State<EarnedStarsScreen> {
                               Container(
                                   height: 50,
                                   child: SmallArrowButton(
-                                      kSecondaryYellow, Icons.arrow_forward, () {})
+                                      kSecondaryYellow, Icons.arrow_forward, () {Navigator.pushNamed(context, '/rate_customer');})
                               ),
                             ],
                           ),

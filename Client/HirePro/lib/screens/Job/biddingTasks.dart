@@ -5,7 +5,7 @@ import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/CompletedTaskCard.dart';
 import 'package:hire_pro/widgets/NavTop.dart';
 import 'package:hire_pro/widgets/UpcomingTaskcard.dart';
-import 'package:hire_pro/screens/Job/startJobScreen.dart';
+import 'package:hire_pro/screens/Job/biddingRequestScreen.dart';
 
 class BiddingTasks extends StatefulWidget {
   @override
@@ -32,7 +32,7 @@ class _BiddingTasksState extends State<BiddingTasks> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => StartJob(),
+                        builder: (context) => BiddingRequest(),
                       ),
                     );
                   },

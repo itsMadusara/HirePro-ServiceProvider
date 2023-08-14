@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hire_pro/screens/Job/stepper.dart';
+import 'package:hire_pro/screens/Job/progress.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/otpPhoneEnterScreen.dart';
 import 'package:hire_pro/screens/Authentication/registerSuccess.dart';
 import 'package:hire_pro/screens/Authentication/loginScreen.dart';
 import 'package:hire_pro/screens/Authentication/signUpScreen.dart';
+import 'package:hire_pro/screens/Authentication/selectCategories.dart';
 import 'package:hire_pro/screens/otpPhoneScreen.dart';
 import 'package:hire_pro/screens/Authentication/verificationScreen.dart';
 import 'package:hire_pro/screens/Authentication/uploadProfilePicture.dart';
@@ -34,6 +35,7 @@ import 'package:hire_pro/screens/agreement.dart';
 import 'package:hire_pro/screens/ongoingTasks.dart';
 import 'package:hire_pro/screens/upcomingTasks.dart';
 import 'package:hire_pro/screens/completedTasks.dart';
+// import 'package:hire_pro/screens/viewTaskDetails.dart';
 
 void main() {
   runApp(const HirePro());
@@ -60,7 +62,7 @@ class HirePro extends StatelessWidget {
               ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B))),
       initialRoute: '/',
       routes: {
-        '/': (context) => VerificationScreen(),
+        '/': (context) => ProgressStart(),
         // '/': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/sign_up': (context) => SignUpScreen(),
@@ -86,6 +88,12 @@ class HirePro extends StatelessWidget {
         '/progress_step_one': (context) => ProgressStepOne(),
         '/progress_step_two': (context) => ProgressStepTwo(),
         '/progress_step_three': (context) => ProgressStepThree(),
+        '/job_completed': (context) => JobCompletedScreen(),
+        '/earned_ratings': (context) => EarnedStarsScreen(),
+        '/rate_customer': (context) => RateCustomerScreen(),
+        '/view_rated': (context) => ViewRatedScreen(),
+        '/select_categories': (context) => SelectCategories(),
+        // '/view_task_details': (context) => ViewTaskDetails(),
 
       },
     );

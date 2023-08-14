@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/CheckIconLarge.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hire_pro/widgets/SmallArrowButton.dart';
+import 'package:hire_pro/widgets/TopNavigation.dart';
 
 class RateCustomerScreen extends StatefulWidget {
   const RateCustomerScreen({super.key});
@@ -16,6 +18,8 @@ class _RateCustomerScreenState extends State<RateCustomerScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          appBar: AppBarBackButton(),
+            bottomNavigationBar: BottomNavBar(),
             body: Center(
               child: Container(
                 child: Column(
@@ -48,7 +52,7 @@ class _RateCustomerScreenState extends State<RateCustomerScreen> {
                     ),
                     SizedBox(height: 80),
                     SmallArrowButton(
-                        kSecondaryYellow, Icons.arrow_forward, () {}
+                        kSecondaryYellow, Icons.arrow_forward, () {Navigator.pushNamed(context, '/view_rated');}
                     ),
                   ],
                 ),

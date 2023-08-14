@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hire_pro/constants.dart';
-import 'package:hire_pro/widgets/CheckIconLarge.dart';
+import 'package:hire_pro/widgets/TopNavigation.dart';
+import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/StarRatingIndicator.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:hire_pro/widgets/SmallArrowButton.dart';
 
 class ViewRatedScreen extends StatefulWidget {
   const ViewRatedScreen({super.key});
@@ -16,6 +14,8 @@ class _ViewRatedScreenState extends State<ViewRatedScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            appBar: AppBarBackButton(),
+            bottomNavigationBar: BottomNavBar(),
             body: Center(
               child: Container(
                 child: Column(
