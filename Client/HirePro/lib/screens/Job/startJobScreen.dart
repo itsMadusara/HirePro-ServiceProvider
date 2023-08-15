@@ -97,7 +97,7 @@ class _StartJobState extends State<StartJob> {
                         ),
                       ),
                       Container(
-                        child: MainButton('Start',(){Navigator.pushNamed(context, '/progress_step_two');}),
+                        child: MainButton('Start',(){Navigator.pushNamed(context, '/progress_start');}),
                       ),
                     ],
                   ),

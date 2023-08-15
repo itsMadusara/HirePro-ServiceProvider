@@ -28,21 +28,31 @@ class _OngoingTasksState extends State<OngoingTasks> {
                       () {Navigator.pushNamed(context, '/completed_tasks');},
                 )
             ),
+            
             Expanded(
               child: ListView.builder(
-                itemCount: 3, // Number of cards
+              // child: isLoading
+              //     ? Center(child: CircularProgressIndicator())
+              //     : ListView.builder(
+                itemCount: 1, // Number of cards
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    child: OngoingTaskCard(
-                      'Task $index Location',
-                      '2023-10-1',
-                      '2:30',
-                      'Sachini Muthugala',
-                      2500,
-                      4.5,
-                      'images/task1.png',
-                    ),
+                  return GestureDetector(
+                      onTap: () {
+                        // Navigate to the task details page when card is clicked
+                        Navigator.pushNamed(context, '/start_job');
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        child: OngoingTaskCard(
+                          'Task $index Location',
+                          '2023-10-1',
+                          '2:30',
+                          'Sachini Muthugala',
+                          2500,
+                          4.5,
+                          'images/task1.png',
+                        ),
+                      )
                   );
                 },
               ),
