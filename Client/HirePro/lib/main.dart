@@ -66,7 +66,6 @@ class HirePro extends StatelessWidget {
         // '/': (context) => ProgressStart(),
         '/': (context) => LoginScreen(),
         // '/': (context) => VerificationScreen(),
-        // '/': (context) => VerificationScreen(),
         '/home': (context) => HomeScreen(),
         '/sign_up': (context) => SignUpScreen(),
         '/registrationSuccess': (context) => RegisterSuccess(),
