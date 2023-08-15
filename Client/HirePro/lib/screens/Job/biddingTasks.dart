@@ -50,7 +50,7 @@ class _BiddingTasksState extends State<BiddingTasks> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BiddingRequest(),
+                              builder: (context) => BiddingRequest(taskDescription: tasks[index]),
                             ),
                           );
                         },
