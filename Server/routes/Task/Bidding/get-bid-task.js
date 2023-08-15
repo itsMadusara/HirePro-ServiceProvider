@@ -6,11 +6,67 @@ const router = exprees.Router();
 
 router.get('/', authTocken, async (req, res) => {
     try {
-        const query = {
-            text: 'SELECT * FROM public."Service";'
+        const query1 = {
+            text: 'SELECT category FROM public."ServiceProvider" where id=$1;',
+            values : [req.user.user_id]
         }
-        const tasks = await pool.query(query);
-        res.json(tasks.rows);
+        const taskCategories = await pool.query(query1);
+        const categories = taskCategories.rows[0].category;
+        let jobs = {};
+        let cards = [];
+
+        for (let i = 0; i < categories.length; i++) {
+            categories[i] = categories[i].replace(' ', '');
+            const queryText = 'SELECT * FROM public."'+ categories[i] +'";'
+            const query2 = {
+                text: queryText
+            }
+            const task = await pool.query(query2);
+            jobs[categories[i]] = task.rows;
+        }
+
+        for (let i = 0; i < categories.length; i++) {
+            for (let j = 0; j < jobs[categories[i]].length; j++) {
+
+                const query3 = {
+                    text: 'SELECT * FROM public."Service" WHERE id = $1;',
+                    values: [jobs[categories[i]][j]['id']]
+                }
+                const bidServices = await pool.query(query3);
+
+                let tasks;
+                console.log(categories[i]);
+                if(categories[i] === "HairDressing"){
+                    const query4 = {
+                        text: 'SELECT task FROM public."HairDressingTasks" WHERE id = $1;',
+                        values: [jobs[categories[i]][j]['id']]
+                    }
+                    const temp = await pool.query(query4);
+                    tasks = temp.rows;
+                }
+                else if(categories[i] === "HouseCleaning"){
+                    const query4 = {
+                        text: 'SELECT task FROM public."HouseCleaningTasks" WHERE id = $1;',
+                        values: [jobs[categories[i]][j]['id']]
+                    }
+                    const temp = await pool.query(query4);
+                    tasks = temp.rows;
+                }
+
+                // const query4 = {
+                //     text: 'SELECT task FROM public."HairDressingTasks" WHERE id = $1;',
+                //     values: [jobs[categories[i]][j]['id']]
+                // }
+                // const tasks = await pool.query(query4);                
+
+                cards.push({
+                    category : categories[i],
+                    serviceValue : bidServices.rows[0],
+                    jobTasks : tasks
+                });
+            }
+        }
+        res.json(cards);
     } catch (error) {
         res.status(500).json({error: error.message});
     }
