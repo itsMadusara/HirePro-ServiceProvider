@@ -60,9 +60,9 @@ class _BiddingTasksState extends State<BiddingTasks> {
                                 tasks[index]['serviceValue']['location'],
                                 toDate(tasks[index]['serviceValue']['date']),
                                 tasks[index]['serviceValue']['description'],
-                                tasks[index]['serviceValue']['estimation'].toDouble(),
-                                tasks[index]['serviceValue']['estimation'].toDouble(),
-                                4.5,
+                                double.parse(tasks[index]['serviceValue']['estMin'].toString()),
+                                double.parse(tasks[index]['serviceValue']['estMax'].toString()),
+                                2,
                                 'images/task1.png',
                               ),
                             )
