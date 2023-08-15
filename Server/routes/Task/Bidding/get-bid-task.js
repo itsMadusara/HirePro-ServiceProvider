@@ -25,6 +25,11 @@ router.get('/', authTocken, async (req, res) => {
             jobs[categories[i]] = task.rows;
         }
 
+        if (categories.length === 0) {
+            res.json(cards);
+            return;
+        }
+
         for (let i = 0; i < categories.length; i++) {
             for (let j = 0; j < jobs[categories[i]].length; j++) {
 
@@ -35,7 +40,6 @@ router.get('/', authTocken, async (req, res) => {
                 const bidServices = await pool.query(query3);
 
                 let tasks;
-                console.log(categories[i]);
                 if(categories[i] === "HairDressing"){
                     const query4 = {
                         text: 'SELECT task FROM public."HairDressingTasks" WHERE id = $1;',
@@ -52,12 +56,6 @@ router.get('/', authTocken, async (req, res) => {
                     const temp = await pool.query(query4);
                     tasks = temp.rows;
                 }
-
-                // const query4 = {
-                //     text: 'SELECT task FROM public."HairDressingTasks" WHERE id = $1;',
-                //     values: [jobs[categories[i]][j]['id']]
-                // }
-                // const tasks = await pool.query(query4);                
 
                 cards.push({
                     category : categories[i],
