@@ -35,6 +35,7 @@ import 'package:hire_pro/screens/agreement.dart';
 import 'package:hire_pro/screens/ongoingTasks.dart';
 import 'package:hire_pro/screens/upcomingTasks.dart';
 import 'package:hire_pro/screens/completedTasks.dart';
+import 'package:hire_pro/screens/Job/startJobScreen.dart';
 // import 'package:hire_pro/screens/viewTaskDetails.dart';
 
 void main() {
@@ -62,8 +63,9 @@ class HirePro extends StatelessWidget {
               ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B))),
       initialRoute: '/',
       routes: {
-        '/': (context) => ProgressStart(),
-        // '/': (context) => LoginScreen(),
+        // '/': (context) => ProgressStart(),
+        '/': (context) => LoginScreen(),
+        // '/': (context) => VerificationScreen(),
         // '/': (context) => VerificationScreen(),
         '/home': (context) => HomeScreen(),
         '/sign_up': (context) => SignUpScreen(),
@@ -86,6 +88,7 @@ class HirePro extends StatelessWidget {
         '/customer_profile': (context) => CustomerProfile(),
         '/bidding_tasks': (context) => BiddingTasks(),
         '/start_job': (context) => StartJob(),
+        '/progress_start': (context) => ProgressStart(),
         '/progress_step_one': (context) => ProgressStepOne(),
         '/progress_step_two': (context) => ProgressStepTwo(),
         '/progress_step_three': (context) => ProgressStepThree(),
