@@ -34,7 +34,7 @@ class _StartJobState extends State<StartJob> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      TaskDetails(),
+                      // TaskDetails(taskDescription: "description"),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

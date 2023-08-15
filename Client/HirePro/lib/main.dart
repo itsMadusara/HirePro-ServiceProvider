@@ -82,7 +82,7 @@ class HirePro extends StatelessWidget {
         '/ongoing_tasks': (context) => OngoingTasks(),
         '/upcoming_tasks': (context) => UpcomingTasks(),
         '/completed_tasks': (context) => CompletedTasks(),
-        '/bidding_request': (context) => BiddingRequest(),
+        // '/bidding_request': (context) => BiddingRequest(),
         '/bidding_successful': (context) => BiddingSuccessfulScreen(),
         '/customer_profile': (context) => CustomerProfile(),
         '/bidding_tasks': (context) => BiddingTasks(),

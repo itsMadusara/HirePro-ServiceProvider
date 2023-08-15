@@ -9,18 +9,20 @@ import 'package:flutter/services.dart';
 
 
 class BiddingRequest extends StatefulWidget {
+  final Map<String, dynamic> taskDescription; // Add this parameter
+  const BiddingRequest({super.key, required this.taskDescription});
   @override
   State<BiddingRequest> createState() => _BiddingRequestState();
 }
 
-String jsondata =
-    '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
+String jsondata = '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
 var userData = jsonDecode(jsondata);
 
 class _BiddingRequestState extends State<BiddingRequest> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> description = widget.taskDescription;
     return SafeArea(
         child: Scaffold(
             appBar: AppBarTitle(title: userData['full_name'],),
@@ -34,7 +36,7 @@ class _BiddingRequestState extends State<BiddingRequest> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      TaskDetails(),
+                      TaskDetails(taskDescription: description),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

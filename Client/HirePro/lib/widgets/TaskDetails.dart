@@ -1,18 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
+import 'package:intl/intl.dart';
 
 class TaskDetails extends StatefulWidget {
-  const TaskDetails({super.key});
+  final Map<String, dynamic> taskDescription; // Add this parameter
+  const TaskDetails({super.key, required this.taskDescription}); // Add constructor
 
   @override
   State<TaskDetails> createState() => _TaskDetailsState();
 }
 
 class _TaskDetailsState extends State<TaskDetails> {
+  String toDate(String utcTimestamp) {
+    DateTime dateTime = DateTime.parse(utcTimestamp);
+    String formattedDateTime = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedDateTime;
+  }
+
+  String toTime(String utcTimestamp) {
+    DateTime dateTime = DateTime.parse(utcTimestamp);
+    String formattedDateTime = DateFormat('HH:mm').format(dateTime);
+    return formattedDateTime;
+  }
+
   List<String> images = ['', ''];
+
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> description = widget.taskDescription;
+    String category = description['category'];
+    String tasks = '';
+    List<dynamic> taskList = description['jobTasks'];
+    for (var item in taskList) {
+      tasks = tasks + item['task'];
+      if(taskList.last == item){
+        continue;
+      }
+      tasks = tasks + ' , ';
+    }
+    if (category == 'HairDressing'){
+      category = 'Hair Dressing';
+    } else if (category == 'HouseCleaning'){
+      category = 'House Cleaning';
+    } else {
+      category = 'Lawn Moving';
+    }
+    print(description);
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -24,11 +58,12 @@ class _TaskDetailsState extends State<TaskDetails> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ContentSection('Task', 'Plumbing'),
+                    // ContentSection('Task', 'Plumbing'),
+                    ContentSection('Task', category),
                     ContentSection(
-                        'Where', 'Galle road,Katukurunda,Kalutara south'),
-                    ContentSection('Schedule Date', '2023-10-2'),
-                    ContentSection('Schedule Time', '14:00'),
+                        'Where', description['serviceValue']['location']),
+                    ContentSection('Schedule Date', toDate(description['serviceValue']['date'])),
+                    ContentSection('Schedule Time', toTime(description['serviceValue']['date'])),
                     Column(
                       children: [
                         ContentSection('Description', ''),
@@ -45,15 +80,16 @@ class _TaskDetailsState extends State<TaskDetails> {
                           margin:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                           child: Text(
+                              description['serviceValue']['description'],
+                              // "Hi there! I'm in need of a skilled plumber to help me with an urgent issue at my home. My kitchen faucet has been leaking persistently, and it's causing water wastage and an annoying dripping sound. I've tried tightening the faucet handle, but the leak hasn't stopped.Hi there! I'm in need of a skilled plumber to help me with an urgent issue at my home. My kitchen faucet has been leaking persistently, and it's causing water wastage and an annoying dripping sound. I've tried tightening the faucet handle, but the leak hasn't stopped.",
                               textAlign: TextAlign.justify,
-                              "Hi there! I'm in need of a skilled plumber to help me with an urgent issue at my home. My kitchen faucet has been leaking persistently, and it's causing water wastage and an annoying dripping sound. I've tried tightening the faucet handle, but the leak hasn't stopped.Hi there! I'm in need of a skilled plumber to help me with an urgent issue at my home. My kitchen faucet has been leaking persistently, and it's causing water wastage and an annoying dripping sound. I've tried tightening the faucet handle, but the leak hasn't stopped.",
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis),
                         ),
                       ],
                     ),
                     ContentSection('Goods Provided', 'Yes'),
-                    ContentSection('Estimate (Rs.)', '2500-3500'),
+                    ContentSection('Estimate (Rs.)', description['serviceValue']['estMin'] + '-' + description['serviceValue']['estMax']),
                     ContentSection('Photos', ''),
                     Expanded(
                       child: GridView.count(
@@ -69,6 +105,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                         }).toList(),
                       ),
                     ),
+                    ContentSection('Tasks', tasks),
                   ],
                 ))
           ],
