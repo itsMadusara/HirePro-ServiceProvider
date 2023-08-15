@@ -21,7 +21,7 @@ class BiddingTasks extends StatefulWidget {
 class _BiddingTasksState extends State<BiddingTasks> {
   void initState() {
     super.initState();
-    getTasks();
+    _loadUserData();
   }
 
   @override
@@ -69,23 +69,33 @@ class _BiddingTasksState extends State<BiddingTasks> {
     );
   }
 
-  Future<void> getTasks() async {
+  Future<String> fetchTasks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // print(jsonDecode(prefs.getString('tokens') ?? '')['accessToken']);
     var response = await http.get(Uri.parse(urlCreate('getBiddingTasks')),
         headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']});
     if (response.statusCode == 200) {
-      return (jsonDecode(response.body));
+      return (response.body);
     } else {
       if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
-        print(jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']);
         response = await http.get(Uri.parse(urlCreate('refreshToken')),
             headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
         var jsonResponse = jsonDecode(response.body);
         print(jsonResponse['tokens']);
         await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
-        getTasks();
+        fetchTasks();
       }
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final userData = await fetchTasks();
+      List<dynamic> userDataMap = jsonDecode(userData);
+      userDataMap.forEach((element) {print(element);});
+      // print(userDataMap);
+    } catch (error) {
+      print('Error fetching user data: $error');
     }
   }
 
