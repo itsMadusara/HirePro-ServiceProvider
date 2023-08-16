@@ -31,14 +31,23 @@ class _TaskDetailsState extends State<TaskDetails> {
     Map<String, dynamic> description = widget.taskDescription;
     String category = description['category'];
     String tasks = '';
-    List<dynamic> taskList = description['jobTasks'];
-    for (var item in taskList) {
-      tasks = tasks + item['task'];
-      if(taskList.last == item){
-        continue;
+    if (category == 'HairDressing' || category == 'HouseCleaning'){
+      List<dynamic> taskList = description['jobTasks'];
+      for (var item in taskList) {
+        tasks = tasks + item['task'];
+        if(taskList.last == item){
+          continue;
+        }
+        tasks = tasks + ' , ';
       }
-      tasks = tasks + ' , ';
+    } else {
+      List<dynamic> taskList = description['jobTasks'];
+      for (var item in taskList) {
+        tasks = tasks + item['areaInSquareMeter'].toString();
+        tasks = "${tasks} Square Meters to Lawn Mow";
+      }
     }
+
     if (category == 'HairDressing'){
       category = 'Hair Dressing';
     } else if (category == 'HouseCleaning'){
@@ -89,7 +98,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                       ],
                     ),
                     ContentSection('Goods Provided', 'Yes'),
-                    ContentSection('Estimate (Rs.)', description['serviceValue']['estMin'] + '-' + description['serviceValue']['estMax']),
+                    ContentSection('Estimate (Rs.)', description['serviceValue']['estmin'] + '-' + description['serviceValue']['estmax']),
                     ContentSection('Photos', ''),
                     Expanded(
                       child: GridView.count(
