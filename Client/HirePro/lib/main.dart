@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/Job/progress.dart';
+import 'package:hire_pro/screens/Profile/viewReviews.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/otpPhoneEnterScreen.dart';
 import 'package:hire_pro/screens/Authentication/registerSuccess.dart';
@@ -25,6 +26,7 @@ import 'package:hire_pro/screens/Job/progressStepThree.dart';
 import 'package:hire_pro/screens/Profile/userProfile.dart';
 import 'package:hire_pro/screens/Profile/customerProfile.dart';
 import 'package:hire_pro/screens/Profile/editProfile.dart';
+import 'package:hire_pro/screens/Profile/viewReviews.dart';
 import 'package:hire_pro/screens/emailcodereqScreen.dart';
 import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
@@ -36,6 +38,7 @@ import 'package:hire_pro/screens/ongoingTasks.dart';
 import 'package:hire_pro/screens/upcomingTasks.dart';
 import 'package:hire_pro/screens/completedTasks.dart';
 import 'package:hire_pro/screens/Job/startJobScreen.dart';
+import 'package:hire_pro/screens/wallet.dart';
 // import 'package:hire_pro/screens/viewTaskDetails.dart';
 
 void main() {
@@ -97,6 +100,8 @@ class HirePro extends StatelessWidget {
         '/view_rated': (context) => ViewRatedScreen(),
         '/select_categories': (context) => SelectCategories(),
         // '/view_task_details': (context) => ViewTaskDetails(),
+        '/view_wallet': (context) => Wallet(),
+        '/view_reviews': (context) => ViewReviews(),
 
       },
     );
