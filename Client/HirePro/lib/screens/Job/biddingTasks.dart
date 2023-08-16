@@ -31,6 +31,7 @@ class _BiddingTasksState extends State<BiddingTasks> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBarAll(title: 'Bid on Tasks'),
@@ -44,6 +45,8 @@ class _BiddingTasksState extends State<BiddingTasks> {
                   : ListView.builder(
                       itemCount: tasks.length, // Number of cards
                       itemBuilder: (context, index) {
+                        String minEst = tasks[index]['serviceValue']['estmin'].toString();
+                        String maxEst = tasks[index]['serviceValue']['estmax'].toString();
                         return GestureDetector(
                             onTap: () {
                           // Navigate to the task details page when card is clicked
@@ -60,8 +63,8 @@ class _BiddingTasksState extends State<BiddingTasks> {
                                 tasks[index]['serviceValue']['location'],
                                 toDate(tasks[index]['serviceValue']['date']),
                                 tasks[index]['serviceValue']['description'],
-                                double.parse(tasks[index]['serviceValue']['estMin'].toString()),
-                                double.parse(tasks[index]['serviceValue']['estMax'].toString()),
+                                double.parse(minEst),
+                                double.parse(maxEst),
                                 2,
                                 'images/task1.png',
                               ),
