@@ -46,7 +46,7 @@ class _BiddingTasksState extends State<BiddingTasks> {
                   : ListView.builder(
                       itemCount: tasks.length, // Number of cards
                       itemBuilder: (context, index) {
-                        String minEst = tasks[index]['serviceValu  e']['estmin'].toString();
+                        String minEst = tasks[index]['serviceValue']['estmin'].toString();
                         String maxEst = tasks[index]['serviceValue']['estmax'].toString();
                         return GestureDetector(
                             onTap: () {

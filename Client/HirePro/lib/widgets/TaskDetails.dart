@@ -99,7 +99,6 @@ class _TaskDetailsState extends State<TaskDetails> {
                     ),
                     ContentSection('Goods Provided', 'Yes'),
                     ContentSection('Estimate (Rs.)', description['serviceValue']['estmin'] + '-' + description['serviceValue']['estmax']),
-                    ContentSection('Tasks', tasks),
                     ContentSection('Photos', ''),
                     Expanded(
                       child: GridView.count(
