@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/widgets/UploadImageBox.dart';
 import 'package:flutter/services.dart';
+import 'package:hire_pro/widgets/UploadMultipleImagesBox.dart';
 
 
 
@@ -26,7 +27,7 @@ class _ProgressStepThreeState extends State<ProgressStepThree> {
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,),
             SizedBox(height: 20,),
-            UploadImageBox('Upload Here'),
+            UploadMultipleImagesBox('Upload Here'),
           ],
         ),
       ),

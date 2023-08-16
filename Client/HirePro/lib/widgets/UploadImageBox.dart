@@ -1,26 +1,26 @@
-
-
+import 'dart:io'; // Import the 'dart:io' library for File class
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
-class UploadImageBox extends StatelessWidget {
+class UploadImageBox extends StatefulWidget {
   UploadImageBox(this.placeholder);
   final String placeholder;
 
+  @override
+  _UploadImageBoxState createState() => _UploadImageBoxState();
+}
+
+class _UploadImageBoxState extends State<UploadImageBox> {
+  List<File> selectedFiles = []; // Store the selected files
+
   void openFiles() async {
-    FilePickerResult? result =
-    await FilePicker.platform.pickFiles(allowMultiple: true);
-    List<PlatformFile> files =
-    []; // Declare the 'files' list outside the if block
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
     if (result != null) {
-      files = result.paths
-          .map((path) => PlatformFile(
-        path: path,
-        name: 'default_filename', // Provide a default filename
-        size: 0, // Provide a default size (e.g., 0 bytes)
-      ))
-          .toList();
+      List<File> files = result.paths.map((path) => File(path!)).toList();
+      setState(() {
+        selectedFiles = files; // Update the selected files list
+      });
     } else {
       // User canceled the picker
       // Handle the cancelation or provide appropriate code here
@@ -32,7 +32,7 @@ class UploadImageBox extends StatelessWidget {
     return Center(
       child: Container(
         width: 330,
-        height: 100,
+        height: 300,
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.grey,
@@ -44,14 +44,28 @@ class UploadImageBox extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            IconButton(
-              icon: Icon(Icons.cloud_upload_outlined,size: 40,),
-              color: Colors.grey,
-              onPressed: () {
-                openFiles();
-              },
-            ),
-            Text(placeholder, style: TextStyle(color: Colors.grey),),
+            if (selectedFiles.isEmpty)
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.cloud_upload_outlined, size: 40),
+                    color: Colors.grey,
+                    onPressed: () {
+                      openFiles();
+                    },
+                  ),
+                  Text(widget.placeholder, style: TextStyle(color: Colors.grey)),
+                ],
+              ),
+            SizedBox(height: 10), // Add some spacing
+            if (selectedFiles.isNotEmpty) // Display selected images
+              Column(
+                children: selectedFiles.map((file) => Container(
+                  width: 300, // Set your desired width
+                  height: 250, // Set your desired height
+                  child: Image.file(file, fit: BoxFit.cover), // Adjust fit as needed
+                )).toList(),
+              ),
           ],
         ),
       ),

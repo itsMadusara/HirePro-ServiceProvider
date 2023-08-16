@@ -42,47 +42,18 @@ class _ViewReviewsState extends State<ViewReviews> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBarAll(title: 'Your Tasks'),
+        appBar: AppBarAll(title: 'View Reviews'),
         bottomNavigationBar: BottomNavBar(),
         resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              child: NavTop(
-                Colors.white,
-                Colors.white,
-                kMainYellow,
-                    () {
-                  Navigator.pushNamed(context, '/ongoing_tasks');
-                },
-                    () {
-                  Navigator.pushNamed(context, '/upcoming_tasks');
-                },
-                    () {},
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 3, // Number of cards
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    child: ListView.separated(
-                      padding: const EdgeInsets.all(8),
-                      itemCount: reviews.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final review = reviews[index];
-                        // return ReviewCard(review: review);
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+        body: ListView.builder(
+          itemCount: reviews.length,
+          itemBuilder: (context, index) {
+            final review = reviews[index];
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: ReviewCard(review: review),
+            );
+          },
         ),
       ),
     );

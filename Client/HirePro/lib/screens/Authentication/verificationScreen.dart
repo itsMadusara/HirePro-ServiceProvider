@@ -12,93 +12,77 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-          appBar: AppBarBackButton(),
-          resizeToAvoidBottomInset: false,
-          body: Center(
+      child: Scaffold(
+        appBar: AppBarBackButton(),
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Center(
             child: Column(
               children: [
-                Expanded(
-                  flex: 9,
-                  child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset('images/hireProWithoutBG.png'),
-                          Container(
-                            width: 350,
-                            child: const Text(
-                              'Sign Up',
-                              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  SizedBox(height: 16), // Add spacing
+                  Image.asset('images/hireProWithoutBG.png'),
+                  SizedBox(height: 16), // Add spacing
+                  Container(
+                    width: 350,
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ]),
+                SizedBox(height: 16), // Add spacing
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: 350,
+                      child: const Text(
+                        'Upload Driving License',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
                       ),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            width: 350,
-                            child: const Text(
-                              'Upload Driving License',
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                          UploadImageBox('Upload Here'),
-                        ],
-                      ),
-                    ),
-
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            width: 350,
-                            child: const Text(
-                              'Proof of Work',
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                          UploadImageBox('Upload Here'),
-                        ],
-                      ),
-                    ),
-
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          MainButton('Sign Up', () {Navigator.pushNamed(context, '/upload_profile_picture');}),
-                        ],
-                      ),
-                    ),
-                  ]),
+                    SizedBox(height: 20,),
+                    UploadImageBox('Upload Here'),
+                  ],
                 ),
-                const Expanded(
-                  flex: 1,
-                  child: TermsAndPolicy(),
-                )
+                SizedBox(height: 16), // Add spacing
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: 350,
+                      child: const Text(
+                        'Proof of Work',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    UploadImageBox('Upload Here'),
+                  ],
+                ),
+                SizedBox(height: 30), // Add spacing
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MainButton('Continue', () {
+                      Navigator.pushNamed(context, '/upload_profile_picture');
+                    }),
+                  ],
+                ),
+                SizedBox(height: 35), // Add spacing
+                const TermsAndPolicy(),
               ],
             ),
           ),
-        )
+        ),
+      ),
     );
   }
-
 }

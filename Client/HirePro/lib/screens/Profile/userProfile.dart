@@ -173,7 +173,7 @@ class _UserProfileState extends State<UserProfile> {
                               child: Text('15', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w800),),), 'Completed'),
                             ProfileWidgets(IconButton.filled(
                               icon: const Icon(Icons.attach_money),
-                              onPressed: () {},), 'Wallet'),
+                              onPressed: () {Navigator.pushNamed(context, '/view_wallet');},), 'Wallet'),
                             ProfileWidgets(IconButton(icon: Icon(Icons.help), onPressed: (){},), 'Help')
                           ],
                         ),
@@ -221,7 +221,7 @@ class _UserProfileState extends State<UserProfile> {
                         ),
 
                         Gallery(),
-                        MainButton('My Reviews', () {}),
+                        MainButton('My Reviews', () {Navigator.pushNamed(context, '/view_reviews');}),
                         SizedBox(
                           height: 10,
                         )
