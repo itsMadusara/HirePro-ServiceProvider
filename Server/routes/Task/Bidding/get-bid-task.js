@@ -55,7 +55,15 @@ router.get('/', authTocken, async (req, res) => {
                     }
                     const temp = await pool.query(query4);
                     tasks = temp.rows;
-                }
+                } 
+                else if(categories[i] === "LawnMoving"){
+                    const query4 = {
+                        text: 'SELECT "areaInSquareMeter" FROM public."LawnMoving" WHERE id = $1;',
+                        values: [jobs[categories[i]][j]['id']]
+                    }
+                    const temp = await pool.query(query4);
+                    tasks = temp.rows;
+                } 
 
                 cards.push({
                     category : categories[i],
