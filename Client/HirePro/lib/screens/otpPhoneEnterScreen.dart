@@ -33,7 +33,7 @@ class _OtpEnterScreen extends State<OtpEnterScreen> {
                           margin: EdgeInsets.symmetric(horizontal: 30),
                           alignment: Alignment.center,
                           child: Text(
-                            'Enter the 4-digit code sent to you at 077XXXXXXX',
+                            'Enter the 4-digit code sent to you at 076-3116008',
                             style: TextStyle(fontSize: 20),
                           ),
                         ),

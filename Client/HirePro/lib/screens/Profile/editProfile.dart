@@ -57,7 +57,7 @@ class _EditProfileState extends State<EditProfile> {
                                   child: CircleAvatar(
                                     radius: 72,
                                     backgroundColor: kMainGrey,
-                                    foregroundImage: AssetImage('images/profile_pic.png'),
+                                    foregroundImage: AssetImage('images/profile_picture_mellow.png'),
                                   ),
                                 ),
                               ),
@@ -75,7 +75,7 @@ class _EditProfileState extends State<EditProfile> {
                           EditField(
                               key: keyCounter,
                               label: 'Full Name',
-                              value: 'Harini Samaliarachchi',
+                              value: 'Sachini Muthugala',
                               edit: () {
                                 setState(() {
                                   keyCounter.currentState!.editField =
@@ -201,7 +201,6 @@ class _EditFieldState extends State<EditField> {
                 ),
               ),
             ),
-
           ],
         ),
         SizedBox(height: 6),

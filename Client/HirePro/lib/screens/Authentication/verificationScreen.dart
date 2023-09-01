@@ -58,7 +58,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     Container(
                       width: 350,
                       child: const Text(
-                        'Proof of Work',
+                        'Proof of document to identify permanent Residence',
                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left,
                       ),

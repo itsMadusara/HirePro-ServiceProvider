@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/Job/progress.dart';
+import 'package:hire_pro/screens/Profile/editCategories.dart';
 import 'package:hire_pro/screens/Profile/viewReviews.dart';
+import 'package:hire_pro/screens/calender.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/otpPhoneEnterScreen.dart';
 import 'package:hire_pro/screens/Authentication/registerSuccess.dart';
@@ -10,6 +12,8 @@ import 'package:hire_pro/screens/Authentication/selectCategories.dart';
 import 'package:hire_pro/screens/otpPhoneScreen.dart';
 import 'package:hire_pro/screens/Authentication/verificationScreen.dart';
 import 'package:hire_pro/screens/Authentication/uploadProfilePicture.dart';
+import 'package:hire_pro/screens/Authentication/forgotPassword.dart';
+import 'package:hire_pro/screens/Authentication/resetPassword.dart';
 import 'package:hire_pro/screens/Job/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/Job/earnedStarsScreen.dart';
 import 'package:hire_pro/screens/Job/rateCustomerScreen.dart';
@@ -27,11 +31,13 @@ import 'package:hire_pro/screens/Profile/userProfile.dart';
 import 'package:hire_pro/screens/Profile/customerProfile.dart';
 import 'package:hire_pro/screens/Profile/editProfile.dart';
 import 'package:hire_pro/screens/Profile/viewReviews.dart';
+import 'package:hire_pro/screens/Profile/addCategory.dart';
 import 'package:hire_pro/screens/emailcodereqScreen.dart';
 import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
 import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/Profile/reviews.dart';
+import 'package:hire_pro/services/calander.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/screens/agreement.dart';
 import 'package:hire_pro/screens/ongoingTasks.dart';
@@ -67,7 +73,7 @@ class HirePro extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // '/': (context) => ProgressStart(),
-        '/': (context) => LoginScreen(),
+        '/': (context) => Wallet(),
         // '/': (context) => VerificationScreen(),
         '/home': (context) => HomeScreen(),
         '/sign_up': (context) => SignUpScreen(),
@@ -102,6 +108,11 @@ class HirePro extends StatelessWidget {
         // '/view_task_details': (context) => ViewTaskDetails(),
         '/view_wallet': (context) => Wallet(),
         '/view_reviews': (context) => ViewReviews(),
+        '/forgot_password': (context) => ForgotPassword(),
+        '/reset_password': (context) => ResetPassword(),
+        '/calender': (context) => CalenderScreen(),
+        '/add_category': (context) => AddCategory(),
+        '/edit_categories': (context) => EditCategories(),
 
       },
     );

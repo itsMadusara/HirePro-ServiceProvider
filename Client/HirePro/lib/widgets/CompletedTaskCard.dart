@@ -101,10 +101,13 @@ class CompletedTaskCard extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 3,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(18.0), // Adjust the radius as needed
-                    child: Image.asset(image, // Replace with your image asset path
-                      fit: BoxFit.cover,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('images/task2.png'),
+                      ),
                     ),
                   ),
                 )

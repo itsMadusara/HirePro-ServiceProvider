@@ -25,6 +25,9 @@ var userData = jsonDecode(jsondata);
 
 class _WalletState extends State<Wallet> {
 
+  // Controller for the account input field
+  final TextEditingController accountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -100,7 +103,9 @@ class _WalletState extends State<Wallet> {
                                           child: Center(
                                             child: IconButton(
                                               icon: Icon(Icons.attach_money, color: Colors.black),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                showTransferDialog(context);
+                                              },
                                             ),
                                           ),
                                         ),
@@ -218,7 +223,51 @@ class _WalletState extends State<Wallet> {
         )
     );
   }
+
+  // Function to show the transfer money pop-up
+  void showTransferDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Transfer Money'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: accountController,
+                decoration: InputDecoration(labelText: 'Account'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Close the pop-up
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Perform the transfer action here using accountController.text
+                // You can add your logic to handle the transfer
+                String account = accountController.text;
+                // Perform the transfer logic with 'account'
+                // Once the transfer is successful, close the pop-up
+                Navigator.of(context).pop();
+              },
+              child: Text('Transfer'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
+
+
 
 class Walletcard extends StatelessWidget {
   final String label;

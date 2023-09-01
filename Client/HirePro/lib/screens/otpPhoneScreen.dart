@@ -21,7 +21,7 @@ class _OTPPhoneState extends State<OTPPhone> {
   @override
   Widget build(BuildContext context) {
     String jsondata =
-        '{"full_name": "John Doe", "email": "sachinimuthugala99@gmail.com", "phone_number": "123-456-7890"}';
+        '{"full_name": "John Doe", "email": "sachinimuthugala99@gmail.com", "phone_number": "076-3116008"}';
     var userData = jsonDecode(jsondata);
 
     return SafeArea(

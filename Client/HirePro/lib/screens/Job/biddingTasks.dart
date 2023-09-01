@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/widgets/BiddingTasksCard.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/CompletedTaskCard.dart';
@@ -45,7 +46,7 @@ class _BiddingTasksState extends State<BiddingTasks> {
                   : ListView.builder(
                       itemCount: tasks.length, // Number of cards
                       itemBuilder: (context, index) {
-                        String minEst = tasks[index]['serviceValue']['estmin'].toString();
+                        String minEst = tasks[index]['serviceValu  e']['estmin'].toString();
                         String maxEst = tasks[index]['serviceValue']['estmax'].toString();
                         return GestureDetector(
                             onTap: () {
@@ -59,14 +60,14 @@ class _BiddingTasksState extends State<BiddingTasks> {
                         },
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                              child: UpcomingTaskCard(
+                              child: BiddingTaskCard(
                                 tasks[index]['serviceValue']['location'],
                                 toDate(tasks[index]['serviceValue']['date']),
                                 tasks[index]['serviceValue']['description'],
                                 double.parse(minEst),
                                 double.parse(maxEst),
                                 2,
-                                'images/task1.png',
+                                'images/lawn1.jpg',
                               ),
                             )
                         );

@@ -39,7 +39,7 @@ class _BiddingSuccessfulScreenState extends State<BiddingSuccessfulScreen> {
                         color: Colors.grey[300], // Set your desired grey background color
                       ),
                       child: TextButton(
-                        onPressed: () {Navigator.pushNamed(context, '/bidding_tasks');},
+                        onPressed: () {Navigator.pushNamed(context, '/home');},
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -49,7 +49,7 @@ class _BiddingSuccessfulScreenState extends State<BiddingSuccessfulScreen> {
                             ),
                             SizedBox(width: 20,),
                             Text(
-                              'Back to Tasks',
+                              'Back to Home',
                               style: TextStyle(color: Colors.black), // Set the text color
                             ),
                           ],

@@ -4,13 +4,13 @@ import 'package:hire_pro/screens/reviews.dart';
 import 'package:hire_pro/services/dateTimeFormatted.dart';
 import 'package:hire_pro/widgets/StarRatingIndicator.dart';
 
-class UpcomingTaskCard extends StatelessWidget {
-  UpcomingTaskCard(this.location, this.date,this.time, this.customerName, this.jobPrice, this.rating, this.image);
+class BiddingTaskCard extends StatelessWidget {
+  BiddingTaskCard(this.location, this.date, this.customerName, this.estimatePriceLower,this.estimatePriceUpper, this.rating, this.image);
   final String location;
   final String date;
-  final String time;
   final String customerName;
-  final double jobPrice;
+  final double estimatePriceLower;
+  final double estimatePriceUpper;
   final double rating;
   final String image;
 
@@ -55,14 +55,14 @@ class UpcomingTaskCard extends StatelessWidget {
                           ),
                           StarRatingIndicator(rating, 16, Colors.black),
                           Text(
-                            "Starts: " + date + " | " + time,
+                            "Finish By: " + date,
                             style: TextStyle(fontSize: 11, color: Colors.black),
                           ),
                           Row(
                             children: [
                               Icon(
                                 Icons.location_on_outlined,
-                                size: 20,
+                                size: 24,
                               ),
                               SizedBox(width: 7,),
                               Container(
@@ -79,8 +79,8 @@ class UpcomingTaskCard extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Job Price', style: TextStyle(color: kMainYellow, fontSize: 10)),
-                              Text( 'Rs.'+jobPrice.toString(),style: TextStyle(color: kMainYellow, fontWeight: FontWeight.bold, fontSize: 15)),
+                              Text('Estimate', style: TextStyle(color: kMainYellow, fontSize: 10)),
+                              Text( 'Rs.'+estimatePriceLower.toString() + ' - Rs.' + estimatePriceUpper.toString(),style: TextStyle(color: kMainYellow, fontWeight: FontWeight.bold, fontSize: 15)),
                             ],
                           ),
                           Row(
@@ -110,7 +110,7 @@ class UpcomingTaskCard extends StatelessWidget {
                         image: AssetImage('images/lawn1.jpg'),
                       ),
                     ),
-                ),
+                  ),
                 ),
               ],
             ),

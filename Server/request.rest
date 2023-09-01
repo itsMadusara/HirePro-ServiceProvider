@@ -1,35 +1,35 @@
-POST http://localhost:5000/registerSP
+POST http://localhost:5001/registerSP
 Content-Type: application/json
 
 {
-  "contact" : "0771234567",
-  "name" : "John Doe",
-  "email" : "john3@gmail.com", 
-  "nic" : "123456893434", 
+  "contact" : "0716960023",
+  "name" : "sachini Muthugala",
+  "email" : "sachinimuthugala1224@gmail.com", 
+  "nic" : "200101101140", 
   "password" : "example123"
 }
 
 ###
-POST http://localhost:5000/loginSP
+POST http://localhost:5001/loginSP
 Content-Type: application/json
 
 {
-  "email" : "madusara@gmail.com", 
+  "email" : "sachinimuthugala1224@gmail.com", 
   "password" : "example123"
 }
 
 ###
-POST http://localhost:5000/logoutSP
+POST http://localhost:5001/logoutSP
 
 ###
-GET http://localhost:5000/testGet
+GET http://localhost:5001/testGet
 
 ###
-GET http://localhost:5000/getUser
+GET http://localhost:5001/getUser
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNiIsInVzZXJfbmFtZSI6IlRoYXJ1c2hrYSBNYWR1c2FyYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTIwNjUwMDYsImV4cCI6MTY5MzI3NDYwNn0.fg_6UuLqd5HKkdRP0wgi-voDNFUUDW_AohIL8Qjr8vk
 
 ###
-POST http://localhost:5000/editUser
+POST http://localhost:5001/editUser
 Content-Type: application/json
 
 {
@@ -39,5 +39,5 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:5000/getBiddingTasks
+GET http://localhost:5001/getBiddingTasks
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNiIsInVzZXJfbmFtZSI6IlRoYXJ1c2hrYSBNYWR1c2FyYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTIwNjUwMDYsImV4cCI6MTY5MzI3NDYwNn0.fg_6UuLqd5HKkdRP0wgi-voDNFUUDW_AohIL8Qjr8vk

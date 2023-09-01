@@ -24,6 +24,9 @@ List<String> images = [
   'images/male3.jpg'
 ];
 
+
+
+
 // class serviceProvider {
 //   final String name;
 //   final String id;
@@ -48,6 +51,22 @@ List<String> images = [
 // }
 
 class _UserProfileState extends State<UserProfile> {
+
+  List<String> selectedImages = [
+    'images/painting.png',
+  ];
+
+  void _handleBoxTap(int index) {
+    if (index == selectedImages.length) {
+      Navigator.pushNamed(context, '/add_category').then((result) {
+        if (result != null && result is String) {
+          setState(() {
+            selectedImages.add(result);
+          });
+        }
+      });
+    }
+  }
 
   Future<String> fetchSP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -113,7 +132,7 @@ class _UserProfileState extends State<UserProfile> {
             child: isLoading
                 ? CircularProgressIndicator()
                 : Container(
-                  height: 850,
+                  height: 950,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30.0),
                     child: Column(
@@ -133,7 +152,7 @@ class _UserProfileState extends State<UserProfile> {
                             tag: "image",
                             child: ClipOval(
                               child: Image.asset(
-                                'images/profile_pic.png',
+                                'images/profile_picture_mellow.png',
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -205,6 +224,50 @@ class _UserProfileState extends State<UserProfile> {
                               Container(
                                 child: Row(
                                   children: [
+                                    Text('Categories',
+                                      style: TextStyle(
+                                          color: kMainYellow,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Icon(Icons.edit,)
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 12,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            for (int i = 0; i < 3; i++)
+                              GestureDetector(
+                                onTap: () => _handleBoxTap(i),
+                                child: Container(
+                                  width: 100,
+                                  height: 100,
+                                  color: selectedImages.length > i ? Colors.black : Colors.grey[300],
+                                  child: selectedImages.length > i
+                                      ? Image.asset(
+                                    selectedImages[i],
+                                    fit: BoxFit.cover,
+                                  )
+                                      : Icon(Icons.add, size: 50),
+                                ),
+                              ),
+                          ],
+                        ),
+                        SizedBox(height: 12,),
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
                                     Text('Featured Projects',
                                       style: TextStyle(
                                       color: kMainYellow,
@@ -219,7 +282,6 @@ class _UserProfileState extends State<UserProfile> {
                             ],
                           ),
                         ),
-
                         Gallery(),
                         MainButton('My Reviews', () {Navigator.pushNamed(context, '/view_reviews');}),
                         SizedBox(

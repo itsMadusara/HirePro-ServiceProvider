@@ -21,7 +21,7 @@ class _EmailCodeVerifyScreenState extends State<EmailCodeVerifyScreen> {
     final args = ModalRoute.of(context)!.settings.arguments;
     int code = email.generateRandomNumber();
     email.sendEmail(
-        name: 'Harini Samaliarachchi',
+        name: 'Sachini Muthugala',
         email: '$args',
         subject: 'Email Verification Code',
         message: 'Please verify with the 5 digit code $code');
