@@ -20,7 +20,7 @@ class Wallet extends StatefulWidget {
 }
 
 String jsondata =
-    '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
+    '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890", "points" : "20000"}';
 var userData = jsonDecode(jsondata);
 
 class _WalletState extends State<Wallet> {
@@ -230,35 +230,81 @@ class _WalletState extends State<Wallet> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Transfer Money'),
+          title: Text('Convert Points'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text('Available Points', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
+              SizedBox(height: 5,),
+              Text('20000', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: kMainYellow),),
+              SizedBox(height: 20,),
+              Text('How many points do you want to transfer?'),
+              SizedBox(height: 12,),
               TextField(
                 controller: accountController,
-                decoration: InputDecoration(labelText: 'Account'),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(12), // Adjust padding as needed
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0), // Adjust the radius as needed
+                  ),
+                  hintText: 'Enter the amount',
+                ),
               ),
             ],
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                // Close the pop-up
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Perform the transfer action here using accountController.text
-                // You can add your logic to handle the transfer
-                String account = accountController.text;
-                // Perform the transfer logic with 'account'
-                // Once the transfer is successful, close the pop-up
-                Navigator.of(context).pop();
-              },
-              child: Text('Transfer'),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    // Close the pop-up
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    backgroundColor: Colors.grey,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20),
+                TextButton(
+                  onPressed: () {
+                    // Perform the transfer action here using accountController.text
+                    // You can add your logic to handle the transfer
+                    String account = accountController.text;
+                    // Perform the transfer logic with 'account'
+                    // Once the transfer is successful, close the pop-up
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    backgroundColor: kMainYellow,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+                    child: Text(
+                      'Transfer',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },
