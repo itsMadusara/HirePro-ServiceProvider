@@ -31,15 +31,15 @@ class _UpcomingTasksState extends State<UpcomingTasks> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 3, // Number of cards
+                itemCount: 1, // Number of cards
                 itemBuilder: (context, index) {
                   return Container(
                     margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     child: UpcomingTaskCard(
-                      'Task $index Location',
+                      'Gemunu Mawatha, Dehiwala',
                       '2023-10-1',
-                      'User $index',
-                      2500,
+                      '10:15',
+                      'T.Madusara',
                       3500,
                       4.5,
                       'images/task1.png',

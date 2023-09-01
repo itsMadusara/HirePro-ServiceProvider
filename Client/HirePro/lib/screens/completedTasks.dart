@@ -37,15 +37,15 @@ class _CompletedTasksState extends State<CompletedTasks> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 3, // Number of cards
+                itemCount: 1, // Number of cards
                 itemBuilder: (context, index) {
                   return Container(
                     margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     child: CompletedTaskCard(
-                      'Task $index Location',
-                      '2023-10-1',
-                      'User $index',
-                      2500,
+                      'Jaya Mawatha, Pettah',
+                      '2023-7-1',
+                      'Sewmini Gunawardhana',
+                      3000,
                       4.5,
                       'images/task1.png',
                     ),

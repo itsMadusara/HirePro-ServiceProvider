@@ -44,10 +44,10 @@ class _OngoingTasksState extends State<OngoingTasks> {
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         child: OngoingTaskCard(
-                          'Task $index Location',
-                          '2023-10-1',
+                          'Vijitha MW, Nagoda',
+                          '2023-8-17',
                           '2:30',
-                          'Sachini Muthugala',
+                          'Tharushi Silva',
                           2500,
                           4.5,
                           'images/task1.png',

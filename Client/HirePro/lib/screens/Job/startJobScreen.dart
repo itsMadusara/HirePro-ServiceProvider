@@ -5,6 +5,7 @@ import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/TaskDetails.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
+import 'package:hire_pro/widgets/OngoingTaskDetails.dart';
 import 'package:flutter/services.dart';
 
 
@@ -14,7 +15,7 @@ class StartJob extends StatefulWidget {
 }
 
 String jsondata =
-    '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
+    '{"full_name": "Tharushi Silva", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
 var userData = jsonDecode(jsondata);
 
 class _StartJobState extends State<StartJob> {
@@ -34,7 +35,7 @@ class _StartJobState extends State<StartJob> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // TaskDetails(taskDescription: "description"),
+                      OngoingTaskDetails(),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

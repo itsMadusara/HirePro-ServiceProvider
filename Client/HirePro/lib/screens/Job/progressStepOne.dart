@@ -17,6 +17,9 @@ var userData = jsonDecode(jsondata);
 class _ProgressStepOneState extends State<ProgressStepOne> {
   double rating = 3.5;
 
+  // OngoingTaskCard taskCard = OngoingTaskCard(...); // Initialize with appropriate values
+  // taskCard.updateProgress(0.9);
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -26,7 +29,7 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Latest Arrival by 10:00',
+                  'Latest Arrival by 2:25 pm',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
@@ -58,7 +61,7 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
                       ),
                     ),
                   ),
-                  Text('Customer Name',
+                  Text('Tharushi Silva',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   style: TextStyle(fontWeight: FontWeight.bold),),

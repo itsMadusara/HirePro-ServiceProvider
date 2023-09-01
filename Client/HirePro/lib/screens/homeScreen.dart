@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      RoundedIconButton(onPressed: () {'/';}, icon: Icons.payment),
+                      RoundedIconButton(onPressed: () {'/view_wallet';}, icon: Icons.payment),
                       RoundedIconButton(onPressed: () {'/';}, icon: Icons.notifications_active),
                       RoundedIconButton(onPressed: () {'/';}, icon: Icons.event),
                     ],
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Color(0XFFF5F5F5),
                   GestureDetector(
                       onTap: () {Navigator.pushNamed(context, '/bidding_tasks');},
-                      child:                    Row(
+                      child:Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Image.asset('images/bid.png'),

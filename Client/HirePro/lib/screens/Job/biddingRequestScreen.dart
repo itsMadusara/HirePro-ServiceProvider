@@ -15,7 +15,7 @@ class BiddingRequest extends StatefulWidget {
   State<BiddingRequest> createState() => _BiddingRequestState();
 }
 
-String jsondata = '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
+String jsondata = '{"full_name": "Harini Samaliarachchi", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
 var userData = jsonDecode(jsondata);
 
 class _BiddingRequestState extends State<BiddingRequest> {
