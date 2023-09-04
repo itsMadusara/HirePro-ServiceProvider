@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hire_pro/services/googleMaps.dart';
 import 'package:hire_pro/widgets/StarRatingIndicator.dart';
 import 'package:flutter/services.dart';
 
@@ -16,6 +19,21 @@ var userData = jsonDecode(jsondata);
 
 class _ProgressStepOneState extends State<ProgressStepOne> {
   double rating = 3.5;
+
+  // final Completer<GoogleMapController> _controller =
+  // Completer<GoogleMapController>();
+  //
+  // static const CameraPosition _kGooglePlex = CameraPosition(
+  //   target: LatLng(6.927079, 79.861244),
+  //   zoom: 14.4746,
+  // );
+  //
+  // static const CameraPosition _kLake = CameraPosition(
+  //     bearing: 192.8334901395799,
+  //     target: LatLng(6.927079, 79.861244),
+  //     tilt: 59.440717697143555,
+  //     zoom: 19.151926040649414);
+
 
   // OngoingTaskCard taskCard = OngoingTaskCard(...); // Initialize with appropriate values
   // taskCard.updateProgress(0.9);
@@ -38,11 +56,15 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
             SizedBox(height: 20,),
             Container(
               width: double.infinity,
-              height: 250,
+              height: 350,
               child: Center(
                   child: Column(
                     children: [
-                      Image.asset('images/google_map_image.jpeg'),
+                      Container(
+                        width: double.infinity,
+                        height: 350, // Set a fixed height
+                        // child: googleMaps(),
+                      )
                     ],
                   ),
               ),
@@ -145,6 +167,11 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
 
     );
   }
+
+  // Future<void> _goToTheLake() async {
+  //   final GoogleMapController controller = await _controller.future;
+  //   await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  // }
 }
 
 

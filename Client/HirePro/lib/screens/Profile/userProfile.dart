@@ -52,9 +52,41 @@ List<String> images = [
 
 class _UserProfileState extends State<UserProfile> {
 
-  List<String> selectedImages = [
-    'images/painting.png',
+  final List<String> allCategories = [
+    'Gardening',
+    'Plumbing',
+    'Cleaning',
+    'Furniture Mounting',
+    'Hair Cutting',
+    'Lawn Mowing',
+    'Painting'
   ];
+
+  final List<String> allCategoryImagePaths = [
+    'images/cleaning.png',
+    'images/hair-cut.png',
+    'images/painting.png',
+    'images/plumber.png',
+    'images/cleaning.png',
+    'images/hair-cut.png',
+    'images/hair-cut.png',
+  ];
+
+  // pass the list of tasks here from backend --> maximum 3 categories
+  List<String> selectedCategories = ['Cleaning', 'Painting'];
+
+  List<String> selectedImages = [];
+
+  void addSelectedCategoryImages() {
+    selectedImages.clear(); // Clear the existing selected images list
+
+    for (String category in selectedCategories) {
+      int index = allCategories.indexOf(category);
+      if (index >= 0 && index < allCategoryImagePaths.length) {
+        selectedImages.add(allCategoryImagePaths[index]);
+      }
+    }
+  }
 
   void _handleBoxTap(int index) {
     if (index == selectedImages.length) {
@@ -96,7 +128,8 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
-    _loadUserData(); // Call an asynchronous method to load user data
+    _loadUserData();// Call an asynchronous method to load user data
+    addSelectedCategoryImages();
   }
 
   Future<void> _loadUserData() async {
@@ -231,7 +264,13 @@ class _UserProfileState extends State<UserProfile> {
                                           fontWeight: FontWeight.w500),
                                     ),
                                     SizedBox(width: 5,),
-                                    Icon(Icons.edit,)
+                                    GestureDetector(
+                                      onTap: () {
+                                        // Navigate to another page when the Icon is tapped
+                                        Navigator.pushNamed(context, '/edit_categories');
+                                      },
+                                      child: Icon(Icons.edit),
+                                    ),
                                   ],
                                 ),
                               ),
