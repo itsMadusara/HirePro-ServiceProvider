@@ -37,6 +37,7 @@ class Email {
   }
   int generateRandomNumber() {
   Random random = Random();
-  return random.nextInt(90000) + 10000;
+  int verificationCode = random.nextInt(90000) + 10000;
+  return verificationCode;
 }
 }
