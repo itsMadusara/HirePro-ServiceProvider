@@ -76,6 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           children: [
                             MainButton('Sign Up', () {
                               signUpUser();
+                              Navigator.pushNamed(context, '/otp_mobile');
                             }),
                           ],
                         ),
@@ -103,17 +104,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "nic" : nicController.text,
           "password" : passwordController.text
         };
-        var response = await http.post(Uri.parse(urlCreate("registerSP")),
-            headers: {'Content-Type': 'application/json'},
-            body: jsonEncode(reqBody));
-        var jsonResponse = jsonDecode(response.body);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('signupReqBody', jsonEncode(reqBody));
+        // var response = await http.post(Uri.parse(urlCreate("registerSP")),
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: jsonEncode(reqBody));
+        // var jsonResponse = jsonDecode(response.body);
         // print(jsonResponse);
-        if(jsonResponse['status'] == "True"){
-          print("Signed Successfully");
-          Navigator.pushNamed(context, '/otp_mobile');
-        } else {
-          print("Sign Up Failed");
-        }
+        // if(jsonResponse['status'] == "True"){
+        //   print("Signed Successfully");
+        //   Navigator.pushNamed(context, '/otp_mobile');
+        // } else {
+        //   print("Sign Up Failed");
+        // }
       }
     }
   }

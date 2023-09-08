@@ -5,13 +5,14 @@ import 'package:file_picker/file_picker.dart';
 class UploadImageBox extends StatefulWidget {
   UploadImageBox(this.placeholder);
   final String placeholder;
+  List<File> selectedFiles = [];
 
   @override
   _UploadImageBoxState createState() => _UploadImageBoxState();
 }
 
 class _UploadImageBoxState extends State<UploadImageBox> {
-  List<File> selectedFiles = []; // Store the selected files
+  // List<File> selectedFiles = []; // Store the selected files
 
   void openFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
@@ -19,9 +20,10 @@ class _UploadImageBoxState extends State<UploadImageBox> {
     if (result != null) {
       List<File> files = result.paths.map((path) => File(path!)).toList();
       setState(() {
-        selectedFiles = files; // Update the selected files list
+        widget.selectedFiles = files; // Update the selected files list
       });
     } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No files selected')));
       // User canceled the picker
       // Handle the cancelation or provide appropriate code here
     }
@@ -44,7 +46,7 @@ class _UploadImageBoxState extends State<UploadImageBox> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (selectedFiles.isEmpty)
+            if (widget.selectedFiles.isEmpty)
               Column(
                 children: [
                   IconButton(
@@ -58,9 +60,9 @@ class _UploadImageBoxState extends State<UploadImageBox> {
                 ],
               ),
             SizedBox(height: 10), // Add some spacing
-            if (selectedFiles.isNotEmpty) // Display selected images
+            if (widget.selectedFiles.isNotEmpty) // Display selected images
               Column(
-                children: selectedFiles.map((file) => Container(
+                children: widget.selectedFiles.map((file) => Container(
                   width: 300, // Set your desired width
                   height: 250, // Set your desired height
                   child: Image.file(file, fit: BoxFit.cover), // Adjust fit as needed

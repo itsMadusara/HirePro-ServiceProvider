@@ -3,6 +3,9 @@ import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/UploadImageBox.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_core/firebase_core.dart';
+import '../../firebase_options.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -12,6 +15,18 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
+  UploadImageBox box1 = UploadImageBox('Upload Here');
+  UploadImageBox box2 = UploadImageBox('Upload Here');
+
+  @override
+  void initState() {
+    super.initState();
+    Firebase.initializeApp().whenComplete(() {
+      print("completed");
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,7 +63,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       ),
                     ),
                     SizedBox(height: 20,),
-                    UploadImageBox('Upload Here'),
+                    box1,
                   ],
                 ),
                 SizedBox(height: 16), // Add spacing
@@ -64,7 +79,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       ),
                     ),
                     SizedBox(height: 20,),
-                    UploadImageBox('Upload Here'),
+                    box2,
                   ],
                 ),
                 SizedBox(height: 30), // Add spacing
@@ -72,6 +87,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MainButton('Continue', () {
+                      print(box1.selectedFiles[0]);
+                      print(box2.selectedFiles);
+                      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+                      storage.ref('uploads/dl.png').putFile(box1.selectedFiles[0]);
                       Navigator.pushNamed(context, '/upload_profile_picture');
                     }),
                   ],
