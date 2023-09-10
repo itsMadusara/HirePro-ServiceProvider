@@ -6,6 +6,7 @@ import 'package:hire_pro/services/email.dart';
 import 'package:hire_pro/widgets/MediumButton.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmailcodereqScreen extends StatefulWidget {
   const EmailcodereqScreen({super.key});
@@ -15,14 +16,43 @@ class EmailcodereqScreen extends StatefulWidget {
 }
 
 class _EmailcodereqScreenState extends State<EmailcodereqScreen> {
-  Email email = Email();
+  Map<String,dynamic> userData = {};
+  bool isLoading = true;
+
+  Future<Map<String, dynamic>> getData() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String signupdata = prefs.getString('signupReqBody') ?? '';
+    var signupdataJson = jsonDecode(signupdata);
+    return signupdataJson;
+    // phoneNumber = userData['contact'] ?? 'Not loaded';
+    // print(userData['contact']);
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      userData = await getData();
+      // userDataMap.forEach((element) {print(element);});
+      setState(() {
+        isLoading = false; // Set isLoading to false after data is loaded
+      });
+      return;
+    } catch (error) {
+      print('Error fetching user data: $error');
+      setState(() {
+        isLoading = false; // Set isLoading to false after data is loaded
+      });
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    String jsondata =
-        '{"full_name": "John Doe", "email": "sachinimuthugala99@gmail.com", "phone_number": "123-456-7890"}';
-    var userData = jsonDecode(jsondata);
-
     return SafeArea(
         child: Scaffold(
           appBar: AppBarBackAndMore(),
@@ -30,7 +60,9 @@ class _EmailcodereqScreenState extends State<EmailcodereqScreen> {
           body: SingleChildScrollView(
             child: Container(
               margin: EdgeInsets.all(40).copyWith(top: 0),
-              child: Column(
+              child: isLoading ?
+              Center(child: CircularProgressIndicator()) :
+              Column(
                 children: [
                   Image.asset('images/hireProWithoutBG.png'),
                   Text(
