@@ -30,53 +30,66 @@ List<String> images = [
 
 class _UserProfileState extends State<UserProfile> {
 
-  final List<String> allCategories = [
-    'Gardening',
-    'Plumbing',
-    'Cleaning',
-    'Furniture Mounting',
-    'Hair Cutting',
-    'Lawn Mowing',
-    'Painting'
-  ];
+  Api api = Api();
+  // List<String> selectedCategories = [];
 
-  final List<String> allCategoryImagePaths = [
-    'images/cleaning.png',
-    'images/hair-cut.png',
-    'images/painting.png',
-    'images/plumber.png',
-    'images/cleaning.png',
-    'images/hair-cut.png',
-    'images/hair-cut.png',
-  ];
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<SPProvider>(context, listen: false).getSPData();
+    });
+    // selectedCategories = SPProvider().selectedCategories;
+    // addSelectedCategoryImages();
+  }
+
+  // final List<String> allCategories = [
+  //   'Gardening',
+  //   'Plumbing',
+  //   'Cleaning',
+  //   'Furniture Mounting',
+  //   'Hair Dressing',
+  //   'Lawn Moving',
+  //   'Painting'
+  // ];
+  //
+  // final List<String> allCategoryImagePaths = [
+  //   'images/cleaning.png',
+  //   'images/hair-cut.png',
+  //   'images/painting.png',
+  //   'images/plumber.png',
+  //   'images/cleaning.png',
+  //   'images/hair-cut.png',
+  //   'images/hair-cut.png',
+  // ];
 
   // pass the list of tasks here from backend --> maximum 3 categories
-  List<String> selectedCategories = ['Cleaning', 'Painting'];
+  // List<String> selectedCategories = ['Cleaning', 'Painting'];
 
-  List<String> selectedImages = [];
+  // List<String> selectedImages = [];
 
-  void addSelectedCategoryImages() {
-    selectedImages.clear(); // Clear the existing selected images list
 
-    for (String category in selectedCategories) {
-      int index = allCategories.indexOf(category);
-      if (index >= 0 && index < allCategoryImagePaths.length) {
-        selectedImages.add(allCategoryImagePaths[index]);
-      }
-    }
-  }
+  // void addSelectedCategoryImages() {
+  //   selectedImages.clear(); // Clear the existing selected images list
+  //
+  //   for (String category in selectedCategories) {
+  //     int index = allCategories.indexOf(category);
+  //     if (index >= 0 && index < allCategoryImagePaths.length) {
+  //       selectedImages.add(allCategoryImagePaths[index]);
+  //     }
+  //   }
+  // }
 
-  void _handleBoxTap(int index) {
-    if (index == selectedImages.length) {
-      Navigator.pushNamed(context, '/add_category').then((result) {
-        if (result != null && result is String) {
-          setState(() {
-            selectedImages.add(result);
-          });
-        }
-      });
-    }
-  }
+  // void _handleBoxTap(int index) {
+  //   if (index == selectedImages.length) {
+  //     Navigator.pushNamed(context, '/add_category').then((result) {
+  //       if (result != null && result is String) {
+  //         setState(() {
+  //           selectedImages.add(result);
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
 
   // Future<String> fetchSP() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -103,15 +116,7 @@ class _UserProfileState extends State<UserProfile> {
   // String email = '';
   // String intro = '';
 
-  Api api = Api();
 
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<SPProvider>(context, listen: false).getSPData();
-    });
-    super.initState();
-    addSelectedCategoryImages();
-  }
 
   // @override
   // void initState() {
@@ -156,6 +161,8 @@ class _UserProfileState extends State<UserProfile> {
                     padding: EdgeInsets.symmetric(horizontal: 30.0),
                     child: Consumer<SPProvider>(
                       builder: (context, serviceProvider, child){
+                        List<String> selectedImages = serviceProvider.selectedImages;
+                        bool isLoading = serviceProvider.isLoading;
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -266,12 +273,23 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                         SizedBox(height: 12,),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             for (int i = 0; i < 3; i++)
                               GestureDetector(
-                                onTap: () => _handleBoxTap(i),
+                                onTap: () {
+                                  if (i == selectedImages.length) {
+                                    Navigator.pushNamed(context, '/add_category').then((result) {
+                                      if (result != null && result is String) {
+                                        setState(() {
+                                          selectedImages.add(result);
+                                        });
+                                      }
+                                    });
+                                  }
+                                },
                                 child: Container(
                                   width: 100,
                                   height: 100,
