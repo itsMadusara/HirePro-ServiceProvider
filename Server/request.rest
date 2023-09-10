@@ -14,8 +14,8 @@ POST http://localhost:5001/loginSP
 Content-Type: application/json
 
 {
-  "email" : "s@gmail.com", 
-  "password" : "123"
+  "email" : "madusara@gmail.com", 
+  "password" : "example123"
 }
 
 ###
