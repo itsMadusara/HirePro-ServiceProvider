@@ -18,15 +18,15 @@
 //   String intro;
 //
 //   TaskDetails({
-//     // required this.id,
-//     // required this.name,
-//     // required this.email,
-//     // required this.contact,
-//     // required this.nic,
-//     // this.image,
-//     // required this.verifyImages,
-//     // required this.points,
-//     // required this.intro,
+//     required this.id,
+//     required this.name,
+//     required this.email,
+//     required this.contact,
+//     required this.nic,
+//     this.image,
+//     required this.verifyImages,
+//     required this.points,
+//     required this.intro,
 //   });
 //
 //   factory TaskDetails.fromJson(Map<String, dynamic> json) {
