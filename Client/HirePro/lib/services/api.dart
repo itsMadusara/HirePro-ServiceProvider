@@ -14,7 +14,9 @@ class Api{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var response = await http.get(Uri.parse(urlCreate('getUser')),
         headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']});
+    print(jsonDecode(prefs.getString('tokens') ?? ''));
     if (response.statusCode == 200) {
+      print((jsonDecode(response.body)));
       return await SP.fromJson(jsonDecode(response.body));
     } else {
       if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
