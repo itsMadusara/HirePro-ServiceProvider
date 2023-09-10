@@ -45,6 +45,9 @@ import 'package:hire_pro/screens/upcomingTasks.dart';
 import 'package:hire_pro/screens/completedTasks.dart';
 import 'package:hire_pro/screens/Job/startJobScreen.dart';
 import 'package:hire_pro/screens/wallet.dart';
+import 'package:provider/provider.dart';
+
+import 'Providers/spProvider.dart';
 // import 'package:hire_pro/screens/viewTaskDetails.dart';
 
 void main() {
@@ -56,7 +59,15 @@ class HirePro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => SPProvider()),
+          // ChangeNotifierProvider(create: (context) => AddressProvider()),
+          // ChangeNotifierProvider(create: (context) => CategoryProvider()),
+          // ChangeNotifierProvider(create: (context) =>TaskProvider()),
+          // ChangeNotifierProvider(create: (context)=>FileUploadProvider())
+        ],
+      child: MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
           brightness: Brightness.light,
@@ -115,6 +126,7 @@ class HirePro extends StatelessWidget {
         '/edit_categories': (context) => EditCategories(),
 
       },
+      )
     );
   }
 }
