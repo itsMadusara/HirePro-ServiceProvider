@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(myTokens);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('tokens', jsonEncode(myTokens));
-        // var sesstionToken = myTokens;
+        // var sessionToken = myTokens;
         // preferences.setString('token', myTokens);
         print("Logged in");
         Navigator.pushNamed(context, '/home');

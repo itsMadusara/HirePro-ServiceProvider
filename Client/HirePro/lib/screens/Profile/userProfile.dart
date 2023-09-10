@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hire_pro/Providers/spProvider.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hire_pro/services/urlCreator.dart';
@@ -9,7 +10,10 @@ import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../services/api.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -24,133 +28,122 @@ List<String> images = [
   'images/male3.jpg'
 ];
 
-
-
-
-// class serviceProvider {
-//   final String name;
-//   final String id;
-//   final String email;
-//   final String intro;
-//
-//   const serviceProvider({
-//     required this.name,
-//     required this.id,
-//     required this.email,
-//     required this.intro,
-//   });
-//
-//   factory serviceProvider.fromJson(Map<String, dynamic> json) {
-//     return serviceProvider(
-//       name: json['id'].toString(),
-//       id: json['name'].toString(),
-//       email: json['email'].toString(),
-//       intro: json['intro'].toString(),
-//     );
-//   }
-// }
-
 class _UserProfileState extends State<UserProfile> {
 
-  final List<String> allCategories = [
-    'Gardening',
-    'Plumbing',
-    'Cleaning',
-    'Furniture Mounting',
-    'Hair Cutting',
-    'Lawn Mowing',
-    'Painting'
-  ];
+  Api api = Api();
+  // List<String> selectedCategories = [];
 
-  final List<String> allCategoryImagePaths = [
-    'images/cleaning.png',
-    'images/hair-cut.png',
-    'images/painting.png',
-    'images/plumber.png',
-    'images/cleaning.png',
-    'images/hair-cut.png',
-    'images/hair-cut.png',
-  ];
-
-  // pass the list of tasks here from backend --> maximum 3 categories
-  List<String> selectedCategories = ['Cleaning', 'Painting'];
-
-  List<String> selectedImages = [];
-
-  void addSelectedCategoryImages() {
-    selectedImages.clear(); // Clear the existing selected images list
-
-    for (String category in selectedCategories) {
-      int index = allCategories.indexOf(category);
-      if (index >= 0 && index < allCategoryImagePaths.length) {
-        selectedImages.add(allCategoryImagePaths[index]);
-      }
-    }
-  }
-
-  void _handleBoxTap(int index) {
-    if (index == selectedImages.length) {
-      Navigator.pushNamed(context, '/add_category').then((result) {
-        if (result != null && result is String) {
-          setState(() {
-            selectedImages.add(result);
-          });
-        }
-      });
-    }
-  }
-
-  Future<String> fetchSP() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var response = await http.get(Uri.parse(urlCreate('getUser')),
-        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']});
-    if (response.statusCode == 200) {
-      return (response.body);
-    } else {
-      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
-        response = await http.get(Uri.parse(urlCreate('refreshToken')),
-            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
-        var jsonResponse = jsonDecode(response.body);
-        print(jsonResponse['tokens']);
-        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
-        fetchSP();
-      }
-      throw Exception('Failed to load album');
-    }
-  }
-
-  bool isLoading = true; // Set initial loading state to true
-  String name = '';
-  String id = '';
-  String email = '';
-  String intro = '';
-
-  @override
   void initState() {
     super.initState();
-    _loadUserData();// Call an asynchronous method to load user data
-    addSelectedCategoryImages();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<SPProvider>(context, listen: false).getSPData();
+    });
+    // selectedCategories = SPProvider().selectedCategories;
+    // addSelectedCategoryImages();
   }
 
-  Future<void> _loadUserData() async {
-    try {
-      final userData = await fetchSP();
-      print(userData);
-      Map<String, dynamic> userDataMap = jsonDecode(userData);
-      setState(() {
-        name = userDataMap['name'];
-        id = userDataMap['id'];
-        email = userDataMap['email'];
-        intro = userDataMap['intro'] ?? '';
-        isLoading = false; // Set isLoading to false after data is loaded
-      });
-    } catch (error) {
-      print('Error fetching user data: $error');
-      setState(() {
-        isLoading = false; // Set isLoading to false even in case of error
-      });
-    }
-  }
+  // final List<String> allCategories = [
+  //   'Gardening',
+  //   'Plumbing',
+  //   'Cleaning',
+  //   'Furniture Mounting',
+  //   'Hair Dressing',
+  //   'Lawn Moving',
+  //   'Painting'
+  // ];
+  //
+  // final List<String> allCategoryImagePaths = [
+  //   'images/cleaning.png',
+  //   'images/hair-cut.png',
+  //   'images/painting.png',
+  //   'images/plumber.png',
+  //   'images/cleaning.png',
+  //   'images/hair-cut.png',
+  //   'images/hair-cut.png',
+  // ];
+
+  // pass the list of tasks here from backend --> maximum 3 categories
+  // List<String> selectedCategories = ['Cleaning', 'Painting'];
+
+  // List<String> selectedImages = [];
+
+
+  // void addSelectedCategoryImages() {
+  //   selectedImages.clear(); // Clear the existing selected images list
+  //
+  //   for (String category in selectedCategories) {
+  //     int index = allCategories.indexOf(category);
+  //     if (index >= 0 && index < allCategoryImagePaths.length) {
+  //       selectedImages.add(allCategoryImagePaths[index]);
+  //     }
+  //   }
+  // }
+
+  // void _handleBoxTap(int index) {
+  //   if (index == selectedImages.length) {
+  //     Navigator.pushNamed(context, '/add_category').then((result) {
+  //       if (result != null && result is String) {
+  //         setState(() {
+  //           selectedImages.add(result);
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
+
+  // Future<String> fetchSP() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var response = await http.get(Uri.parse(urlCreate('getUser')),
+  //       headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']});
+  //   if (response.statusCode == 200) {
+  //     return (response.body);
+  //   } else {
+  //     if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+  //       response = await http.get(Uri.parse(urlCreate('refreshToken')),
+  //           headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+  //       var jsonResponse = jsonDecode(response.body);
+  //       print(jsonResponse['tokens']);
+  //       await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+  //       fetchSP();
+  //     }
+  //     throw Exception('Failed to load album');
+  //   }
+  // }
+  //
+  // bool isLoading = true; // Set initial loading state to true
+  // String name = '';
+  // String id = '';
+  // String email = '';
+  // String intro = '';
+
+
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _loadUserData();// Call an asynchronous method to load user data
+  //   addSelectedCategoryImages();
+  // }
+
+  // Future<void> _loadUserData() async {
+  //   try {
+  //     final userData = await fetchSP();
+  //     print(userData);
+  //     Map<String, dynamic> userDataMap = jsonDecode(userData);
+  //     setState(() {
+  //       name = userDataMap['name'];
+  //       id = userDataMap['id'];
+  //       email = userDataMap['email'];
+  //       intro = userDataMap['intro'] ?? '';
+  //       isLoading = false; // Set isLoading to false after data is loaded
+  //     });
+  //   } catch (error) {
+  //     print('Error fetching user data: $error');
+  //     setState(() {
+  //       isLoading = false; // Set isLoading to false even in case of error
+  //     });
+  //   }
+  // }
 
   final ScrollController controller = ScrollController();
   @override
@@ -162,13 +155,15 @@ class _UserProfileState extends State<UserProfile> {
         resizeToAvoidBottomInset: false,
         body: Center(
           child: SingleChildScrollView(
-            child: isLoading
-                ? CircularProgressIndicator()
-                : Container(
+            child:Container(
                   height: 950,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Column(
+                    child: Consumer<SPProvider>(
+                      builder: (context, serviceProvider, child){
+                        List<String> selectedImages = serviceProvider.selectedImages;
+                        bool isLoading = serviceProvider.isLoading;
+                    return Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
@@ -192,7 +187,7 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                         Text(
-                          name,
+                        serviceProvider.serviceProviderData!.name,
                           style: TextStyle(
                             fontSize: 30,
                             overflow: TextOverflow.ellipsis,
@@ -208,7 +203,7 @@ class _UserProfileState extends State<UserProfile> {
                           itemSize: 30.0,
                           direction: Axis.horizontal,
                         ),
-                        Text('HirePro ID - $id',
+                        Text('HirePro ID - ' + serviceProvider.serviceProviderData!.id,
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[700],
@@ -216,7 +211,7 @@ class _UserProfileState extends State<UserProfile> {
                         ),
 
                         SizedBox(height: 15,),
-                        ProfileSummary('LKR 120,000', 'Revenue Earned'),
+                        ProfileSummary((serviceProvider.serviceProviderData!.points).toString() , 'Revenue Earned'),
                         SizedBox(height: 5,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -244,7 +239,7 @@ class _UserProfileState extends State<UserProfile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: 6,),
-                              Text(intro),
+                              // Text(serviceProvider.serviceProviderData!.intro),
                             ],
                           ),
                         ),
@@ -278,12 +273,23 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                         SizedBox(height: 12,),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             for (int i = 0; i < 3; i++)
                               GestureDetector(
-                                onTap: () => _handleBoxTap(i),
+                                onTap: () {
+                                  if (i == selectedImages.length) {
+                                    Navigator.pushNamed(context, '/add_category').then((result) {
+                                      if (result != null && result is String) {
+                                        setState(() {
+                                          selectedImages.add(result);
+                                        });
+                                      }
+                                    });
+                                  }
+                                },
                                 child: Container(
                                   width: 100,
                                   height: 100,
@@ -327,7 +333,7 @@ class _UserProfileState extends State<UserProfile> {
                           height: 10,
                         )
                       ],
-                    ),
+                    );}),
                   ),
                 ),
           ),
