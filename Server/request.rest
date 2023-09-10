@@ -63,7 +63,7 @@ Content-Type: application/json
   "additionalInfo" : "This is the additional info",
   "bidAmount" : "1000",
   "schedule" : "2021-05-12",
-  "taskid" : "10"
+  "taskid" : "2"
 }
 
 ###
@@ -74,4 +74,35 @@ Content-Type: application/json
 {
   "oldPassword" : "example1234",
   "newPassword" : "example123"
+}
+
+###
+GET http://localhost:5000/getOngoingTasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQzMjEwMDUsImV4cCI6MTY5NTUzMDYwNX0.AzhWrK5Kt5mpLvbmK8KxpmCpaRu5UJEQL96AXmm6fRo
+
+###
+POST http://localhost:5000/setStarted
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQzMjEwMDUsImV4cCI6MTY5NTUzMDYwNX0.AzhWrK5Kt5mpLvbmK8KxpmCpaRu5UJEQL96AXmm6fRo
+Content-Type: application/json
+
+{
+  "serviceid" : "3"
+}
+
+###
+POST http://localhost:5000/setArrived
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQzMjEwMDUsImV4cCI6MTY5NTUzMDYwNX0.AzhWrK5Kt5mpLvbmK8KxpmCpaRu5UJEQL96AXmm6fRo
+Content-Type: application/json
+
+{
+  "serviceid" : "3"
+}
+
+###
+POST http://localhost:5000/setCompleted
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQzMjEwMDUsImV4cCI6MTY5NTUzMDYwNX0.AzhWrK5Kt5mpLvbmK8KxpmCpaRu5UJEQL96AXmm6fRo
+Content-Type: application/json
+
+{
+  "serviceid" : "3"
 }

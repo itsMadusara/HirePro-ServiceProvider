@@ -5,6 +5,25 @@ import { authTocken } from '../../../middleware/authentication.js';
 const router = exprees.Router();
 
 router.get('/', authTocken, async (req, res) => {
+    // try {
+
+    //     const query1 = {
+    //         text: 'SELECT * FROM public."Service" WHERE status = \'Pending\' and id in (SELECT "serviceId" FROM public."Bid" WHERE "serviceProviderId"=$1 and accept_customerid is not NULL);',
+    //         values : [req.user.user_id]
+    //     };
+    //     const taskBid = await pool.query(query1);
+    //     const tasks = taskBid.rows;
+
+    //     res.json(tasks);
+
+
+
+    // } catch (error) {
+    //     res.status(500).json({error: error.message});
+    // }
+
+
+
     try {
         const query1 = {
             text: 'SELECT category FROM public."ServiceProvider" where id=$1;',
@@ -17,9 +36,9 @@ router.get('/', authTocken, async (req, res) => {
 
         for (let i = 0; i < categories.length; i++) {
             categories[i] = categories[i].replace(' ', '');
-            const queryText = 'SELECT * FROM public."'+ categories[i] +'" WHERE id NOT IN (SELECT "serviceId" FROM public."Bid" WHERE "serviceProviderId"='+ req.user.user_id +');'
             const query2 = {
-                text: queryText
+                text: 'SELECT * FROM public."'+categories[i]+'" WHERE id in (SELECT "serviceId" FROM public."Bid" WHERE "serviceProviderId"=$1 and accept_customerid is not NULL);',
+                values : [req.user.user_id]
             }
             const task = await pool.query(query2);
             jobs[categories[i]] = task.rows;
@@ -35,7 +54,7 @@ router.get('/', authTocken, async (req, res) => {
             for (let j = 0; j < jobs[categories[i]].length; j++) {
 
                 const query3 = {
-                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status in (\'Pending\');',
+                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status not in (\'Sheduled\', \'Pending\', \'Completed\');',
                     values: [jobs[categories[i]][j]['id']]
                 }
                 const bidServices = await pool.query(query3);
@@ -85,10 +104,12 @@ router.get('/', authTocken, async (req, res) => {
                 });
             }
         }
+        console.log(cards);
         res.json(cards);
     } catch (error) {
         res.status(500).json({error: error.message});
     }
+
 });
 
 export default router;
