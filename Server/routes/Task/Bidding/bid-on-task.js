@@ -8,8 +8,8 @@ router.post('/', authTocken, async (req, res) => {
     try {
 
         const query1 = {
-            text: 'INSERT INTO public."Bid" ("timestamp", "additionalInfo", amount, schedule, "serviceId", "serviceProviderId") VALUES (NOW(), $1, $2, $3, $4, $5);',
-            values : [req.body.additionalInfo, req.body.bidAmount, req.body.schedule, req.body.taskid, req.user.user_id]
+            text: 'INSERT INTO public."Bid" ("timestamp", "additionalInfo", amount, "serviceId", "serviceProviderId") VALUES (NOW(), $1, $2, $3, $4);',
+            values : [req.body.additionalInfo, req.body.bidAmount, req.body.taskid, req.user.user_id]
         };
         const taskBid = await pool.query(query1);
         res.json({message: 'Bid added successfully'});
