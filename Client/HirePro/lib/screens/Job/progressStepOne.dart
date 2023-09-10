@@ -63,7 +63,7 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
                       Container(
                         width: double.infinity,
                         height: 350, // Set a fixed height
-                        // child: googleMaps(),
+                        child: GoogleMaps(),
                       )
                     ],
                   ),
