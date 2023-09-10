@@ -13,8 +13,13 @@ import userLogout from "./routes/authentication/user-logout.js";
 import getUserTest from "./routes/profileManagement/get-user-test.js";
 import getUser from "./routes/profileManagement/view-profile.js";
 import editUser from "./routes/profileManagement/edit-profile.js";
+import addCategory from "./routes/profileManagement/add-category.js";
+import changePassword from "./routes/profileManagement/change-password.js";
 
 import getBidTasks from "./routes/Task/Bidding/get-bid-task.js";
+import bidTask from "./routes/Task/Bidding/bid-on-task.js";
+import getContact from "./routes/Task/Bidding/get-phone-number.js";
+
 import { get } from "http";
 
 dotenv.config();
@@ -38,8 +43,12 @@ app.use("/refreshToken", getRefreshToken);
 app.use("/testGet", getUserTest);
 app.use("/getUser", getUser);
 app.use("/editUser", editUser);
+app.use("/addCategory", addCategory);
+app.use("/changePassword", changePassword);
 
-app.use("/getBiddingTasks", getBidTasks)
+app.use("/getBiddingTasks", getBidTasks);
+app.use("/bidTask", bidTask);
+// app.use("/getContact", getContact);
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`);
