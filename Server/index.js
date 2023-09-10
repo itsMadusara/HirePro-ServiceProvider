@@ -20,6 +20,11 @@ import getBidTasks from "./routes/Task/Bidding/get-bid-task.js";
 import bidTask from "./routes/Task/Bidding/bid-on-task.js";
 import getContact from "./routes/Task/Bidding/get-phone-number.js";
 
+import getOngoingTasks from "./routes/Task/ongoing/get-tasks-ongoing.js";
+import setStarted from "./routes/Task/ongoing/start.js";
+import setArrived from "./routes/Task/ongoing/arrived.js";
+import setCompleted from "./routes/Task/ongoing/completed.js";
+
 import { get } from "http";
 
 dotenv.config();
@@ -49,6 +54,11 @@ app.use("/changePassword", changePassword);
 app.use("/getBiddingTasks", getBidTasks);
 app.use("/bidTask", bidTask);
 // app.use("/getContact", getContact);
+
+app.use("/getOngoingtasks", getOngoingTasks);
+app.use("/setStarted", setStarted);
+app.use("/setArrived", setArrived);
+app.use("/setCompleted", setCompleted);
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`);
