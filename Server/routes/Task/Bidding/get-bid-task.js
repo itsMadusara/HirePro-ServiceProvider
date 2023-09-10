@@ -17,13 +17,14 @@ router.get('/', authTocken, async (req, res) => {
 
         for (let i = 0; i < categories.length; i++) {
             categories[i] = categories[i].replace(' ', '');
-            const queryText = 'SELECT * FROM public."'+ categories[i] +'";'
+            const queryText = 'SELECT * FROM public."'+ categories[i] +'" WHERE id NOT IN (SELECT "serviceId" FROM public."Bid" WHERE "serviceProviderId"='+ req.user.user_id +');'
             const query2 = {
                 text: queryText
             }
             const task = await pool.query(query2);
             jobs[categories[i]] = task.rows;
         }
+        console.log(jobs);
 
         if (categories.length === 0) {
             res.json(cards);
@@ -38,6 +39,13 @@ router.get('/', authTocken, async (req, res) => {
                     values: [jobs[categories[i]][j]['id']]
                 }
                 const bidServices = await pool.query(query3);
+                // console.log(bidServices.rows[0].customerid);
+
+                const query5 = {
+                    text: 'SELECT name,id FROM public."Customer" WHERE id= $1;',
+                    values: [bidServices.rows[0].customerid]
+                }
+                const customerName = await pool.query(query5);
 
                 let tasks;
                 if(categories[i] === "HairDressing"){
@@ -63,12 +71,14 @@ router.get('/', authTocken, async (req, res) => {
                     }
                     const temp = await pool.query(query4);
                     tasks = temp.rows;
-                } 
+                }
 
                 cards.push({
                     category : categories[i],
                     serviceValue : bidServices.rows[0],
-                    jobTasks : tasks
+                    jobTasks : tasks,
+                    customerName : customerName.rows[0].name,
+                    customerId : customerName.rows[0].id
                 });
             }
         }

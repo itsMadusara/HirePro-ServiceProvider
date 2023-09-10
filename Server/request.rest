@@ -1,4 +1,4 @@
-POST http://localhost:5001/registerSP
+POST http://localhost:5000/registerSP
 Content-Type: application/json
 
 {
@@ -10,34 +10,68 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5001/loginSP
+POST http://localhost:5000/loginSP
 Content-Type: application/json
 
 {
-  "email" : "sachinimuthugala1224@gmail.com", 
-  "password" : "example123"
+  "email" : "madusara@gmail.com", 
+  "password" : "example1234"
 }
 
 ###
-POST http://localhost:5001/logoutSP
+POST http://localhost:5000/logoutSP
 
 ###
-GET http://localhost:5001/testGet
+GET http://localhost:5000/testGet
 
 ###
-GET http://localhost:5001/getUser
+GET http://localhost:5000/getUser
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNiIsInVzZXJfbmFtZSI6IlRoYXJ1c2hrYSBNYWR1c2FyYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTIwNjUwMDYsImV4cCI6MTY5MzI3NDYwNn0.fg_6UuLqd5HKkdRP0wgi-voDNFUUDW_AohIL8Qjr8vk
 
 ###
-POST http://localhost:5001/editUser
+POST http://localhost:5000/editUser
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJuZXdtYWlsQGdtYWlsLmNvbSIsImlhdCI6MTY5NDMyMDY5NywiZXhwIjoxNjk1NTMwMjk3fQ.5vH8YrALWGFedRcjO38LqJumzS_DvaoUfaTVnvQbrgc
 Content-Type: application/json
 
 {
   "name" : "John Doe",
-  "email" : "newmail@gmail.com",
-  "intro" : "New new intro"
+  "email" : "madusara@gmail.com",
+  "intro" : "New new intro",
+  "contact" : "0711111111"
 }
 
 ###
-GET http://localhost:5001/getBiddingTasks
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNiIsInVzZXJfbmFtZSI6IlRoYXJ1c2hrYSBNYWR1c2FyYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTIwNjUwMDYsImV4cCI6MTY5MzI3NDYwNn0.fg_6UuLqd5HKkdRP0wgi-voDNFUUDW_AohIL8Qjr8vk
+GET http://localhost:5000/getBiddingTasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIE11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQyNDQwNzEsImV4cCI6MTY5NTQ1MzY3MX0.B0SJn7QhqGvBcS-Isz8jxbE_UwwTjUS9mGG8mL8-aW8
+
+###
+POST http://localhost:5000/addCategory
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIE11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQyNDQwNzEsImV4cCI6MTY5NTQ1MzY3MX0.B0SJn7QhqGvBcS-Isz8jxbE_UwwTjUS9mGG8mL8-aW8
+Content-Type: application/json
+
+{
+  "category" : "Lawn Moving"
+}
+
+
+###
+POST  http://localhost:5000/bidTask
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIE11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQyNDQwNzEsImV4cCI6MTY5NTQ1MzY3MX0.B0SJn7QhqGvBcS-Isz8jxbE_UwwTjUS9mGG8mL8-aW8
+Content-Type: application/json
+
+{
+  "additionalInfo" : "This is the additional info",
+  "bidAmount" : "1000",
+  "schedule" : "2021-05-12",
+  "taskid" : "10"
+}
+
+###
+POST http://localhost:5000/changePassword
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQzMjEwMDUsImV4cCI6MTY5NTUzMDYwNX0.AzhWrK5Kt5mpLvbmK8KxpmCpaRu5UJEQL96AXmm6fRo
+Content-Type: application/json
+
+{
+  "oldPassword" : "example1234",
+  "newPassword" : "example123"
+}
