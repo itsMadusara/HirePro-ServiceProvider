@@ -27,7 +27,6 @@ class _ViewTaskDetailsState extends State<ViewTaskDetails> {
                       
                   ],
                 )
-
                   ],
                 ),
               ),

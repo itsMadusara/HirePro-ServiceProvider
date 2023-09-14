@@ -12,6 +12,13 @@ router.post('/', authTocken, async (req, res) => {
             values : [req.body.additionalInfo, req.body.bidAmount, req.body.taskid, req.user.user_id]
         };
         const taskBid = await pool.query(query1);
+
+        const query2 = {
+            text: 'UPDATE public."Service" set status=\'Sheduled\' where id=$1;',
+            values : [req.body.taskid]
+        };
+        const taskStatus = await pool.query(query2);
+
         res.json({message: 'Bid added successfully'});
 
     } catch (error) {

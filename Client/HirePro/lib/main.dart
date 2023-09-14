@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hire_pro/screens/ChatScreen.dart';
 import 'package:hire_pro/screens/Job/progress.dart';
 import 'package:hire_pro/screens/Profile/editCategories.dart';
 import 'package:hire_pro/screens/Profile/viewReviews.dart';
-import 'package:hire_pro/screens/calender.dart';
+import 'package:hire_pro/screens/viewCalender.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/otpPhoneEnterScreen.dart';
 import 'package:hire_pro/screens/Authentication/registerSuccess.dart';
@@ -37,7 +38,6 @@ import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
 import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/Profile/reviews.dart';
-import 'package:hire_pro/services/calander.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/screens/agreement.dart';
 import 'package:hire_pro/screens/ongoingTasks.dart';
@@ -62,10 +62,6 @@ class HirePro extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => SPProvider()),
-          // ChangeNotifierProvider(create: (context) => AddressProvider()),
-          // ChangeNotifierProvider(create: (context) => CategoryProvider()),
-          // ChangeNotifierProvider(create: (context) =>TaskProvider()),
-          // ChangeNotifierProvider(create: (context)=>FileUploadProvider())
         ],
       child: MaterialApp(
       title: 'Flutter Demo',
@@ -84,7 +80,7 @@ class HirePro extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // '/': (context) => ProgressStart(),
-        '/': (context) => LoginScreen(),
+        '/': (context) => HomeScreen(),
         // '/': (context) => VerificationScreen(),
         '/home': (context) => HomeScreen(),
         '/sign_up': (context) => SignUpScreen(),
@@ -121,7 +117,7 @@ class HirePro extends StatelessWidget {
         '/view_reviews': (context) => ViewReviews(),
         '/forgot_password': (context) => ForgotPassword(),
         '/reset_password': (context) => ResetPassword(),
-        '/calender': (context) => CalenderScreen(),
+        '/calender': (context) => ViewCalendarScreen(),
         '/add_category': (context) => AddCategory(),
         '/edit_categories': (context) => EditCategories(),
 

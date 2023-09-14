@@ -29,6 +29,8 @@ class Api{
       }
       throw Exception('Failed to load User Details');
     }
+
+
     // final response = await http.get(
     //   Uri.parse(url + 'getUser'),
     //   headers: <String, String>{
@@ -46,5 +48,27 @@ class Api{
     //   print(e);
     //   throw (e);
     // }
+  }
+
+
+
+  Future<http.Response> addBidding(additionalInfo, bidAmount, taskId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+      final response = await http.post(Uri.parse(urlCreate('bidTask')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+      body: jsonEncode(<String, String>{
+        'additionalInfo': additionalInfo,
+        'amount': bidAmount,
+        'serviceId': taskId,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      // return Customer.fromJson(jsonDecode(response.body));
+      print("data sent");
+      return response;
+    } else {
+      throw Exception('Failed to request task');
+    }
   }
 }
