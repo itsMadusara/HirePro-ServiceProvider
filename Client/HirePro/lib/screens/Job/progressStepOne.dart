@@ -43,26 +43,15 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
     return SingleChildScrollView(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Latest Arrival by 2:25 pm',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 20,),
             Container(
               width: double.infinity,
-              height: 350,
+              height: 450,
               child: Center(
                   child: Column(
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 350, // Set a fixed height
+                        height: 450, // Set a fixed height
                         child: GoogleMaps(),
                       )
                     ],

@@ -31,19 +31,28 @@ class _UpcomingTasksState extends State<UpcomingTasks> {
             ),
             Expanded(
               child: ListView.builder(
+                // child: isLoading
+                //     ? Center(child: CircularProgressIndicator())
+                //     : ListView.builder(
                 itemCount: 1, // Number of cards
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    child: UpcomingTaskCard(
-                      'Gemunu Mawatha, Dehiwala',
-                      '2023-10-1',
-                      '10:15',
-                      'T.Madusara',
-                      3500,
-                      4.5,
-                      'images/task1.png',
-                    ),
+                  return GestureDetector(
+                      onTap: () {
+                        // Navigate to the task details page when card is clicked
+                        Navigator.pushNamed(context, '/start_job');
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        child: UpcomingTaskCard(
+                          'Vijitha MW, Nagoda',
+                          '2023-8-17',
+                          '2:30',
+                          'Tharushi Silva',
+                          2500,
+                          4.5,
+                          'images/task1.png',
+                        ),
+                      )
                   );
                 },
               ),

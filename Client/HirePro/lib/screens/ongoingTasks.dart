@@ -39,7 +39,7 @@ class _OngoingTasksState extends State<OngoingTasks> {
                   return GestureDetector(
                       onTap: () {
                         // Navigate to the task details page when card is clicked
-                        Navigator.pushNamed(context, '/start_job');
+                        Navigator.pushNamed(context, '/progress_start');
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

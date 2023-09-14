@@ -109,9 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      RoundedIconButton(onPressed: () {'/view_wallet';}, icon: Icons.payment),
+                      RoundedIconButton(onPressed: () {Navigator.pushNamed(context, '/view_wallet');}, icon: Icons.payment),
                       RoundedIconButton(onPressed: () {'/';}, icon: Icons.notifications_active),
-                      RoundedIconButton(onPressed: () {'/';}, icon: Icons.event),
+                      RoundedIconButton(onPressed: () {Navigator.pushNamed(context, '/calender');}, icon: Icons.event),
                     ],
                   ),
 
