@@ -26,7 +26,7 @@ GET http://localhost:5001/testGet
 
 ###
 GET http://localhost:5001/getUser
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNiIsInVzZXJfbmFtZSI6IlRoYXJ1c2hrYSBNYWR1c2FyYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTIwNjUwMDYsImV4cCI6MTY5MzI3NDYwNn0.fg_6UuLqd5HKkdRP0wgi-voDNFUUDW_AohIL8Qjr8vk
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQ0NTY2NDEsImV4cCI6MTY5NTY2NjI0MX0.HIvDQ-axx6qBVqjCsZcxyucybFlE4vRbrTVtduNYp-g
 
 ###
 POST http://localhost:5001/editUser
@@ -62,8 +62,7 @@ Content-Type: application/json
 {
   "additionalInfo" : "This is the additional info",
   "bidAmount" : "1000",
-  "schedule" : "2021-05-12",
-  "taskid" : "2"
+  "taskid" : "1"
 }
 
 ###
@@ -72,7 +71,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2Vy
 Content-Type: application/json
 
 {
-  "oldPassword" : "example1234",
+  "oldPassword" : "example123",
   "newPassword" : "example123"
 }
 
@@ -106,3 +105,7 @@ Content-Type: application/json
 {
   "serviceid" : "3"
 }
+
+###
+GET http://localhost:5001/getUpcomingtasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQzMjEwMDUsImV4cCI6MTY5NTUzMDYwNX0.AzhWrK5Kt5mpLvbmK8KxpmCpaRu5UJEQL96AXmm6fRo

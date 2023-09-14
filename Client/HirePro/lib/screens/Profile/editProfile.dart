@@ -8,6 +8,10 @@ import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../services/urlCreator.dart';
 
 
 class EditProfile extends StatefulWidget {
@@ -15,12 +19,60 @@ class EditProfile extends StatefulWidget {
   State<EditProfile> createState() => _EditProfileState();
 }
 
-String jsondata =
-    '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
-var userData = jsonDecode(jsondata);
+// String jsondata =
+//     '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
+// var userData = jsonDecode(jsondata);
 
 class _EditProfileState extends State<EditProfile> {
   final keyCounter = GlobalKey<_EditFieldState>();
+  Map<String,dynamic> userData = {};
+  bool isLoading = true;
+
+  Future<String> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.get(Uri.parse(urlCreate('getUser')),
+        headers: {'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']}
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        getUserData();
+      }
+      throw Exception('Failed to load');
+    }
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final fetchedData = await getUserData();
+      Map<String,dynamic> userDataMap = jsonDecode(fetchedData);
+      // userDataMap.forEach((element) {print(element);});
+      setState(() {
+        userData = userDataMap;
+        isLoading = false; // Set isLoading to false after data is loaded
+      });
+      print(userDataMap);
+      return;
+    } catch (error) {
+      print('Error fetching user data: $error');
+      setState(() {
+        userData = {};
+        isLoading = false; // Set isLoading to false after data is loaded
+      });
+      return;
+    }
+  }
+
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +82,8 @@ class _EditProfileState extends State<EditProfile> {
             bottomNavigationBar: BottomNavBar(),
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
-              child: Center(
+              child: isLoading ? Center(child: CircularProgressIndicator())
+              : Center(
                 child: Container(
                   height: 900,
                   margin: EdgeInsets.symmetric(horizontal: 40),
@@ -75,7 +128,7 @@ class _EditProfileState extends State<EditProfile> {
                           EditField(
                               key: keyCounter,
                               label: 'Full Name',
-                              value: 'Sachini Muthugala',
+                              value: userData['name'],
                               edit: () {
                                 setState(() {
                                   keyCounter.currentState!.editField =
@@ -84,7 +137,7 @@ class _EditProfileState extends State<EditProfile> {
                               }),
                           EditField(
                               label: 'Email',
-                              value: 'sachinimuthugala99@gmail.com',
+                              value: userData['email'],
                               edit: () {
                                 Navigator.pushNamed(
                                     context, '/emailcoderequest',
@@ -92,7 +145,7 @@ class _EditProfileState extends State<EditProfile> {
                               }),
                           EditField(
                               label: 'Mobile Number',
-                              value: '0761232323',
+                              value: userData['contact'],
                               edit: () {
                                 Navigator.pushNamed(
                                     context, '/otp_phone',
@@ -101,7 +154,7 @@ class _EditProfileState extends State<EditProfile> {
                           EditField(
                               // key: keyCounter,
                               label: 'Introduction',
-                              value: 'HandyNYC (Insured) - We are a Handyman Company Based in NYC That Presenting Home Owners - Renters and Business Solutions For Maintaining and Remodeling Their Property',
+                              value: userData['intro'],
                               edit: () {
                                 setState(() {
                                   keyCounter.currentState!.editField =

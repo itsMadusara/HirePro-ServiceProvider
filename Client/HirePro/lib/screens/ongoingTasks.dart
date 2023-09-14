@@ -34,7 +34,7 @@ class _OngoingTasksState extends State<OngoingTasks> {
               // child: isLoading
               //     ? Center(child: CircularProgressIndicator())
               //     : ListView.builder(
-                itemCount: 1, // Number of cards
+                itemCount: 5, // Number of cards
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap: () {

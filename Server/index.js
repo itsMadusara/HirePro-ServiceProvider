@@ -25,6 +25,8 @@ import setStarted from "./routes/Task/ongoing/start.js";
 import setArrived from "./routes/Task/ongoing/arrived.js";
 import setCompleted from "./routes/Task/ongoing/completed.js";
 
+import getUpcomingTasks from "./routes/Task/upcoming/get-tasks-upcoming.js";
+
 import { get } from "http";
 
 dotenv.config();
@@ -59,6 +61,8 @@ app.use("/getOngoingtasks", getOngoingTasks);
 app.use("/setStarted", setStarted);
 app.use("/setArrived", setArrived);
 app.use("/setCompleted", setCompleted);
+
+app.use("/getUpcomingtasks", getUpcomingTasks);
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`);
