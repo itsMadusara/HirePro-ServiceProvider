@@ -6,6 +6,10 @@ import 'package:hire_pro/widgets/TaskDetails.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../services/urlCreator.dart';
 
 
 class BiddingRequest extends StatefulWidget {
@@ -15,17 +19,39 @@ class BiddingRequest extends StatefulWidget {
   State<BiddingRequest> createState() => _BiddingRequestState();
 }
 
-String jsondata = '{"full_name": "Harini Samaliarachchi", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
-var userData = jsonDecode(jsondata);
+// String jsondata = '{"full_name": "Harini Samaliarachchi", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
+// var userData = jsonDecode(jsondata);
 
 class _BiddingRequestState extends State<BiddingRequest> {
+  TextEditingController bidValue = TextEditingController();
+
+  Future<String> bidOnTask() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.post(Uri.parse(urlCreate('bidTask')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+        body: jsonEncode({'additionalInfo': 'This is the addition info from app', 'bidAmount': bidValue.text, 'taskid': widget.taskDescription['serviceValue']['id']})
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        bidOnTask();
+      }
+      throw Exception('Failed to load album');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> description = widget.taskDescription;
     return SafeArea(
         child: Scaffold(
-            appBar: AppBarTitle(title: userData['full_name'],),
+            appBar: AppBarTitle(title: description['customerName'],),
             bottomNavigationBar: BottomNavBar(),
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
@@ -54,13 +80,25 @@ class _BiddingRequestState extends State<BiddingRequest> {
                                       borderRadius: BorderRadius.circular(35.0), // Set the border radius
                                       borderSide: BorderSide.none, // Remove the bottom line
                                     ),
-                                  )
+                                  ),
+                                controller: bidValue,
                               ),
                             ),
                             SizedBox(width: 10,),
                             Expanded(
                                 flex: 1,
-                                child: MainButton('Bid',(){Navigator.pushNamed(context, '/bidding_successful');})
+                                child: MainButton('Bid',(){
+                                  try{
+                                    if(bidValue.text == '' || double.parse(bidValue.text) < 0){
+                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No Valid Bid Value Entered')));
+                                    } else {
+                                      print(bidOnTask());
+                                      Navigator.pushNamed(context, '/bidding_successful');
+                                    }
+                                  } catch(FormatException){
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid Bid Value Entered')));
+                                  }
+                                })
                             ),
                           ],
                         ),

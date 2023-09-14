@@ -12,6 +12,9 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController reEnterNewPasswordController = TextEditingController();
+
   bool _obscureText = true;
   IconData _icon = FontAwesomeIcons.eyeSlash;
   @override
@@ -48,12 +51,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                         ToggleEyeField(
                             obscureText: _obscureText,
                             icon: _icon,
-                            placeholder: 'New Password'),
+                            placeholder: 'New Password',
+                            controller: newPasswordController),
                         SizedBox(height: 15,),
                         ToggleEyeField(
                             obscureText: _obscureText,
                             icon: _icon,
-                            placeholder: 'Confirm New password'),
+                            placeholder: 'Confirm New password',
+                            controller: reEnterNewPasswordController),
                         SizedBox(height: 35,),
                         MainButton('Update', () {
 

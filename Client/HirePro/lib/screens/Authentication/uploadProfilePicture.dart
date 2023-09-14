@@ -11,6 +11,10 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../services/urlCreator.dart';
 
 class UploadProfilePicture extends StatefulWidget {
   @override
@@ -101,7 +105,23 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
                           ),
                         ],
                       ),
-                      MainButton("Save", () {Navigator.pushNamed(context, '/registration_success');}),
+                      MainButton("Save", () async {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        String signupdata = prefs.getString('signupReqBody') ?? '';
+                        var response = await http.post(Uri.parse(urlCreate("registerSP")),
+                            headers: {'Content-Type': 'application/json'},
+                            body: signupdata);
+                        var jsonResponse = jsonDecode(response.body);
+                        print(jsonResponse);
+                        if(jsonResponse['status'] == "True"){
+                          print("Signed Successfully");
+                          Navigator.pushNamed(context, '/otp_mobile');
+                        } else {
+                          print("Sign Up Failed");
+                        }
+                        prefs.remove("signupReqBody");
+                        Navigator.pushNamed(context, '/registration_success');
+                      }),
                     ],
                   ),
                 ),

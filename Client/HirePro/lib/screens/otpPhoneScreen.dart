@@ -74,7 +74,7 @@ class _OTPPhoneState extends State<OTPPhone> {
                 children: [
                   Image.asset('images/hireProWithoutBG.png'),
                   Text(
-                    'Press "Continue" to receive a 4-digit OTP to your phone Number \n' + userData['contact'],
+                    'Press "Continue" to receive a 4-digit OTP to your phone Number \n' + (userData['contact'] ?? 'Not Valid'),
                     style: kHeading1.copyWith(fontWeight: FontWeight.w400),
                   ),
                   SizedBox(
