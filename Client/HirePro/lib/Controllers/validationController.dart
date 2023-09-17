@@ -15,7 +15,7 @@ class ValidationController {
       return 'This field is required';
     }
 
-    if (!RegExp(r"^\+?0[0-9]{10}$").hasMatch(phone)) {
+    if (!RegExp(r"^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$").hasMatch(phone)) {
       return "Please enter a valid phone number";
     }
     if (phone.length != 10) {

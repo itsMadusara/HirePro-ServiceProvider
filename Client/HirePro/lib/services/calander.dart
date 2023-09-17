@@ -17,6 +17,7 @@ class _CalanderState extends State<Calander> {
     DateTime(DateTime.now().year, DateTime.now().month, 5): ['Event 1', 'Event 2'],
     DateTime(DateTime.now().year, DateTime.now().month, 13): ['Event 3'],
     DateTime(DateTime.now().year, DateTime.now().month, 23): ['Event 4'],
+    DateTime(DateTime.now().year, DateTime.now().month+1, 25): ['Event 4'],
   };
 
   List<String> _getEventsForDay(DateTime day) {

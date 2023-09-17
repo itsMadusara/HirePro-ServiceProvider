@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:hire_pro/Controllers/validationController.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/services/urlCreator.dart';
 import 'package:hire_pro/widgets/FormFieldRegular.dart';
@@ -16,6 +17,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  ValidationController validationController = ValidationController();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController contactController = TextEditingController();
@@ -23,6 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController rePasswordController = TextEditingController();
   TextEditingController nicController = TextEditingController();
   late SharedPreferences preferences;
+  final _signupFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,58 +34,87 @@ class _SignUpScreenState extends State<SignUpScreen> {
           resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(
             child: Container(
-              height: 900,
+              height: 1000,
               child: Column(
                 children: [
-                  Expanded(
-                    flex: 13,
-                    child:
-                    Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Image.asset('images/hireProWithoutBG.png'),
-                            Container(
-                              width: 350,
-                              child: const Text(
-                                'Sign Up',
-                                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
+                  Form(
+                    key: _signupFormKey,
+                    child:Expanded(
+                      flex: 13,
+                      child:
+                      Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Image.asset('images/hireProWithoutBG.png'),
+                              Container(
+                                width: 350,
+                                child: const Text(
+                                  'Sign Up',
+                                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 450,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            FormFieldRegular('Name', nameController, false),
-                            FormFieldRegular('Email', emailController, false),
-                            FormFieldRegular('Mobile Number', contactController, false),
-                            FormFieldRegular('Password', passwordController, true),
-                            FormFieldRegular('Re-Enter Password', rePasswordController, true),
-                            FormFieldRegular('NIC Number', nicController, false),
-                          ],
+                        Container(
+                          height: 550,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              FormFieldRegular('Name', nameController, false, (val) {
+                                if (validationController.nameValidator(val) != null)
+                                  return validationController.nameValidator(val);
+                                return null;}),
+                              FormFieldRegular('Email', emailController, false,(val) {
+                                if (validationController.emailValidator(val) != null)
+                                  return validationController.emailValidator(val);
+                                return null;}),
+                              FormFieldRegular('Mobile Number', contactController, false,(val) {
+                                if (validationController.phoneValidator(val) != null)
+                                  return validationController.phoneValidator(val);
+                                return null;}),
+                              FormFieldRegular('Password', passwordController, true,(val) {
+                                if (validationController.passwordValidator(val) != null)
+                                  return validationController.passwordValidator(val);
+                                return null;}),
+                              FormFieldRegular('Re-Enter Password', rePasswordController, true,(val) {
+                                if (validationController.passwordValidator(val) != null)
+                                  return validationController.passwordValidator(val);
+                                return null;}),
+                              FormFieldRegular('NIC Number', nicController, false,(val) {
+                                if (validationController.nicValidator(val) != null)
+                                  return validationController.nicValidator(val);
+                                return null;}),
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MainButton('Sign Up', () {
-                              signUpUser();
-                              Navigator.pushNamed(context, '/otp_mobile');
-                            }),
-                          ],
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              MainButton('Sign Up', () {
+                                if (_signupFormKey.currentState!.validate()) {
+                                  signUpUser();
+                                  Navigator.pushNamed(context, '/otp_mobile');
+                                }
+                              }
+                              // {
+                              //   signUpUser();
+                              //   Navigator.pushNamed(context, '/otp_mobile');
+                              // }
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ]),
+                      ]),
                   ),
+                  ),
+
                   const Expanded(
                     flex: 1,
                     child: TermsAndPolicy(),

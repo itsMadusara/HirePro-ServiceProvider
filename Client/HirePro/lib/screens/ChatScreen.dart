@@ -1,7 +1,9 @@
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:hire_pro/services/chatService.dart';
 
 
 class ChatScreen extends StatefulWidget {
@@ -11,16 +13,30 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _messageController = TextEditingController();
+  final ChatService _chatService = ChatService();
+  // receiverId --> CustomerId
+  final receiverId = '1';
+  final taskId = '2';
+  final currentUserId = '23';
+
 
   @override
   void initState() {
     super.initState();
-
     // Scroll to the bottom when the widget first loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
   }
+
+  void sendMessage() async {
+    if(_messageController.text.isNotEmpty){
+      await _chatService.sendMessage(receiverId, _messageController.text,taskId,currentUserId);
+      _messageController.clear();
+    }
+  }
+
 
   @override
   void dispose() {
@@ -28,28 +44,55 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  List<ChatMessage> messages = [
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-  ];
+  Widget _buildMessageList(){
+    return StreamBuilder(stream: _chatService.getMessage(taskId), builder: (context,snapshot){
+      if(snapshot.hasError){
+        return Text('Error${snapshot.error}');
+      }
+      if(snapshot.connectionState ==  ConnectionState.waiting){
+        return const Text('Loading .. ');
+      }
+      return ListView(
+        children: snapshot.data!.docs.map((document) => _buildMessageItem(document)).toList(),
+      );
+    }
+    );
+  }
+
+  Widget _buildMessageItem(DocumentSnapshot document){
+    bool sender = false;
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    if(data['senderId'] == currentUserId){
+      sender = true;
+    }
+    var alignment =  (data['senderId'] == currentUserId)
+        ? Alignment.centerRight
+        : Alignment.centerLeft;
+    return Container(
+      padding:
+      EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+      alignment: alignment,
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: (!sender
+                  ? Colors.grey.shade200
+                  : Colors.blue[200]),
+            ),
+            padding: EdgeInsets.all(16),
+            child: Text(
+              data['message'],
+              style: TextStyle(fontSize: 15),
+            ),
+          )
+        ],
+        // children: [
+        //   Text(data['message'])
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +104,7 @@ class _ChatScreenState extends State<ChatScreen> {
               backgroundColor: Colors.white,
               flexibleSpace: SafeArea(
                 child: Container(
+                  height: 500,
                   padding: EdgeInsets.only(right: 16),
                   child: Row(
                     children: <Widget>[
@@ -94,47 +138,13 @@ class _ChatScreenState extends State<ChatScreen> {
           body: Stack(
             children: <Widget>[
               Scrollbar(
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(0,0,0,60), // Adjust margin as needed
-                    child: Column(
-                      children: <Widget>[
-                        ListView.builder(
-                          itemCount: messages.length,
-                          shrinkWrap: true,
-                          padding: EdgeInsets.only(top: 10, bottom: 10),
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return Container(
-                              padding:
-                              EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-                              child: Align(
-                                alignment: (messages[index].messageType == "receiver"
-                                    ? Alignment.topLeft
-                                    : Alignment.topRight),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: (messages[index].messageType == "receiver"
-                                        ? Colors.grey.shade200
-                                        : Colors.blue[200]),
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  child: Text(
-                                    messages[index].messageContent,
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                controller: _scrollController,
+                child:Container(
+                  margin: EdgeInsets.fromLTRB(0,0,0,60),
+                  child: _buildMessageList(),
                 ),
               ),
+
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Container(
@@ -160,6 +170,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       SizedBox(width: 15,),
                       Expanded(
                         child: TextField(
+                          controller: _messageController,
                           decoration: InputDecoration(
                               hintText: "Write message...",
                               hintStyle: TextStyle(color: Colors.black54),
@@ -169,7 +180,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       SizedBox(width: 15,),
                       FloatingActionButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          sendMessage();
+                        },
                         child: Icon(Icons.send,color: Colors.white,size: 18,),
                         backgroundColor: kMainYellow,
                         elevation: 0,
@@ -186,12 +199,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-
-class ChatMessage{
-  String messageContent;
-  String messageType;
-  ChatMessage({required this.messageContent, required this.messageType});
-}
 
 
 
