@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/Job/progress.dart';
@@ -46,6 +47,16 @@ class _StartJobState extends State<StartJob> {
       }
       throw Exception('Failed to load album');
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    Firebase.initializeApp().whenComplete(() {
+      print("completed--------");
+      setState(() {});
+    });
   }
 
   @override
@@ -119,7 +130,7 @@ class _StartJobState extends State<StartJob> {
                                   ),
                                   child: IconButton(
                                     icon: Icon(Icons.chat, color: Colors.black,), // Set the icon color
-                                    onPressed: () {},
+                                    onPressed: () {Navigator.pushNamed(context, '/chat');},
                                   ),
                                 )
                             ),

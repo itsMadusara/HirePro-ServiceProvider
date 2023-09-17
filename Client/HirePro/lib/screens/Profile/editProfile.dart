@@ -24,7 +24,8 @@ class EditProfile extends StatefulWidget {
 // var userData = jsonDecode(jsondata);
 
 class _EditProfileState extends State<EditProfile> {
-  final keyCounter = GlobalKey<_EditFieldState>();
+  final keyCounterName = GlobalKey<_EditFieldState>();
+  final keyCounterIntro = GlobalKey<_EditFieldState>();
   Map<String,dynamic> userData = {};
   bool isLoading = true;
 
@@ -126,13 +127,13 @@ class _EditProfileState extends State<EditProfile> {
                       Column(
                         children: [
                           EditField(
-                              key: keyCounter,
+                              key: keyCounterName,
                               label: 'Full Name',
                               value: userData['name'],
                               edit: () {
                                 setState(() {
-                                  keyCounter.currentState!.editField =
-                                      !keyCounter.currentState!.editField;
+                                  keyCounterName.currentState!.editField =
+                                      !keyCounterName.currentState!.editField;
                                 });
                               }),
                           EditField(
@@ -152,13 +153,13 @@ class _EditProfileState extends State<EditProfile> {
                                     arguments: userData['phone_number']);
                               }),
                           EditField(
-                              // key: keyCounter,
+                              key: keyCounterIntro,
                               label: 'Introduction',
                               value: userData['intro'],
                               edit: () {
                                 setState(() {
-                                  keyCounter.currentState!.editField =
-                                  !keyCounter.currentState!.editField;
+                                  keyCounterIntro.currentState!.editField =
+                                  !keyCounterIntro.currentState!.editField;
                                 });
                               }),
                           EditField(

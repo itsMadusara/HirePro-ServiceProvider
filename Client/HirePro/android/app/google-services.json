@@ -40,6 +40,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185986606023:android:3427346f84a6a496b6afe2",
+        "android_client_info": {
+          "package_name": "com.example.hirepro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185986606023-jg431vsjkjp67g3t324p7foj2uisi5g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRDHC8c863lm92H-_f8KVr0LXoS8BkPfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "185986606023-jg431vsjkjp67g3t324p7foj2uisi5g3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "185986606023-qttv6u0qapninhbaok89ag6on1dkrs6k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hirePro"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

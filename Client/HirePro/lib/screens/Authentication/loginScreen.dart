@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hire_pro/Controllers/validationController.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/services/urlCreator.dart';
 import 'package:hire_pro/widgets/FormFieldRegular.dart';
@@ -18,9 +19,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  ValidationController validationController = ValidationController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late SharedPreferences preferences;
+  final _loginFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -68,72 +71,89 @@ class _LoginScreenState extends State<LoginScreen> {
           body: Center(
             child: Column(
               children: [
-                Expanded(
-                  flex: 10,
-                  child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset('images/hireProWithoutBG.png'),
-                          GoogleLogin(),
-                          const LineDivider(),
-                        ],
+                Form(
+                  key: _loginFormKey,
+                  child:Expanded(
+                    flex: 10,
+                    child:
+                    Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Image.asset('images/hireProWithoutBG.png'),
+                            GoogleLogin(),
+                            const LineDivider(),
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          FormFieldRegular('Your Email', usernameController, false),
-                          FormFieldRegular('Password', passwordController, true),
-                        ],
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            FormFieldRegular('Your Email', usernameController, false,(val) {
+                              if (validationController.emailValidator(val) != null)
+                                return validationController.emailValidator(val);
+                              return null;}),
+                            FormFieldRegular('Password', passwordController, true,(val) {
+                              if (validationController.passwordValidator(val) != null)
+                                return validationController.passwordValidator(val);
+                              return null;}),
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 350,
-                            child: Text(
-                              'Forgot Password?',
-                              style: TextStyle(color: kMainYellow, fontSize: 14),
-                              textAlign: TextAlign.right,
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 350,
+                              child: Text(
+                                'Forgot Password?',
+                                style: TextStyle(color: kMainYellow, fontSize: 14),
+                                textAlign: TextAlign.right,
+                              ),
                             ),
-                          ),
-                          MainButton('Login', () {
-                            loginUser();
-                          }),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Don't have an account? ",
-                                style: TextStyle(color: Colors.black, fontSize: 14),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/sign_up');
-                                },
-                                child: Text(
-                                  'Sign up',
-                                  style: TextStyle(color: kMainYellow, fontSize: 14),
+                            MainButton('Login', ()
+                            {
+                              if (_loginFormKey.currentState!.validate()) {
+                                loginUser();
+                              }
+                            }
+                            // {
+                            //   loginUser();
+                            // }
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Don't have an account? ",
+                                  style: TextStyle(color: Colors.black, fontSize: 14),
                                 ),
-                              ),
-                            ],
-                          )
-                        ],
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/sign_up');
+                                  },
+                                  child: Text(
+                                    'Sign up',
+                                    style: TextStyle(color: kMainYellow, fontSize: 14),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ]),
+                    ]),
+                  ),
                 ),
+
                 const Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: TermsAndPolicy(),
                 )
               ],

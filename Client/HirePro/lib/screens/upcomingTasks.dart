@@ -85,7 +85,6 @@ class _UpcomingTasksState extends State<UpcomingTasks> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBarAll(title: 'Your Tasks'),
         bottomNavigationBar: BottomNavBar(),
         resizeToAvoidBottomInset: false,
         body: Column(

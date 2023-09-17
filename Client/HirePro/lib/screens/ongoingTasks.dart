@@ -94,7 +94,6 @@ class _OngoingTasksState extends State<OngoingTasks> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBarAll(title: 'Your Tasks'),
         bottomNavigationBar: BottomNavBar(),
         resizeToAvoidBottomInset: false,
         body: Column(

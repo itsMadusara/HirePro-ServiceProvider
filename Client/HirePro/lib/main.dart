@@ -38,6 +38,7 @@ import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
 import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/Profile/reviews.dart';
+import 'package:hire_pro/services/calander.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/screens/agreement.dart';
 import 'package:hire_pro/screens/ongoingTasks.dart';
@@ -120,7 +121,7 @@ class HirePro extends StatelessWidget {
         '/calender': (context) => ViewCalendarScreen(),
         '/add_category': (context) => AddCategory(),
         '/edit_categories': (context) => EditCategories(),
-
+        '/chat': (context) => ChatScreen(),
       },
       )
     );
