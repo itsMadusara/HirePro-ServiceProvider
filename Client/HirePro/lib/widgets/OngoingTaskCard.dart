@@ -13,8 +13,9 @@ class OngoingTaskCard extends StatefulWidget {
   final double price;
   final double rating;
   final String image;
+  final double progress;
 
-  OngoingTaskCard(this.location, this.date, this.time, this.customerName, this.price, this.rating, this.image);
+  OngoingTaskCard(this.location, this.date, this.time, this.customerName, this.price, this.rating, this.image, this.progress);
 
   @override
   _OngoingTaskCardState createState() => _OngoingTaskCardState();
@@ -129,7 +130,7 @@ class _OngoingTaskCardState extends State<OngoingTaskCard> {
                           child: Container(
                             height: 10,
                             child: LinearProgressIndicator(
-                              value: 0.35, // percent filled
+                              value: widget.progress, // percent filled
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
                               backgroundColor: Colors.grey,
                             ),

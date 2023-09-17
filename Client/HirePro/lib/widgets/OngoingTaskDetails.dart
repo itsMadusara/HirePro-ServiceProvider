@@ -4,18 +4,58 @@ import 'package:hire_pro/widgets/MainCard.dart';
 import 'package:intl/intl.dart';
 
 class OngoingTaskDetails extends StatefulWidget {
-  const OngoingTaskDetails({super.key}); // Add constructor
+  final Map<String, dynamic> taskDescription;
+  const OngoingTaskDetails({super.key, required this.taskDescription}); // Add constructor
 
   @override
   State<OngoingTaskDetails> createState() => _TaskDetailsState();
 }
 
 class _TaskDetailsState extends State<OngoingTaskDetails> {
+  String toDate(String utcTimestamp) {
+    DateTime dateTime = DateTime.parse(utcTimestamp);
+    String formattedDateTime = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedDateTime;
+  }
+
+  String toTime(String utcTimestamp) {
+    DateTime dateTime = DateTime.parse(utcTimestamp);
+    String formattedDateTime = DateFormat('HH:mm').format(dateTime);
+    return formattedDateTime;
+  }
 
   List<String> images = ['images/task1.png', 'images/task2.png'];
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> description = widget.taskDescription;
+    String category = description['category'];
+    String tasks = '';
+    if (category == 'HairDressing' || category == 'HouseCleaning'){
+      List<dynamic> taskList = description['jobTasks'];
+      for (var item in taskList) {
+        tasks = tasks + item['task'];
+        if(taskList.last == item){
+          continue;
+        }
+        tasks = tasks + ' , ';
+      }
+    } else {
+      List<dynamic> taskList = description['jobTasks'];
+      for (var item in taskList) {
+        tasks = tasks + item['areaInSquareMeter'].toString();
+        tasks = "${tasks} Square Meters to Lawn Mow";
+      }
+    }
+
+    if (category == 'HairDressing'){
+      category = 'Hair Dressing';
+    } else if (category == 'HouseCleaning'){
+      category = 'House Cleaning';
+    } else {
+      category = 'Lawn Moving';
+    }
+
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -28,11 +68,11 @@ class _TaskDetailsState extends State<OngoingTaskDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // ContentSection('Task', 'Plumbing'),
-                    ContentSection('Task', 'Plumbing'),
+                    ContentSection('Task', category),
                     ContentSection(
-                        'Where', 'Vijitha MW, Nagoda'),
-                    ContentSection('Schedule Date', '2023-8-17'),
-                    ContentSection('Schedule Time', '2:30'),
+                        'Where', description['serviceValue']['location']),
+                    ContentSection('Schedule Date', toDate(description['serviceValue']['date'])),
+                    ContentSection('Schedule Time', toTime(description['serviceValue']['date'])),
                     Column(
                       children: [
                         ContentSection('Description', ''),
@@ -49,7 +89,7 @@ class _TaskDetailsState extends State<OngoingTaskDetails> {
                           margin:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                           child: Text(
-                              'Two story house having a leak in 1st floor bathroom. leaking all the floor',
+                              description['serviceValue']['description'],
                               // "Hi there! I'm in need of a skilled plumber to help me with an urgent issue at my home. My kitchen faucet has been leaking persistently, and it's causing water wastage and an annoying dripping sound. I've tried tightening the faucet handle, but the leak hasn't stopped.Hi there! I'm in need of a skilled plumber to help me with an urgent issue at my home. My kitchen faucet has been leaking persistently, and it's causing water wastage and an annoying dripping sound. I've tried tightening the faucet handle, but the leak hasn't stopped.",
                               textAlign: TextAlign.justify,
                               maxLines: 3,
@@ -58,7 +98,8 @@ class _TaskDetailsState extends State<OngoingTaskDetails> {
                       ],
                     ),
                     ContentSection('Goods Provided', 'Yes'),
-                    ContentSection('Job Price (Rs.)', '2500'),
+                    ContentSection('Job Price (Rs.)', description['bidValues']['amount'].toString()),
+                    ContentSection('Tasks', tasks),
                     ContentSection('Photos', ''),
                     Expanded(
                       child: GridView.count(

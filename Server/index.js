@@ -27,6 +27,10 @@ import setCompleted from "./routes/Task/ongoing/completed.js";
 
 import getUpcomingTasks from "./routes/Task/upcoming/get-tasks-upcoming.js";
 
+import getCompletedTasks from "./routes/Task/completed/get-tasks-completed.js";
+
+import getAllTasks from "./routes/Task/get-all-tasks.js";
+
 import { get } from "http";
 
 dotenv.config();
@@ -63,6 +67,10 @@ app.use("/setArrived", setArrived);
 app.use("/setCompleted", setCompleted);
 
 app.use("/getUpcomingtasks", getUpcomingTasks);
+
+app.use("/getCompleted", getCompletedTasks);
+
+app.use("/getAllTasks", getAllTasks);
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`);

@@ -69,6 +69,12 @@ router.get('/', authTocken, async (req, res) => {
                 }
                 const customerName = await pool.query(query5);
 
+                const query6 = {
+                    text: 'SELECT amount FROM public."Bid" WHERE "serviceId"=$1 and "serviceProviderId"=$2',
+                    values: [jobs[categories[i]][j]['id'], req.user.user_id]
+                }
+                const finalBid = await pool.query(query6);
+
                 let tasks;
                 if(categories[i] === "HairDressing"){
                     const query4 = {
@@ -100,7 +106,8 @@ router.get('/', authTocken, async (req, res) => {
                     serviceValue : bidServices.rows[0],
                     jobTasks : tasks,
                     customerName : customerName.rows[0].name,
-                    customerId : customerName.rows[0].id
+                    customerId : customerName.rows[0].id,
+                    bidValues : finalBid.rows[0]
                 });
             }
         }
