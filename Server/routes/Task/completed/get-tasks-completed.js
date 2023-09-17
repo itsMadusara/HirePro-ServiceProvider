@@ -35,7 +35,7 @@ router.get('/', authTocken, async (req, res) => {
             for (let j = 0; j < jobs[categories[i]].length; j++) {
 
                 const query3 = {
-                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status in (\'Sheduled\');',
+                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status in (\'Completed\');',
                     values: [jobs[categories[i]][j]['id']]
                 }
                 const bidServices = await pool.query(query3);

@@ -14,7 +14,7 @@ router.post('/', authTocken, async (req, res) => {
         const taskBid = await pool.query(query1);
 
         const query2 = {
-            text: 'UPDATE public."Service" set status=\'Sheduled\' where id=$1;',
+            text: 'UPDATE public."Service" set status=\'Pending\' where id=$1;',
             values : [req.body.taskid]
         };
         const taskStatus = await pool.query(query2);

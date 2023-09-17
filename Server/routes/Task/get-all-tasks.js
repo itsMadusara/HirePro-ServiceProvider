@@ -1,6 +1,6 @@
 import exprees from 'express';
-import pool from '../../../dbcon.js';
-import { authTocken } from '../../../middleware/authentication.js';
+import pool from '../../dbcon.js';
+import { authTocken } from '../../middleware/authentication.js';
 
 const router = exprees.Router();
 
@@ -35,7 +35,7 @@ router.get('/', authTocken, async (req, res) => {
             for (let j = 0; j < jobs[categories[i]].length; j++) {
 
                 const query3 = {
-                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status in (\'Sheduled\');',
+                    text: 'SELECT * FROM public."Service" WHERE id = $1;',
                     values: [jobs[categories[i]][j]['id']]
                 }
                 const bidServices = await pool.query(query3);
@@ -45,7 +45,7 @@ router.get('/', authTocken, async (req, res) => {
                 // console.log(bidServices.rows[0].customerid);
 
                 const query5 = {
-                    text: 'SELECT name,id FROM public."Customer" WHERE id= $1;',
+                    text: 'SELECT name FROM public."Customer" WHERE id= $1;',
                     values: [bidServices.rows[0].customerid]
                 }
                 const customerName = await pool.query(query5);
@@ -55,37 +55,13 @@ router.get('/', authTocken, async (req, res) => {
                     values: [jobs[categories[i]][j]['id'], req.user.user_id]
                 }
                 const finalBid = await pool.query(query6);
-
-                let tasks;
-                if(categories[i] === "HairDressing"){
-                    const query4 = {
-                        text: 'SELECT task FROM public."HairDressingTasks" WHERE id = $1;',
-                        values: [jobs[categories[i]][j]['id']]
-                    }
-                    const temp = await pool.query(query4);
-                    tasks = temp.rows;
-                }
-                else if(categories[i] === "HouseCleaning"){
-                    const query4 = {
-                        text: 'SELECT task FROM public."HouseCleaningTasks" WHERE id = $1;',
-                        values: [jobs[categories[i]][j]['id']]
-                    }
-                    const temp = await pool.query(query4);
-                    tasks = temp.rows;
-                } 
-                else if(categories[i] === "LawnMoving"){
-                    const query4 = {
-                        text: 'SELECT "areaInSquareMeter" FROM public."LawnMoving" WHERE id = $1;',
-                        values: [jobs[categories[i]][j]['id']]
-                    }
-                    const temp = await pool.query(query4);
-                    tasks = temp.rows;
-                }
+                
+                const time = bidServices.rows[0].date;
 
                 cards.push({
+                    time : time,
                     category : categories[i],
                     serviceValue : bidServices.rows[0],
-                    jobTasks : tasks,
                     customerName : customerName.rows[0].name,
                     customerId : customerName.rows[0].id,
                     bidValues : finalBid.rows[0]

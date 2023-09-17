@@ -1,30 +1,59 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/screens/Job/progress.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/TaskDetails.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/OngoingTaskDetails.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import '../../services/urlCreator.dart';
 
 
 class StartJob extends StatefulWidget {
+  final Map<String, dynamic> taskDescription;
+  const StartJob({super.key, required this.taskDescription});
   @override
   State<StartJob> createState() => _StartJobState();
 }
 
-String jsondata =
-    '{"full_name": "Tharushi Silva", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
-var userData = jsonDecode(jsondata);
+// String jsondata =
+//     '{"full_name": "Tharushi Silva", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
+// var userData = jsonDecode(jsondata);
 
 class _StartJobState extends State<StartJob> {
 
+  Future<String> setStart() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.post(Uri.parse(urlCreate('setStarted')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+        body: jsonEncode({"serviceid" : widget.taskDescription['serviceValue']['id']})
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        setStart();
+      }
+      throw Exception('Failed to load album');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> data = widget.taskDescription;
     return SafeArea(
         child: Scaffold(
-            appBar: AppBarTitle(title: userData['full_name'],),
+            appBar: AppBarTitle(title: data['customerName'],),
             bottomNavigationBar: BottomNavBar(),
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
@@ -35,7 +64,7 @@ class _StartJobState extends State<StartJob> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      OngoingTaskDetails(),
+                      OngoingTaskDetails(taskDescription: data),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -98,7 +127,15 @@ class _StartJobState extends State<StartJob> {
                         ),
                       ),
                       Container(
-                        child: MainButton('Start',(){Navigator.pushNamed(context, '/progress_start');}),
+                        child: MainButton('Start',(){
+                          setStart();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProgressStart(taskDescription: widget.taskDescription),
+                              )
+                          );
+                        }),
                       ),
                     ],
                   ),
