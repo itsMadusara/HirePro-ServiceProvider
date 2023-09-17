@@ -9,6 +9,8 @@ import 'package:flutter/services.dart';
 
 
 class ProgressStepOne extends StatefulWidget {
+  Map<String,dynamic> taskDescription;
+  ProgressStepOne({required this.taskDescription});
   @override
   State<ProgressStepOne> createState() => _ProgressStepOneState();
 }
@@ -72,7 +74,7 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
                       ),
                     ),
                   ),
-                  Text('Tharushi Silva',
+                  Text(widget.taskDescription['customerName'],
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   style: TextStyle(fontWeight: FontWeight.bold),),
