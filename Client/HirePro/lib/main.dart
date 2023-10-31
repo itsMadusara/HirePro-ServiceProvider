@@ -3,6 +3,7 @@ import 'package:hire_pro/screens/ChatScreen.dart';
 import 'package:hire_pro/screens/Job/progress.dart';
 import 'package:hire_pro/screens/Profile/editCategories.dart';
 import 'package:hire_pro/screens/Profile/viewReviews.dart';
+import 'package:hire_pro/screens/complaintForm.dart';
 import 'package:hire_pro/screens/viewCalender.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/otpPhoneEnterScreen.dart';
@@ -38,6 +39,7 @@ import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
 import 'package:hire_pro/screens/Profile/changePassword.dart';
 import 'package:hire_pro/screens/Profile/reviews.dart';
+import 'package:hire_pro/screens/walletDetails.dart';
 import 'package:hire_pro/services/calander.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/screens/agreement.dart';
@@ -106,7 +108,7 @@ class HirePro extends StatelessWidget {
         // '/start_job': (context) => StartJob(),
         // '/progress_start': (context) => ProgressStart(),
         // '/progress_step_one': (context) => ProgressStepOne(),
-        '/progress_step_two': (context) => ProgressStepTwo(),
+        // '/progress_step_two': (context) => ProgressStepTwo(),
         '/progress_step_three': (context) => ProgressStepThree(),
         '/job_completed': (context) => JobCompletedScreen(),
         '/earned_ratings': (context) => EarnedStarsScreen(),
@@ -115,6 +117,7 @@ class HirePro extends StatelessWidget {
         '/select_categories': (context) => SelectCategories(),
         // '/view_task_details': (context) => ViewTaskDetails(),
         '/view_wallet': (context) => Wallet(),
+        '/add_wallet_details': (context) => WalletDetails(),
         '/view_reviews': (context) => ViewReviews(),
         '/forgot_password': (context) => ForgotPassword(),
         '/reset_password': (context) => ResetPassword(),
@@ -122,6 +125,7 @@ class HirePro extends StatelessWidget {
         '/add_category': (context) => AddCategory(),
         '/edit_categories': (context) => EditCategories(),
         '/chat': (context) => ChatScreen(),
+        // '/complaint_form': (context) => ComplaintForm(),
       },
       )
     );

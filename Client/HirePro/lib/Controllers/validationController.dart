@@ -87,4 +87,18 @@ class ValidationController {
       return 'Invalid value';
     }
   }
+
+  String? cardNumberValidator(String? cardNo) {
+    if (cardNo == null || cardNo.isEmpty) {
+      return 'This field is required';
+    }
+
+    if (!RegExp(r"^\d+$").hasMatch(cardNo)) {
+      return "Please enter a valid card number";
+    }
+    if (cardNo.length != 12) {
+      return "card number is not valid";
+    }
+    return null;
+  }
 }

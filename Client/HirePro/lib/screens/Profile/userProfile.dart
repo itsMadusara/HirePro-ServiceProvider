@@ -30,66 +30,62 @@ List<String> images = [
 
 class _UserProfileState extends State<UserProfile> {
 
-  Api api = Api();
   // List<String> selectedCategories = [];
 
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<SPProvider>(context, listen: false).getSPData();
-    });
     // selectedCategories = SPProvider().selectedCategories;
-    // addSelectedCategoryImages();
+    addSelectedCategoryImages();
   }
 
-  // final List<String> allCategories = [
-  //   'Gardening',
-  //   'Plumbing',
-  //   'Cleaning',
-  //   'Furniture Mounting',
-  //   'Hair Dressing',
-  //   'Lawn Moving',
-  //   'Painting'
-  // ];
-  //
-  // final List<String> allCategoryImagePaths = [
-  //   'images/cleaning.png',
-  //   'images/hair-cut.png',
-  //   'images/painting.png',
-  //   'images/plumber.png',
-  //   'images/cleaning.png',
-  //   'images/hair-cut.png',
-  //   'images/hair-cut.png',
-  // ];
+  final List<String> allCategories = [
+    'Gardening',
+    'Plumbing',
+    'Cleaning',
+    'Furniture Mounting',
+    'Hair Dressing',
+    'Lawn Moving',
+    'Painting'
+  ];
+
+  final List<String> allCategoryImagePaths = [
+    'images/cleaning.png',
+    'images/hair-cut.png',
+    'images/painting.png',
+    'images/plumber.png',
+    'images/cleaning.png',
+    'images/hair-cut.png',
+    'images/hair-cut.png',
+  ];
 
   // pass the list of tasks here from backend --> maximum 3 categories
-  // List<String> selectedCategories = ['Cleaning', 'Painting'];
+  List<String> selectedCategories = ['Cleaning', 'Painting'];
 
-  // List<String> selectedImages = [];
+  List<String> selectedImages = [];
 
 
-  // void addSelectedCategoryImages() {
-  //   selectedImages.clear(); // Clear the existing selected images list
-  //
-  //   for (String category in selectedCategories) {
-  //     int index = allCategories.indexOf(category);
-  //     if (index >= 0 && index < allCategoryImagePaths.length) {
-  //       selectedImages.add(allCategoryImagePaths[index]);
-  //     }
-  //   }
-  // }
+  void addSelectedCategoryImages() {
+    selectedImages.clear(); // Clear the existing selected images list
 
-  // void _handleBoxTap(int index) {
-  //   if (index == selectedImages.length) {
-  //     Navigator.pushNamed(context, '/add_category').then((result) {
-  //       if (result != null && result is String) {
-  //         setState(() {
-  //           selectedImages.add(result);
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
+    for (String category in selectedCategories) {
+      int index = allCategories.indexOf(category);
+      if (index >= 0 && index < allCategoryImagePaths.length) {
+        selectedImages.add(allCategoryImagePaths[index]);
+      }
+    }
+  }
+
+  void _handleBoxTap(int index) {
+    if (index == selectedImages.length) {
+      Navigator.pushNamed(context, '/add_category').then((result) {
+        if (result != null && result is String) {
+          setState(() {
+            selectedImages.add(result);
+          });
+        }
+      });
+    }
+  }
 
   // Future<String> fetchSP() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -158,11 +154,7 @@ class _UserProfileState extends State<UserProfile> {
                   height: 950,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Consumer<SPProvider>(
-                      builder: (context, serviceProvider, child){
-                        List<String> selectedImages = serviceProvider.selectedImages;
-                        bool isLoading = serviceProvider.isLoading;
-                    return Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
@@ -185,8 +177,7 @@ class _UserProfileState extends State<UserProfile> {
                             ),
                           ),
                         ),
-                        Text(
-                        serviceProvider.serviceProviderData!.name,
+                        Text('sp-name',
                           style: TextStyle(
                             fontSize: 30,
                             overflow: TextOverflow.ellipsis,
@@ -202,7 +193,7 @@ class _UserProfileState extends State<UserProfile> {
                           itemSize: 30.0,
                           direction: Axis.horizontal,
                         ),
-                        Text('HirePro ID - ' + serviceProvider.serviceProviderData!.id,
+                        Text('HirePro ID - 2',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[700],
@@ -210,7 +201,7 @@ class _UserProfileState extends State<UserProfile> {
                         ),
 
                         SizedBox(height: 15,),
-                        ProfileSummary((serviceProvider.serviceProviderData!.points).toString() , 'Revenue Earned'),
+                        ProfileSummary('1000' , 'Revenue Earned'),
                         SizedBox(height: 5,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -332,13 +323,12 @@ class _UserProfileState extends State<UserProfile> {
                           height: 10,
                         )
                       ],
-                    );}),
+                    ),
                   ),
                 ),
           ),
-        ),
-      ),
-    );
+
+    )));
   }
 }
 
