@@ -2,9 +2,9 @@ POST http://localhost:5001/registerSP
 Content-Type: application/json
 
 {
-  "contact" : "0716960023",
+  "contact" : "0716960033",
   "name" : "sachini Muthugala",
-  "email" : "sachinimuthugala1224@gmail.com", 
+  "email" : "sachini@gmail.com", 
   "nic" : "200101101140", 
   "password" : "example123"
 }
@@ -42,11 +42,11 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5001/getBiddingTasks
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIE11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQyNDQwNzEsImV4cCI6MTY5NTQ1MzY3MX0.B0SJn7QhqGvBcS-Isz8jxbE_UwwTjUS9mGG8mL8-aW8
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg2NTQzMzMsImV4cCI6MTY5OTg2MzkzM30.oq1Xk_4V0EQXmDX9l0sZ-ES5hc3zfJfaFVzFQ2pAgPQ
 
 ###
 POST http://localhost:5001/addCategory
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIE11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQyNDQwNzEsImV4cCI6MTY5NTQ1MzY3MX0.B0SJn7QhqGvBcS-Isz8jxbE_UwwTjUS9mGG8mL8-aW8
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg2OTQ4NTYsImV4cCI6MTY5OTkwNDQ1Nn0.SfeK83khxWaD_0c_wQFw9hoCecRX6uGiI65GyNrUKN0
 Content-Type: application/json
 
 {
@@ -110,7 +110,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5001/getUpcomingtasks
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQ2OTgyMjIsImV4cCI6MTY5NTkwNzgyMn0.clKSwYL1IE95eWjBVWLSuO_HMVycGhSESOWEKFPnxBQ
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg3NDE5NDAsImV4cCI6MTY5OTk1MTU0MH0.O9C8B3pD1NUsYLgBuS3OeC1SO9GmttthWhbFqxHbaNo
 
 
 ###
@@ -145,4 +145,34 @@ Content-Type: application/json
   "content" : "testing",
   "serviceid" : 10,
   "spid" : 23
+}
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg2NTc5NDQsImV4cCI6MTY5OTg2NzU0NH0.E3_pkrR8uTRju7e7hgZSnamzrioG4lenDt22k8IFlVA
+
+###
+POST http://localhost:5001/deleteCategory
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg2NTc5NDQsImV4cCI6MTY5OTg2NzU0NH0.E3_pkrR8uTRju7e7hgZSnamzrioG4lenDt22k8IFlVA
+Content-Type: application/json
+
+{
+  "category" : "Lawn Moving"
+}
+
+###
+POST http://localhost:5001/requestCategory
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg2NTc5NDQsImV4cCI6MTY5OTg2NzU0NH0.E3_pkrR8uTRju7e7hgZSnamzrioG4lenDt22k8IFlVA
+Content-Type: application/json
+
+{
+  "category" : "Lawn Moving"
+}
+
+###
+POST http://localhost:5001/updateLocation
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg2NTc5NDQsImV4cCI6MTY5OTg2NzU0NH0.E3_pkrR8uTRju7e7hgZSnamzrioG4lenDt22k8IFlVA
+Content-Type: application/json
+
+{
+  "serviceid" : "2",
+  "longitude" : "6.927079",
+  "latitude" : "79.861244"
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
@@ -13,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../services/urlCreator.dart';
 
@@ -29,8 +31,7 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
   void changeProfilePicture(ImageSource source) async {
     final file = await imageUpload.pickImage(source);
     if (file != null) {
-      final croppedImage =
-      await imageUpload.crop(file: file, cropStyle: CropStyle.circle);
+      final croppedImage = await imageUpload.crop(file: file, cropStyle: CropStyle.circle);
       if (croppedImage != null) {
         setState(() {
           _image = File(
@@ -108,6 +109,7 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
                       MainButton("Save", () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         String signupdata = prefs.getString('signupReqBody') ?? '';
+                        print(signupdata);
                         var response = await http.post(Uri.parse(urlCreate("registerSP")),
                             headers: {'Content-Type': 'application/json'},
                             body: signupdata);
@@ -115,7 +117,8 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
                         print(jsonResponse);
                         if(jsonResponse['status'] == "True"){
                           print("Signed Successfully");
-                          Navigator.pushNamed(context, '/otp_mobile');
+                          storeVerifyPictures(jsonResponse['id']);
+                          storeProfilePicture(jsonResponse['id']);
                         } else {
                           print("Sign Up Failed");
                         }
@@ -149,4 +152,27 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
       ],
     );
   }
+
+  void storeVerifyPictures(String id) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String images = prefs.getString('verifyImages') ?? '';
+    var imagesList = jsonDecode(images);
+    print(imagesList);
+    for(String i in imagesList["dl"]){
+      File file = File(i);
+      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+      await storage.ref('serviceProvider/drivingLicense/${id}.png').putFile(file);
+    }
+    for(String i in imagesList["proof"]){
+      File file = File(i);
+      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+      await storage.ref('serviceProvider/proofs/${id}.png').putFile(file);
+    }
+  }
+
+  void storeProfilePicture(String id) async{
+    final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+    await storage.ref('serviceProvider/profilePicture/${id}.png').putFile(_image!);
+  }
+
 }

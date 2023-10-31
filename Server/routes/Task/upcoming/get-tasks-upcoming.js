@@ -35,7 +35,7 @@ router.get('/', authTocken, async (req, res) => {
             for (let j = 0; j < jobs[categories[i]].length; j++) {
 
                 const query3 = {
-                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status in (\'Sheduled\');',
+                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status in (\'Accepted\');',
                     values: [jobs[categories[i]][j]['id']]
                 }
                 const bidServices = await pool.query(query3);
@@ -88,7 +88,8 @@ router.get('/', authTocken, async (req, res) => {
                     jobTasks : tasks,
                     customerName : customerName.rows[0].name,
                     customerId : customerName.rows[0].id,
-                    bidValues : finalBid.rows[0]
+                    bidValues : finalBid.rows[0],
+                    providerId : req.user.user_id
                 });
             }
         }

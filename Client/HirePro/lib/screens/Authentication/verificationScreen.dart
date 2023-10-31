@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
@@ -5,6 +7,7 @@ import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/UploadImageBox.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../firebase_options.dart';
 
 class VerificationScreen extends StatefulWidget {
@@ -89,8 +92,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     MainButton('Continue', () {
                       print(box1.selectedFiles[0]);
                       print(box2.selectedFiles);
-                      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-                      storage.ref('uploads/dl.png').putFile(box1.selectedFiles[0]);
+                      Map<String,dynamic> images = {
+                        "dl" : [box1.selectedFiles[0].path],  // Assuming File has a `path` property
+                        "proof" : [for (var file in box2.selectedFiles) file.path],
+                      };
+                      setPrefImages(images);
                       Navigator.pushNamed(context, '/upload_profile_picture');
                     }),
                   ],
@@ -104,4 +110,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
       ),
     );
   }
+
+  Future<void> setPrefImages (Map<String,dynamic> images) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String imagesJson = jsonEncode(images);
+    await prefs.setString('verifyImages', imagesJson);
+  }
+
 }

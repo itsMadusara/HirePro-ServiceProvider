@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/Providers/spProvider.dart';
 import 'package:hire_pro/constants.dart';
@@ -11,6 +12,7 @@ import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/api.dart';
@@ -30,18 +32,19 @@ List<String> images = [
 
 class _UserProfileState extends State<UserProfile> {
 
-  // List<String> selectedCategories = [];
-
   void initState() {
     super.initState();
-    // selectedCategories = SPProvider().selectedCategories;
-    addSelectedCategoryImages();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _loadUserData();
+      await getImageUrl();
+      await addSelectedCategoryImages();
+    });
   }
 
   final List<String> allCategories = [
     'Gardening',
     'Plumbing',
-    'Cleaning',
+    'House Cleaning',
     'Furniture Mounting',
     'Hair Dressing',
     'Lawn Moving',
@@ -59,20 +62,21 @@ class _UserProfileState extends State<UserProfile> {
   ];
 
   // pass the list of tasks here from backend --> maximum 3 categories
-  List<String> selectedCategories = ['Cleaning', 'Painting'];
-
+  List<String> selectedCategories = [];
   List<String> selectedImages = [];
 
-
-  void addSelectedCategoryImages() {
+  Future<String> addSelectedCategoryImages() async {
     selectedImages.clear(); // Clear the existing selected images list
-
+    for (var element in categories) {
+      selectedCategories.add(element.toString());
+    }
     for (String category in selectedCategories) {
       int index = allCategories.indexOf(category);
       if (index >= 0 && index < allCategoryImagePaths.length) {
         selectedImages.add(allCategoryImagePaths[index]);
       }
     }
+    return '1';
   }
 
   void _handleBoxTap(int index) {
@@ -87,70 +91,84 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
-  // Future<String> fetchSP() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   var response = await http.get(Uri.parse(urlCreate('getUser')),
-  //       headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']});
-  //   if (response.statusCode == 200) {
-  //     return (response.body);
-  //   } else {
-  //     if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
-  //       response = await http.get(Uri.parse(urlCreate('refreshToken')),
-  //           headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
-  //       var jsonResponse = jsonDecode(response.body);
-  //       print(jsonResponse['tokens']);
-  //       await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
-  //       fetchSP();
-  //     }
-  //     throw Exception('Failed to load album');
-  //   }
-  // }
-  //
-  // bool isLoading = true; // Set initial loading state to true
-  // String name = '';
-  // String id = '';
-  // String email = '';
-  // String intro = '';
 
+  Future<String> fetchSP() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.get(Uri.parse(urlCreate('getUser')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']});
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        fetchSP();
+      }
+      throw Exception('Failed to load album');
+    }
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _loadUserData();// Call an asynchronous method to load user data
-  //   addSelectedCategoryImages();
-  // }
+  Future<void> getImageUrl() async {
+    try {
+      await Firebase.initializeApp();
+      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+      firebase_storage.Reference ref = storage.ref('serviceProvider/profilePicture/$id.png');
+      final String downloadURL = await ref.getDownloadURL();
+      setState(() {
+        imageURL = downloadURL;
+      });
+      isLoadingImage = false;
+      print(imageURL);
+    } catch (e) {
+      print('Error retrieving image from Firebase Storage: $e');
+    }
+  }
 
-  // Future<void> _loadUserData() async {
-  //   try {
-  //     final userData = await fetchSP();
-  //     print(userData);
-  //     Map<String, dynamic> userDataMap = jsonDecode(userData);
-  //     setState(() {
-  //       name = userDataMap['name'];
-  //       id = userDataMap['id'];
-  //       email = userDataMap['email'];
-  //       intro = userDataMap['intro'] ?? '';
-  //       isLoading = false; // Set isLoading to false after data is loaded
-  //     });
-  //   } catch (error) {
-  //     print('Error fetching user data: $error');
-  //     setState(() {
-  //       isLoading = false; // Set isLoading to false even in case of error
-  //     });
-  //   }
-  // }
+  bool isLoading = true; // Set initial loading state to true
+  bool isLoadingImage = true;
+  String name = '';
+  String id = '';
+  String email = '';
+  String intro = '';
+  String imageURL = '';
+  List<dynamic> categories = [];
+
+  Future<void> _loadUserData() async {
+    try {
+      final userData = await fetchSP();
+      print(userData);
+      Map<String, dynamic> userDataMap = jsonDecode(userData);
+      setState(() {
+        name = userDataMap['name'];
+        id = userDataMap['id'];
+        email = userDataMap['email'];
+        intro = userDataMap['intro'] ?? '';
+        categories = userDataMap['category'];
+      });
+      isLoading = false;
+    } catch (error) {
+      print('Error fetching user data: $error');
+      setState(() {
+        isLoading = false; // Set isLoading to false even in case of error
+      });
+    }
+  }
 
   final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBarBackAndMore(),
-        bottomNavigationBar: BottomNavBar(),
-        resizeToAvoidBottomInset: false,
-        body: Center(
-          child: SingleChildScrollView(
-            child:Container(
+        child: isLoading ? Center(child: CircularProgressIndicator()) :
+        Scaffold(
+            appBar: AppBarBackAndMore(),
+            bottomNavigationBar: BottomNavBar(),
+            resizeToAvoidBottomInset: false,
+            body: Center(
+              child: SingleChildScrollView(
+                child:Container(
                   height: 950,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30.0),
@@ -170,14 +188,16 @@ class _UserProfileState extends State<UserProfile> {
                           child: Hero(
                             tag: "image",
                             child: ClipOval(
-                              child: Image.asset(
-                                'images/profile_picture_mellow.png',
+                              child: isLoadingImage ? Center(child: CircularProgressIndicator()) :
+                              Image(
+                                image: NetworkImage(imageURL),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                         ),
-                        Text('sp-name',
+
+                        Text(name,
                           style: TextStyle(
                             fontSize: 30,
                             overflow: TextOverflow.ellipsis,
@@ -193,7 +213,13 @@ class _UserProfileState extends State<UserProfile> {
                           itemSize: 30.0,
                           direction: Axis.horizontal,
                         ),
-                        Text('HirePro ID - 2',
+                        Text('HirePro ID - ' + id,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        Text(intro,
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[700],
@@ -305,9 +331,9 @@ class _UserProfileState extends State<UserProfile> {
                                   children: [
                                     Text('Featured Projects',
                                       style: TextStyle(
-                                      color: kMainYellow,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500),
+                                          color: kMainYellow,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     SizedBox(width: 5,),
                                     Icon(Icons.edit,)
@@ -326,9 +352,9 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                 ),
-          ),
+              ),
 
-    )));
+            )));
   }
 }
 
@@ -376,9 +402,9 @@ class ProfileWidgets extends StatelessWidget {
                   fontSize: 13,
                   color: Colors.grey[500],
                   fontWeight: FontWeight.w600))
-            ],
-          ),
-      );
+        ],
+      ),
+    );
   }
 }
 

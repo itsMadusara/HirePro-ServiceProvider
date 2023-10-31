@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../services/urlCreator.dart';
+import '../ChatScreen.dart';
 
 
 class StartJob extends StatefulWidget {
@@ -54,7 +55,7 @@ class _StartJobState extends State<StartJob> {
     super.initState();
 
     Firebase.initializeApp().whenComplete(() {
-      print("completed--------");
+      print("completed");
       setState(() {});
     });
   }
@@ -130,7 +131,12 @@ class _StartJobState extends State<StartJob> {
                                   ),
                                   child: IconButton(
                                     icon: Icon(Icons.chat, color: Colors.black,), // Set the icon color
-                                    onPressed: () {Navigator.pushNamed(context, '/chat');},
+                                    onPressed: () {Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ChatScreen(taskDescription: widget.taskDescription),
+                                        )
+                                    );},
                                   ),
                                 )
                             ),

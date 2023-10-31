@@ -14,33 +14,23 @@ router.post('/', authTocken, async (req, res) => {
         const categories = taskCategories.rows[0].category ?? [];
 
         const newCategory = req.body.category;
+        let requestCategories;
 
         if (!(categories.includes(newCategory))){
-            categories.push(newCategory);
+            const query2 = {
+                text: 'INSERT INTO public."categoryReview" (providerid, category) VALUES ($1, $2);',
+                values : [req.user.user_id, newCategory]
+            };
+            requestCategories = await pool.query(query2);
         }
 
-        console.log(categories);
-        let newValue = "{";
-
-        for ( let i=0 ; i<categories.length ; i++ ){
-            newValue += categories[i];
-            if ( i !== categories.length-1 ){
-                newValue += ",";
-            }
-        }
-
-        newValue += "}";
-
-        console.log(newValue);
-
-        const query2 = {
-            text: 'UPDATE public."ServiceProvider" set category=$1 where id=$2;',
-            values : [newValue, req.user.user_id]
+        const query3 = {
+            text: 'SELECT id FROM public."categoryReview" WHERE providerid=$1 AND category=$2;',
+            values : [req.user.user_id, newCategory]
         };
+        const newCategoryId = await pool.query(query3);
 
-        const taskUpdate = await pool.query(query2);
-        console.log(taskUpdate);
-        res.json({message: 'Category Added Successfully'});
+        res.json({message: 'Category Request Successful', requestId: newCategoryId.rows[0].id});
 
     } catch (error) {
         res.status(500).json({error: error.message});

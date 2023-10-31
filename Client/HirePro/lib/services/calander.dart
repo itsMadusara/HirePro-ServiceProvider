@@ -19,12 +19,20 @@ class _CalanderState extends State<Calander> {
   List<dynamic> tasks = [];
   bool isLoading = true;
   DateTime _selectedDay = DateTime.now();
-  Map<DateTime, List<String>> _events = {
-    DateTime(DateTime.now().year, DateTime.now().month, 5): ['Event 1', 'Event 2'],
-    DateTime(DateTime.now().year, DateTime.now().month, 13): ['Event 3'],
-    DateTime(DateTime.now().year, DateTime.now().month, 23): ['Event 4'],
-    DateTime(DateTime.now().year, DateTime.now().month+1, 25): ['Event 4'],
-  };
+  Map<DateTime, List<dynamic>> _events = {};
+
+  String toDate(String utcTimestamp) {
+    DateTime dateTime = DateTime.parse(utcTimestamp);
+    String formattedDateTime = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedDateTime; // This will print: 2023-08-14 06:00:00
+  }
+
+  String toTime(String utcTimestamp) {
+    DateTime dateTime = DateTime.parse(utcTimestamp);
+    String formattedDateTime = DateFormat('HH:mm').format(dateTime);
+    return formattedDateTime; // This will print: 2023-08-14 06:00:00
+  }
+
 
   void initState() {
     super.initState();
@@ -60,9 +68,16 @@ class _CalanderState extends State<Calander> {
         isLoading = false;// Set isLoading to false after data is loaded
         for(var i in tasks){
           DateTime dateTime = DateTime.parse(i['time']);
-          String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(dateTime);
+          String formattedDateTime = DateFormat('yyyy-MM-dd 00:00:00.000').format(dateTime);
           dateTime = DateTime.parse(formattedDateTime);
-          _events[dateTime] = ['Event 1', 'Event 2'];
+          Map<String, dynamic> temp = i['serviceValue'];
+          temp['customerName'] = i['customerName'];
+          temp['amount'] = i['bidValues']['amount'];
+          if(_events[dateTime]!= null){
+            _events[dateTime]?.add(temp);
+          } else{
+            _events[dateTime] = [temp];
+          }
         }
       });
       print(userDataMap);
@@ -77,7 +92,7 @@ class _CalanderState extends State<Calander> {
     }
   }
 
-  List<String> _getEventsForDay(DateTime day) {
+  List _getEventsForDay(DateTime day) {
     return _events[DateTime(day.year, day.month, day.day)] ?? [];
   }
 
@@ -176,11 +191,11 @@ class _CalanderState extends State<Calander> {
                       return Container(
                         margin: EdgeInsets.only(bottom: 10.0), // Add margin between UpcomingTaskCards
                         child: UpcomingTaskCard(
-                          'Gemunu Mawatha, Dehiwala',
-                          '2023-10-1',
-                          '10:15',
-                          'T.Madusara',
-                          3500,
+                          event['location'],
+                          toDate(event['date']),
+                          toTime(event['date']),
+                          event['customerName'].toString(),
+                          event['amount'].toDouble(),
                           4.5,
                           'images/task1.png',
                     ),

@@ -71,8 +71,8 @@ class _TaskDetailsState extends State<TaskDetails> {
                     ContentSection('Task', category),
                     ContentSection(
                         'Where', description['serviceValue']['location']),
-                    ContentSection('Schedule Date', toDate(description['serviceValue']['date'])),
-                    ContentSection('Schedule Time', toTime(description['serviceValue']['date'])),
+                    ContentSection('Schedule Date', toDate(description['serviceValue']['posted_timestamp'])),
+                    ContentSection('Schedule Time', toTime(description['serviceValue']['posted_timestamp'])),
                     Column(
                       children: [
                         ContentSection('Description', ''),

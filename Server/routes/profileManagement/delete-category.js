@@ -11,12 +11,12 @@ router.post('/', authTocken, async (req, res) => {
             values : [req.user.user_id]
         };
         const taskCategories = await pool.query(query1);
-        const categories = taskCategories.rows[0].category ?? [];
+        let categories = taskCategories.rows[0].category ?? [];
 
-        const newCategory = req.body.category;
+        let deleteCategory = req.body.category;
 
-        if (!(categories.includes(newCategory))){
-            categories.push(newCategory);
+        if (categories.includes(deleteCategory)){
+            categories = categories.filter(category => category !== deleteCategory);
         }
 
         console.log(categories);
@@ -40,7 +40,7 @@ router.post('/', authTocken, async (req, res) => {
 
         const taskUpdate = await pool.query(query2);
         console.log(taskUpdate);
-        res.json({message: 'Category Added Successfully'});
+        res.json({message: 'Category Deleted Successfully'});
 
     } catch (error) {
         res.status(500).json({error: error.message});
