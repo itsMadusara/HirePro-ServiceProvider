@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hire_pro/services/urlCreator.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleMaps extends StatefulWidget {
-  const GoogleMaps({Key? key}) : super(key: key);
-
+  Map<String,dynamic> taskDescription;
+  GoogleMaps({required this.taskDescription});
   @override
   _GoogleMapsState createState() => _GoogleMapsState();
 }
@@ -24,18 +26,42 @@ class _GoogleMapsState extends State<GoogleMaps> {
   late double distance = 0;
 
   static LatLng sourceLocation = LatLng(0.0, 0.0);
-  static const LatLng destinationLocation = LatLng(6.8940, 79.8547);
+  static LatLng destinationLocation = LatLng(6.8940, 79.8547);
 
   List<LatLng> polylineCoordinates = [];
-
   PolylinePoints polylinePoints = PolylinePoints();
+
+  void setDestination(){
+    destinationLocation = LatLng(double.parse(widget.taskDescription['serviceValue']['latitude']), double.parse(widget.taskDescription['serviceValue']['longitude']));
+  }
+
+  Future<String> updateLocation() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.post(Uri.parse(urlCreate('updateLocation')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+        body: jsonEncode({"serviceid" : widget.taskDescription['serviceValue']['id'], "longitude" : sourceLocation.longitude, "latitude" : sourceLocation.latitude})
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        updateLocation();
+      }
+      throw Exception('Failed to load album');
+    }
+  }
 
   Future<void> getCurrentPosition() async {
     await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() => _currentPosition = position,);
-      sourceLocation = LatLng(_currentPosition.latitude, _currentPosition.longitude);
+      sourceLocation = LatLng(_currentPosition.latitude.toDouble(), _currentPosition.longitude.toDouble());
     }).catchError((e) {
       debugPrint(e);
     });
@@ -49,6 +75,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
   void initState() {
     super.initState();
     _initializeMap();
+    setDestination();
 
     const locationUpdateInterval = Duration(seconds: 10);
     final LocationSettings locationSettings = LocationSettings(
@@ -60,6 +87,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
         _currentPosition = position;
         sourceLocation = LatLng(position.latitude, position.longitude);
       });
+      updateLocation();
       drawPolyline();
       fetchStats();
     });
@@ -123,55 +151,55 @@ class _GoogleMapsState extends State<GoogleMaps> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450,
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        height: 450,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Arriving in : " + duration, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                   SizedBox(height: 5,),
                   Text("Distance " + distance.toStringAsFixed(3) + " KM", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                   SizedBox(height: 5,),
                 ],
-            ),
-          ),
-          Container(
-            height: 400,
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(6.8943, 79.8685),
-                zoom: 13.5,
               ),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-              markers: <Marker>[
-                Marker(
-                  markerId: MarkerId('sourcePin'),
-                  position: sourceLocation,
-                  icon: BitmapDescriptor.defaultMarkerWithHue(120),
-                ),
-                Marker(
-                  markerId: MarkerId('destinationPin'),
-                  position: destinationLocation,
-                  icon: BitmapDescriptor.defaultMarker,
-                ),
-              ].toSet(),
-              polylines: <Polyline>[
-                Polyline(
-                  polylineId: PolylineId('polyline'),
-                  color: Colors.blue,
-                  points: polylineCoordinates,
-                  width: 5,
-                ),
-              ].toSet(),
             ),
-          )
-        ],
-      )
+            Container(
+              height: 400,
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(6.8943, 79.8685),
+                  zoom: 13.5,
+                ),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                markers: <Marker>[
+                  Marker(
+                    markerId: MarkerId('sourcePin'),
+                    position: sourceLocation,
+                    icon: BitmapDescriptor.defaultMarkerWithHue(120),
+                  ),
+                  Marker(
+                    markerId: MarkerId('destinationPin'),
+                    position: destinationLocation,
+                    icon: BitmapDescriptor.defaultMarker,
+                  ),
+                ].toSet(),
+                polylines: <Polyline>[
+                  Polyline(
+                    polylineId: PolylineId('polyline'),
+                    color: Colors.blue,
+                    points: polylineCoordinates,
+                    width: 5,
+                  ),
+                ].toSet(),
+              ),
+            )
+          ],
+        )
     );
   }
 }

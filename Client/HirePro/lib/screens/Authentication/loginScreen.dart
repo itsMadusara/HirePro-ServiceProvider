@@ -97,10 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (validationController.emailValidator(val) != null)
                                 return validationController.emailValidator(val);
                               return null;}),
-                            FormFieldRegular('Password', passwordController, true,(val) {
-                              if (validationController.passwordValidator(val) != null)
-                                return validationController.passwordValidator(val);
-                              return null;}),
+                            FormFieldRegular('Password', passwordController, true),
                           ],
                         ),
                       ),

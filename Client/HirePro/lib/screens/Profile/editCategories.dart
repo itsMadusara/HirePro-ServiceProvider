@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
@@ -6,7 +8,10 @@ import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/ToggleEyeField.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/UploadMultipleImagesBox.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
+import '../../services/urlCreator.dart';
 import '../../widgets/MainCard.dart';
 
 class EditCategories extends StatefulWidget {
@@ -16,13 +21,75 @@ class EditCategories extends StatefulWidget {
 
 class _EditCategoriesState extends State<EditCategories> {
 
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _loadUserData();
+      await addSelectedCategoryImages();
+    });
+  }
+
+  Future<String> addSelectedCategoryImages() async {
+    for (var element in categories) {
+      selectedCategories.add(element.toString());
+    }
+    return '1';
+  }
+
+  String getCategoryImagePath(String categoryName) {
+    final index = allCategories.indexOf(categoryName);
+    if (index != -1 && index < allCategoryImagePaths.length) {
+      return allCategoryImagePaths[index];
+    }
+    return '';
+  }
+
+  Future<String> fetchSP() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.get(Uri.parse(urlCreate('getUser')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']});
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        fetchSP();
+      }
+      throw Exception('Failed to load album');
+    }
+  }
+
+  bool isLoading = true; // Set initial loading state to true
+  List<dynamic> categories = [];
+
+  Future<void> _loadUserData() async {
+    try {
+      final userData = await fetchSP();
+      print(userData);
+      Map<String, dynamic> userDataMap = jsonDecode(userData);
+      setState(() {
+        categories = userDataMap['category'];
+      });
+      isLoading = false;
+    } catch (error) {
+      print('Error fetching user data: $error');
+      setState(() {
+        isLoading = false; // Set isLoading to false even in case of error
+      });
+    }
+  }
+
   final List<String> allCategories = [
     'Gardening',
     'Plumbing',
-    'Cleaning',
+    'House Cleaning',
     'Furniture Mounting',
-    'Hair Cutting',
-    'Lawn Mowing',
+    'Hair Dressing',
+    'Lawn Moving',
     'Painting'
   ];
 
@@ -37,7 +104,7 @@ class _EditCategoriesState extends State<EditCategories> {
   ];
 
   // pass the list of tasks here from backend --> maximum 3 categories
-  List<String> selectedCategories = ['Cleaning', 'Painting'];
+  List<String> selectedCategories = [];
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +146,31 @@ class _EditCategoriesState extends State<EditCategories> {
     );
   }
 
-  String getCategoryImagePath(String categoryName) {
-    final index = allCategories.indexOf(categoryName);
-    if (index != -1 && index < allCategoryImagePaths.length) {
-      return allCategoryImagePaths[index];
-    }
-    return '';
-  }
-
 }
 
 
 class CategoryCard extends StatelessWidget {
+  Future<String> deleteCategory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.post(Uri.parse(urlCreate('deleteCategory')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+        body: jsonEncode({'category': categoryName})
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        deleteCategory();
+      }
+      throw Exception('Failed to load album');
+    }
+  }
+
   final String categoryName;
   final String categoryImagePath;
   final VoidCallback? onClose;
@@ -193,6 +273,7 @@ class CategoryCard extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the dialog
                     if (onClose != null) {
+                      deleteCategory();
                       onClose!(); // Call the onClose callback
                     }
                   },

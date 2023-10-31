@@ -7,6 +7,8 @@ import 'package:hire_pro/services/chatService.dart';
 
 
 class ChatScreen extends StatefulWidget {
+  final Map<String, dynamic> taskDescription;
+  const ChatScreen({super.key, required this.taskDescription});
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -16,9 +18,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   // receiverId --> CustomerId
-  final receiverId = '1';
-  final taskId = '2';
-  final currentUserId = '23';
+  String receiverId = '1';
+  String taskId = '138';
+  String currentUserId = '15';
 
 
   @override
@@ -28,6 +30,21 @@ class _ChatScreenState extends State<ChatScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await setId();
+    });
+  }
+
+  Future<String> setId() async{
+    try{
+      receiverId = widget.taskDescription['customerId'];
+      taskId = widget.taskDescription['serviceValue']['id'];
+      currentUserId = widget.taskDescription['providerId'];
+      return('1');
+    } catch (err){
+      print(err);
+      return('0');
+    }
   }
 
   void sendMessage() async {
@@ -125,7 +142,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text("Kriss Benwat",style: TextStyle( fontSize: 16 ,fontWeight: FontWeight.w600),),
+                            Text(widget.taskDescription['customerName'],style: TextStyle( fontSize: 16 ,fontWeight: FontWeight.w600),),
                           ],
                         ),
                       ),

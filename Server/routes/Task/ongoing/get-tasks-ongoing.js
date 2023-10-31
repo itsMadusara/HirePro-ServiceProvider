@@ -43,7 +43,7 @@ router.get('/', authTocken, async (req, res) => {
             const task = await pool.query(query2);
             jobs[categories[i]] = task.rows;
         }
-        console.log(jobs);
+        // console.log(jobs);
 
         if (categories.length === 0) {
             res.json(cards);
@@ -54,7 +54,7 @@ router.get('/', authTocken, async (req, res) => {
             for (let j = 0; j < jobs[categories[i]].length; j++) {
 
                 const query3 = {
-                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status not in (\'Sheduled\', \'Pending\', \'Completed\');',
+                    text: 'SELECT * FROM public."Service" WHERE id = $1 and status not in (\'Accepted\', \'Pending\', \'Completed\');',
                     values: [jobs[categories[i]][j]['id']]
                 }
                 const bidServices = await pool.query(query3);
