@@ -34,6 +34,11 @@ import getCompletedTasks from "./routes/Task/completed/get-tasks-completed.js";
 
 import getAllTasks from "./routes/Task/get-all-tasks.js";
 
+import checkBankDetails from "./routes/profileManagement/check-bank-details.js";
+import addBankDetails from "./routes/profileManagement/add-bank-details.js";
+
+import addComplaints from "./routes/Task/add-complaints.js";
+
 import { get } from "http";
 
 dotenv.config();
@@ -77,6 +82,10 @@ app.use("/getCompleted", getCompletedTasks);
 
 app.use("/getAllTasks", getAllTasks);
 
+app.use("/checkBankDetails", checkBankDetails);
+app.use("/addBankDetails", addBankDetails);
+
+app.use("/addComplaint", addComplaints);
 app.use("/updateLocation", updateLocation);
 
 app.listen(PORT, () => {

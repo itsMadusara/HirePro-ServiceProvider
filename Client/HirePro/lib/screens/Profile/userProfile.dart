@@ -32,7 +32,6 @@ List<String> images = [
 
 class _UserProfileState extends State<UserProfile> {
 
-
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -91,7 +90,6 @@ class _UserProfileState extends State<UserProfile> {
       });
     }
   }
-
 
 
   Future<String> fetchSP() async {
@@ -198,6 +196,7 @@ class _UserProfileState extends State<UserProfile> {
                             ),
                           ),
                         ),
+
                         Text(name,
                           style: TextStyle(
                             fontSize: 30,

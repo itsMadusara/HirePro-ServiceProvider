@@ -133,7 +133,7 @@ class _ProgressStartState extends State<ProgressStart> {
         Step(
             isActive: currentStep == 1,
             title: Text('Arrived'),
-            content: ProgressStepTwo()
+            content: ProgressStepTwo(taskDescription: widget.taskDescription)
         ),
         Step(
             isActive: currentStep == 2,

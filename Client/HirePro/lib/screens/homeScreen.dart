@@ -1,11 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:hire_pro/widgets/NavButton.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'package:hire_pro/widgets/SearchBarWidget.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'dart:html';
+import 'package:http/http.dart' as http;
+
+import '../services/urlCreator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,12 +16,57 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  bool isBankDetailsAdded = true;
+
+  Future<String> fetchWallet() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.get(Uri.parse(urlCreate('checkBankDetails')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']}
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        fetchWallet();
+      }
+      throw Exception('Failed to load wallet details');
+    }
+  }
+
+  Future<void> _loadWalletData() async {
+    try {
+      final walletData = await fetchWallet();
+      isBankDetailsAdded = (jsonDecode(walletData)['case'].toLowerCase() == "true") ? true : false;
+      // userDataMap.forEach((element) {print(element);});
+      // setState(() {
+      //   tasks = userDataMap;
+      //   isLoading = false; // Set isLoading to false after data is loaded
+      // });
+      print(isBankDetailsAdded);
+      return;
+    } catch (error) {
+      print('Error fetching user data: $error');
+      setState(() {
+        // tasks = [];
+        // isLoading = false; // Set isLoading to false after data is loaded
+      });
+      return;
+    }
+  }
+
   String _storedValue = '';
 
   @override
   void initState() {
     super.initState();
     _loadStoredValue();
+    _loadWalletData();
   }
 
   // Load stored value from SharedPreferences
@@ -29,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _storedValue = prefs.getString('tokens') ?? '';
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +157,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      RoundedIconButton(onPressed: () {Navigator.pushNamed(context, '/view_wallet');}, icon: Icons.payment),
+                      RoundedIconButton(onPressed: () {
+                        // bool isAccountDetailsAdded = true;
+
+                        if(isBankDetailsAdded){Navigator.pushNamed(context, '/view_wallet');
+                        } else{
+                          Navigator.pushNamed(context, '/add_wallet_details');
+                      }}, icon: Icons.payment),
                       RoundedIconButton(onPressed: () {'/';}, icon: Icons.notifications_active),
                       RoundedIconButton(onPressed: () {Navigator.pushNamed(context, '/calender');}, icon: Icons.event),
                     ],

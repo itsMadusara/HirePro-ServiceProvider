@@ -14,8 +14,8 @@ POST http://localhost:5001/loginSP
 Content-Type: application/json
 
 {
-  "email" : "madusara@gmail.com", 
-  "password" : "example123"
+  "email" : "s@gmail.com", 
+  "password" : "example@123"
 }
 
 ###
@@ -115,10 +115,37 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2Vy
 
 ###
 GET http://localhost:5001/getCompleted
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTQ2OTgyMjIsImV4cCI6MTY5NTkwNzgyMn0.clKSwYL1IE95eWjBVWLSuO_HMVycGhSESOWEKFPnxBQ
-
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODczODkxOSwiZXhwIjoxNjk5OTQ4NTE5fQ.BLtefUQBgiiQsneLDyuvCTcBfApFRPDvnVofHNMx7UA
 ###
 GET http://localhost:5001/getAllTasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODY2MjUxMSwiZXhwIjoxNjk5ODcyMTExfQ.BB7BMH_owQIUlVJoPlCSC93r6nitSywbb1fXnapD8kU
+
+###
+GET http://localhost:5001/checkBankDetails
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODY2MjUxMSwiZXhwIjoxNjk5ODcyMTExfQ.BB7BMH_owQIUlVJoPlCSC93r6nitSywbb1fXnapD8kU
+
+###
+POST http://localhost:5001/addBankDetails
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODY5MjU4MywiZXhwIjoxNjk5OTAyMTgzfQ.CviBrfZb5gSA8WUeZZvWk1uBLgmYlXTg2DdjNHFgVqk
+Content-Type: application/json
+
+{
+  "account_no" : "2020202020202020",
+  "card_holder_name" : "sachini Muthugala",
+  "bank_name" : "HNB", 
+  "branch_name" : "Kalutara"
+}
+
+###
+POST http://localhost:5001/addComplaint
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODczODkxOSwiZXhwIjoxNjk5OTQ4NTE5fQ.BLtefUQBgiiQsneLDyuvCTcBfApFRPDvnVofHNMx7UA
+Content-Type: application/json
+
+{
+  "content" : "testing",
+  "serviceid" : 10,
+  "spid" : 23
+}
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg2NTc5NDQsImV4cCI6MTY5OTg2NzU0NH0.E3_pkrR8uTRju7e7hgZSnamzrioG4lenDt22k8IFlVA
 
 ###

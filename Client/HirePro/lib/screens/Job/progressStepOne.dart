@@ -5,7 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hire_pro/services/googleMaps.dart';
 import 'package:hire_pro/widgets/StarRatingIndicator.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
+import '../complaintForm.dart';
 
 
 class ProgressStepOne extends StatefulWidget {
@@ -19,8 +21,17 @@ class ProgressStepOne extends StatefulWidget {
 //     '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
 // var userData = jsonDecode(jsondata);
 
+
 class _ProgressStepOneState extends State<ProgressStepOne> {
   double rating = 3.5;
+  final customerNumber = '0763116008';
+  final sosNumber = '119';
+
+  void initState(){
+    super.initState();
+    print(widget.taskDescription);
+    print("widget.taskDescription");
+  }
 
   // final Completer<GoogleMapController> _controller =
   // Completer<GoogleMapController>();
@@ -107,11 +118,29 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
                         ),
                         child: IconButton(
                           icon: Icon(Icons.phone, color: Colors.black), // Set the icon color
+                          onPressed: () async {
+                            await FlutterPhoneDirectCaller.callNumber(customerNumber);
+                          },
+                        ),
+                      )
+                  ),
+                  SizedBox(width: 8,),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 40, // Set your desired width
+                        height: 40, // Set your desired height
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[300], // Set your desired grey background color
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.chat, color: Colors.black,), // Set the icon color
                           onPressed: () {},
                         ),
                       )
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(width: 8,),
                   Expanded(
                       flex: 2,
                       child:Container(
@@ -134,7 +163,7 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
                         ),
                       )
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(width: 8,),
                   Expanded(
                       flex: 1,
                       child: Container(
@@ -145,8 +174,28 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
                           color: Colors.grey[300], // Set your desired grey background color
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.chat, color: Colors.black,), // Set the icon color
-                          onPressed: () {},
+                          icon: Icon(Icons.report_problem_rounded, color: Colors.black), // Set the icon color
+                          onPressed: () {Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (context) => ComplaintForm(taskDetails : widget.taskDescription))
+                          );},
+                        ),
+                      )
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 40, // Set your desired width
+                        height: 40, // Set your desired height
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[300], // Set your desired grey background color
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.sos_outlined, color: Colors.black), // Set the icon color
+                          onPressed: () async {
+                            await FlutterPhoneDirectCaller.callNumber(sosNumber);
+                          },
                         ),
                       )
                   ),
