@@ -24,6 +24,25 @@ class ProgressStart extends StatefulWidget {
 class _ProgressStartState extends State<ProgressStart> {
   int currentStep = 0;
 
+  void setCurrState(){
+    String status = widget.taskDescription['serviceValue']['status'];
+    switch (status) {
+      case 'Started':
+        currentStep = 0;
+      case 'Arrived':
+        currentStep = 1;
+      case 'Completed':
+        currentStep = 2;
+      default:
+        currentStep = 0;
+    }
+  }
+
+  void initState() {
+    super.initState();
+    setCurrState();
+  }
+
   Future<String> setArrived() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var response = await http.post(Uri.parse(urlCreate('setArrived')),

@@ -121,7 +121,7 @@ class HirePro extends StatelessWidget {
         '/calender': (context) => ViewCalendarScreen(),
         '/add_category': (context) => AddCategory(),
         '/edit_categories': (context) => EditCategories(),
-        '/chat': (context) => ChatScreen(),
+        // '/chat': (context) => ChatScreen(),
       },
       )
     );

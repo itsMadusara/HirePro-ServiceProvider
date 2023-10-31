@@ -13,7 +13,14 @@ router.post('/', async (req, res) => {
         values: [req.body.contact, req.body.name, req.body.email, req.body.nic, hashedPassword]
       }
       const newUser = await pool.query(query);
-      res.json({status : "True" , newUser});
+
+      const query1 = {
+        text: 'SELECT id from public."ServiceProvider" WHERE email = $1',
+        values: [req.body.email]
+      }
+      const newUserDetails = await pool.query(query1);
+
+      res.json({status : "True" , id : newUserDetails.rows[0].id});
     } catch (error) {
       res.status(500).json({error: error.message});
     }

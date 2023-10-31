@@ -108,8 +108,8 @@ class _UpcomingTasksState extends State<UpcomingTasks> {
                           // Navigate to the task details page when card is clicked
                           Navigator.push(
                               context,
-                            MaterialPageRoute(
-                              builder: (context) => StartJob(taskDescription: tasks[index]),
+                              MaterialPageRoute(
+                                builder: (context) => StartJob(taskDescription: tasks[index]),
                             ),
                           );
                         },
@@ -117,8 +117,8 @@ class _UpcomingTasksState extends State<UpcomingTasks> {
                           margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                           child: UpcomingTaskCard(
                             tasks[index]['serviceValue']['location'],
-                            toDate(tasks[index]['serviceValue']['date']),
-                            toTime(tasks[index]['serviceValue']['date']),
+                            toDate(tasks[index]['serviceValue']['posted_timestamp']),
+                            toTime(tasks[index]['serviceValue']['posted_timestamp']),
                             tasks[index]['customerName'],
                             tasks[index]['bidValues']['amount'].toDouble(),
                             4.5,

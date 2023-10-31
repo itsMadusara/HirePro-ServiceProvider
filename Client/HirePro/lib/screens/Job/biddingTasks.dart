@@ -62,7 +62,7 @@ class _BiddingTasksState extends State<BiddingTasks> {
                               margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                               child: BiddingTaskCard(
                                 tasks[index]['serviceValue']['location'],
-                                toDate(tasks[index]['serviceValue']['date']),
+                                toDate(tasks[index]['serviceValue']['posted_timestamp']),
                                 tasks[index]['serviceValue']['description'],
                                 double.parse(minEst),
                                 double.parse(maxEst),

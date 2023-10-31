@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
@@ -10,6 +11,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../services/urlCreator.dart';
 
@@ -28,6 +30,8 @@ class _EditProfileState extends State<EditProfile> {
   final keyCounterIntro = GlobalKey<_EditFieldState>();
   Map<String,dynamic> userData = {};
   bool isLoading = true;
+  bool isLoadingImage = true;
+  String imageURL = '';
 
   Future<String> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -70,9 +74,29 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+  Future<void> getImageUrl() async {
+    try {
+      await Firebase.initializeApp();
+      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+      firebase_storage.Reference ref = storage.ref('serviceProvider/profilePicture/${userData['id']}.png');
+      final String downloadURL = await ref.getDownloadURL();
+      setState(() {
+        imageURL = downloadURL;
+      });
+      isLoadingImage = false;
+      print(imageURL);
+    } catch (e) {
+      print('Error retrieving image from Firebase Storage: $e');
+    }
+  }
+
   void initState() {
     super.initState();
     _loadUserData();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _loadUserData();
+      await getImageUrl();
+    });
   }
 
   @override
@@ -111,7 +135,7 @@ class _EditProfileState extends State<EditProfile> {
                                   child: CircleAvatar(
                                     radius: 72,
                                     backgroundColor: kMainGrey,
-                                    foregroundImage: AssetImage('images/profile_picture_mellow.png'),
+                                    foregroundImage: NetworkImage(imageURL),
                                   ),
                                 ),
                               ),

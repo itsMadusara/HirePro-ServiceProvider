@@ -1,10 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
+import 'package:hire_pro/widgets/UploadImageBox.dart';
 import 'package:hire_pro/widgets/UploadMultipleImagesBox.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-const List<String> list = <String>['Gardening', 'Plumbing', 'Cleaning', 'Furniture Mounting','Hair Cutting','Lawn Mowing', 'Painting'];
+import '../../services/urlCreator.dart';
+
+const List<String> list = <String>['Gardening', 'Plumbing', 'House Cleaning', 'Furniture Mounting','Hair Dressing','Lawn Moving', 'Painting'];
 
 class AddCategory extends StatefulWidget {
   const AddCategory({Key? key}) : super(key: key);
@@ -15,6 +23,49 @@ class AddCategory extends StatefulWidget {
 
 class _AddCategoryState extends State<AddCategory> {
   String selectedCategory = 'Gardening'; // Store the selected category here
+  UploadImageBox box1 = UploadImageBox('Upload');
+  bool isLoading = true;
+  String requestid = '';
+
+  Future<String> categoryRequest() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.post(Uri.parse(urlCreate('requestCategory')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+        body: jsonEncode({'category': selectedCategory})
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        categoryRequest();
+      }
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<void> sendRequest() async {
+    try {
+      final userData = await categoryRequest();
+      print(userData);
+      Map<String, dynamic> userDataMap = jsonDecode(userData);
+      setState(() {
+        requestid = userDataMap['requestId'];
+      });
+      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+      await storage.ref('serviceProvider/request/${requestid}.png').putFile(box1.selectedFiles[0]);
+      isLoading = false;
+    } catch (error) {
+      print('Error fetching user data: $error');
+      setState(() {
+        isLoading = false; // Set isLoading to false even in case of error
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +93,11 @@ class _AddCategoryState extends State<AddCategory> {
               SizedBox(height: 25,),
               Text('Upload Proof of work here', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
               SizedBox(height: 10,),
-              UploadMultipleImagesBox('upload'),
+              box1,
               SizedBox(height: 40,),
               Center(
                 child: MainButton('Submit', () {
+                  sendRequest();
                   Navigator.of(context).pop();
                 }),
               ),

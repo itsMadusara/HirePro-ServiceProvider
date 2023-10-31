@@ -14,6 +14,8 @@ import getUserTest from "./routes/profileManagement/get-user-test.js";
 import getUser from "./routes/profileManagement/view-profile.js";
 import editUser from "./routes/profileManagement/edit-profile.js";
 import addCategory from "./routes/profileManagement/add-category.js";
+import deleteCategory from "./routes/profileManagement/delete-category.js";
+import requestCategory from "./routes/profileManagement/add-category-req.js";
 import changePassword from "./routes/profileManagement/change-password.js";
 
 import getBidTasks from "./routes/Task/Bidding/get-bid-task.js";
@@ -24,6 +26,7 @@ import getOngoingTasks from "./routes/Task/ongoing/get-tasks-ongoing.js";
 import setStarted from "./routes/Task/ongoing/start.js";
 import setArrived from "./routes/Task/ongoing/arrived.js";
 import setCompleted from "./routes/Task/ongoing/completed.js";
+import updateLocation from "./routes/Task/ongoing/update-location.js";
 
 import getUpcomingTasks from "./routes/Task/upcoming/get-tasks-upcoming.js";
 
@@ -55,6 +58,8 @@ app.use("/testGet", getUserTest);
 app.use("/getUser", getUser);
 app.use("/editUser", editUser);
 app.use("/addCategory", addCategory);
+app.use("/deleteCategory", deleteCategory);
+app.use("/requestCategory", requestCategory);
 app.use("/changePassword", changePassword);
 
 app.use("/getBiddingTasks", getBidTasks);
@@ -71,6 +76,8 @@ app.use("/getUpcomingtasks", getUpcomingTasks);
 app.use("/getCompleted", getCompletedTasks);
 
 app.use("/getAllTasks", getAllTasks);
+
+app.use("/updateLocation", updateLocation);
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`);

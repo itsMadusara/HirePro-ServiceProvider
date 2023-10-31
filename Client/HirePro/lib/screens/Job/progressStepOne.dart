@@ -15,9 +15,9 @@ class ProgressStepOne extends StatefulWidget {
   State<ProgressStepOne> createState() => _ProgressStepOneState();
 }
 
-String jsondata =
-    '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
-var userData = jsonDecode(jsondata);
+// String jsondata =
+//     '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890"}';
+// var userData = jsonDecode(jsondata);
 
 class _ProgressStepOneState extends State<ProgressStepOne> {
   double rating = 3.5;
@@ -54,7 +54,7 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
                       Container(
                         width: double.infinity,
                         height: 450, // Set a fixed height
-                        child: GoogleMaps(),
+                        child: GoogleMaps(taskDescription: widget.taskDescription),
                       )
                     ],
                   ),
