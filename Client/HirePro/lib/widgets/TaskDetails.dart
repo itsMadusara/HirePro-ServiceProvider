@@ -1,7 +1,9 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class TaskDetails extends StatefulWidget {
   final Map<String, dynamic> taskDescription; // Add this parameter
@@ -12,6 +14,8 @@ class TaskDetails extends StatefulWidget {
 }
 
 class _TaskDetailsState extends State<TaskDetails> {
+  List<String> images = [];
+
   String toDate(String utcTimestamp) {
     DateTime dateTime = DateTime.parse(utcTimestamp);
     String formattedDateTime = DateFormat('yyyy-MM-dd').format(dateTime);
@@ -24,7 +28,25 @@ class _TaskDetailsState extends State<TaskDetails> {
     return formattedDateTime;
   }
 
-  List<String> images = ['images/lawn1.jpg', 'images/lawn2.jpg'];
+  Future<List<String>> getImagesInFolder(String id) async {
+    try {
+      List<String> images1 = [];
+      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+
+      firebase_storage.Reference ref = storage.ref('/task_images/$id');
+      final ListResult result = await ref.listAll();
+
+      for (final firebase_storage.Reference item in result.items) {
+        final String downloadURL = await item.getDownloadURL();
+        images1.add(downloadURL);
+        print('Download URL for ${item.fullPath}: $downloadURL');
+      }
+      return images1;
+    } catch (e) {
+      print('Error getting number of images: $e');
+      return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,24 +124,58 @@ class _TaskDetailsState extends State<TaskDetails> {
                     ContentSection('Tasks', tasks),
                     ContentSection('Photos', ''),
                     Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        children: images.map((image) {
-                          return Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.asset(
-                                image,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                      child: FutureBuilder<List<String>>(
+                          future: getImagesInFolder(description['serviceValue']['id']),
+                          builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Text('Error loading images');
+                          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return Text('No images available');
+                          } else {
+                            images = snapshot.data!;
+                            return GridView.count(
+                              crossAxisCount: 2,
+                              children: images.map((image) {
+                                return Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.network(
+                                      image,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          }
+                        },
                       ),
                     )
+                    // Expanded(
+                    //   child: isLoading ? Center(child: CircularProgressIndicator()) :
+                    //   GridView.count(
+                    //     crossAxisCount: 2,
+                    //     children: images.map((image) {
+                    //       return Card(
+                    //         shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(20),
+                    //         ),
+                    //         child: ClipRRect(
+                    //           borderRadius: BorderRadius.circular(20),
+                    //           child: Image.asset(
+                    //             image,
+                    //             fit: BoxFit.cover,
+                    //           ),
+                    //         ),
+                    //       );
+                    //     }).toList(),
+                    //   ),
+                    // )
                   ],
                 ))
           ],

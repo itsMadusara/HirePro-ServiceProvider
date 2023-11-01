@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/reviews.dart';
 import 'package:hire_pro/services/dateTimeFormatted.dart';
 import 'package:hire_pro/widgets/StarRatingIndicator.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class BiddingTaskCard extends StatelessWidget {
   BiddingTaskCard(this.location, this.date, this.customerName, this.estimatePriceLower,this.estimatePriceUpper, this.rating, this.image);
@@ -13,9 +15,29 @@ class BiddingTaskCard extends StatelessWidget {
   final double estimatePriceUpper;
   final double rating;
   final String image;
+  bool isLoading = true;
+  String imageURL = '';
+
+  Future<String> getImageUrl(String id) async {
+    try {
+      await Firebase.initializeApp();
+      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+      firebase_storage.Reference ref = storage.ref('/task_images/$id/0.png');
+      final String downloadURL = await ref.getDownloadURL();
+      // imageURL = downloadURL;
+      // isLoading = false;
+      print(imageURL);
+      return downloadURL;
+    } catch (e) {
+      print('Error retrieving image from Firebase Storage: $e');
+      return '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    getImageUrl(image);
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 180,
@@ -102,14 +124,28 @@ class BiddingTaskCard extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('images/lawn1.jpg'),
-                      ),
-                    ),
+                  child: FutureBuilder<String>(
+                        future: getImageUrl(image),
+                        builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error loading image');
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Text('Image not available');
+                      } else {
+                        String imageURL = snapshot.data!;
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(imageURL),
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ),
               ],

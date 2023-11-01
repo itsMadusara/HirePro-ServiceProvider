@@ -11,7 +11,7 @@ router.post('/', authTocken, async (req, res) => {
             values: [req.body.latitude, req.body.longitude, req.body.serviceid]
         }
         const user = await pool.query(query);
-        res.json({message: 'Status Set to Started'});
+        res.json({message: 'Location Updated'});
     } catch (error) {
         res.status(500).json({error: error.message});
     }

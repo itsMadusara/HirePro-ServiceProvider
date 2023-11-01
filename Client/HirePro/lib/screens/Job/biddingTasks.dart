@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:ffi';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/BiddingTasksCard.dart';
@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:hire_pro/services/urlCreator.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class BiddingTasks extends StatefulWidget {
   @override
@@ -67,7 +68,7 @@ class _BiddingTasksState extends State<BiddingTasks> {
                                 double.parse(minEst),
                                 double.parse(maxEst),
                                 2,
-                                'images/lawn1.jpg',
+                                tasks[index]['serviceValue']['id'].toString(),
                               ),
                             )
                         );
