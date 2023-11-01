@@ -32,6 +32,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
   PolylinePoints polylinePoints = PolylinePoints();
 
   void setDestination(){
+    print(widget.taskDescription['serviceValue']['latitude']);
     destinationLocation = LatLng(double.parse(widget.taskDescription['serviceValue']['latitude']), double.parse(widget.taskDescription['serviceValue']['longitude']));
   }
 
@@ -42,6 +43,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
         body: jsonEncode({"serviceid" : widget.taskDescription['serviceValue']['id'], "longitude" : sourceLocation.longitude, "latitude" : sourceLocation.latitude})
     );
     if (response.statusCode == 200) {
+      print(response.body);
       return (response.body);
     } else {
       if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
@@ -52,7 +54,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
         await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
         updateLocation();
       }
-      throw Exception('Failed to load album');
+      throw Exception('Failed to update location');
     }
   }
 

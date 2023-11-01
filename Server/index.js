@@ -36,6 +36,9 @@ import getAllTasks from "./routes/Task/get-all-tasks.js";
 
 import checkBankDetails from "./routes/profileManagement/check-bank-details.js";
 import addBankDetails from "./routes/profileManagement/add-bank-details.js";
+import convertPoints from "./routes/wallet/convert-points.js";
+import getPoints from "./routes/wallet/get-points.js";
+import getBankDetails from "./routes/wallet/get-bank-details.js";
 
 import addComplaints from "./routes/Task/add-complaints.js";
 
@@ -84,6 +87,9 @@ app.use("/getAllTasks", getAllTasks);
 
 app.use("/checkBankDetails", checkBankDetails);
 app.use("/addBankDetails", addBankDetails);
+app.use("/convertPoints", convertPoints);
+app.use("/getPoints", getPoints);
+app.use("/getBankDetails", getBankDetails);
 
 app.use("/addComplaint", addComplaints);
 app.use("/updateLocation", updateLocation);

@@ -18,12 +18,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../widgets/NavTopBid.dart';
 
-class BiddingTasks extends StatefulWidget {
+class BiddingDoneTasks extends StatefulWidget {
   @override
-  State<BiddingTasks> createState() => _BiddingTasksState();
+  State<BiddingDoneTasks> createState() => _BiddingDoneTasksState();
 }
 
-class _BiddingTasksState extends State<BiddingTasks> {
+class _BiddingDoneTasksState extends State<BiddingDoneTasks> {
   List<dynamic> tasks = [];
   bool isLoading = true;
 
@@ -45,42 +45,42 @@ class _BiddingTasksState extends State<BiddingTasks> {
             Container(
                 margin: EdgeInsets.symmetric(vertical: 20),
                 child:
-                NavTopBid(kMainYellow,Colors.white, () {},
-                      () {Navigator.pushNamed(context, '/bidding_done_tasks');},
+                NavTopBid(Colors.white, kMainYellow,
+                      () {Navigator.pushNamed(context, '/bidding_tasks');}, () {}
                 )
             ),
             Expanded(
               child: isLoading
                   ? Center(child: CircularProgressIndicator())
                   : ListView.builder(
-                      itemCount: tasks.length, // Number of cards
-                      itemBuilder: (context, index) {
-                        String minEst = tasks[index]['serviceValue']['estmin'].toString();
-                        String maxEst = tasks[index]['serviceValue']['estmax'].toString();
-                        return GestureDetector(
-                            onTap: () {
-                          // Navigate to the task details page when card is clicked
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BiddingRequest(taskDescription: tasks[index]),
-                            ),
-                          );
-                        },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                              child: BiddingTaskCard(
-                                tasks[index]['serviceValue']['location'],
-                                toDate(tasks[index]['serviceValue']['posted_timestamp']),
-                                tasks[index]['serviceValue']['description'],
-                                double.parse(minEst),
-                                double.parse(maxEst),
-                                2,
-                                'images/lawn1.jpg',
-                              ),
-                            )
+                itemCount: tasks.length, // Number of cards
+                itemBuilder: (context, index) {
+                  String minEst = tasks[index]['serviceValue']['estmin'].toString();
+                  String maxEst = tasks[index]['serviceValue']['estmax'].toString();
+                  return GestureDetector(
+                      onTap: () {
+                        // Navigate to the task details page when card is clicked
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BiddingRequest(taskDescription: tasks[index]),
+                          ),
                         );
-                        },
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        child: BiddingTaskCard(
+                          tasks[index]['serviceValue']['location'],
+                          toDate(tasks[index]['serviceValue']['posted_timestamp']),
+                          tasks[index]['serviceValue']['description'],
+                          double.parse(minEst),
+                          double.parse(maxEst),
+                          2,
+                          'images/lawn1.jpg',
+                        ),
+                      )
+                  );
+                },
               ),
             ),
           ],
@@ -137,6 +137,3 @@ class _BiddingTasksState extends State<BiddingTasks> {
 
 
 }
-
-
-

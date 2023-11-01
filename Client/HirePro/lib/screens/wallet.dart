@@ -10,8 +10,12 @@ import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import 'package:http/http.dart' as http;
+
+import '../services/urlCreator.dart';
 
 
 class Wallet extends StatefulWidget {
@@ -25,8 +29,75 @@ var userData = jsonDecode(jsondata);
 
 class _WalletState extends State<Wallet> {
 
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _loadPoints();
+    });
+  }
+
   // Controller for the account input field
   final TextEditingController accountController = TextEditingController();
+
+  Future<String> convertPoints() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.post(Uri.parse(urlCreate('convertPoints')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+        body: jsonEncode({
+          'points' : accountController.text,})
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        convertPoints();
+      }
+      throw Exception('Failed to convert points');
+    }
+  }
+
+  Future<String> fetchPoints() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.get(Uri.parse(urlCreate('getPoints')),
+        headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        convertPoints();
+      }
+      throw Exception('Failed to convert points');
+    }
+  }
+
+  String points = '';
+
+  Future<void> _loadPoints() async {
+    try {
+      final userData = await fetchPoints();
+      print(userData);
+      Map<String, dynamic> userDataMap = jsonDecode(userData);
+      setState(() {
+        int Intpoints = userDataMap['points'];
+        points = Intpoints.toString();
+      });
+    } catch (error) {
+      print('Error fetching point data: $error');
+      setState(() {
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +152,9 @@ class _WalletState extends State<Wallet> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text('Your Balance',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),),
+                                          Text('Your Points',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),),
                                           SizedBox(height: 9,),
-                                          Text('LKR 120,000',style: TextStyle(fontSize: 30,fontWeight: FontWeight.w900, color: Colors.white),
+                                          Text(points,style: TextStyle(fontSize: 30,fontWeight: FontWeight.w900, color: Colors.white),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,)
                                         ],
@@ -119,9 +190,9 @@ class _WalletState extends State<Wallet> {
                               SizedBox(height: 30,),
                               Row(
                                 children: [
-                                  Expanded(child: Walletcard('Service Fee','LKR 120,000')),
+                                  Expanded(child: Walletcard('Services','Points 120,000')),
                                   SizedBox(width: 15,),
-                                  Expanded(child: Walletcard('Tips','LKR 30,000')),
+                                  Expanded(child: Walletcard('Tips','Points 30,000')),
                                 ],
                               )
                             ],
@@ -236,7 +307,7 @@ class _WalletState extends State<Wallet> {
             children: [
               Text('Available Points', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
               SizedBox(height: 5,),
-              Text('20000', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: kMainYellow),),
+              Text(points, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: kMainYellow),),
               SizedBox(height: 20,),
               Text('How many points do you want to transfer?'),
               SizedBox(height: 12,),
@@ -279,13 +350,20 @@ class _WalletState extends State<Wallet> {
                 ),
                 SizedBox(width: 20),
                 TextButton(
-                  onPressed: () {
-                    // Perform the transfer action here using accountController.text
-                    // You can add your logic to handle the transfer
-                    String account = accountController.text;
-                    // Perform the transfer logic with 'account'
-                    // Once the transfer is successful, close the pop-up
-                    Navigator.of(context).pop();
+                  onPressed: () async {
+                    // Call your custom function here
+                    await convertPoints();
+
+                    // Show a SnackBar
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Color.fromARGB(255, 42, 201, 74),
+                        content: Text('Points transfered successfully!'),
+                      ),
+                    );
+
+                    // Navigate to a new screen
+                    Navigator.pushNamed(context, '/view_wallet');
                   },
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -486,3 +564,4 @@ class SalesData {
   final String year;
   final double sales;
 }
+

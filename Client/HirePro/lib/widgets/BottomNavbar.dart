@@ -23,12 +23,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1:
-        Navigator.pushReplacementNamed(context, '');
-        break;
-      case 2:
         Navigator.pushReplacementNamed(context, '/ongoing_tasks');
         break;
-      case 3:
+      case 2:
         Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
@@ -41,10 +38,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
         icon: Icon(Icons.home),
         label: 'Home',
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.search),
-        label: 'Search',
-      ),
+      // BottomNavigationBarItem(
+      //   icon: Icon(Icons.search),
+      //   label: 'Search',
+      // ),
       BottomNavigationBarItem(
         icon: Icon(Icons.handyman),
         label: 'Tasks',
