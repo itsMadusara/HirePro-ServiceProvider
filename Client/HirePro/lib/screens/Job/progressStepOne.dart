@@ -7,6 +7,7 @@ import 'package:hire_pro/widgets/StarRatingIndicator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
+import '../ChatScreen.dart';
 import '../complaintForm.dart';
 
 
@@ -136,7 +137,12 @@ class _ProgressStepOneState extends State<ProgressStepOne> {
                         ),
                         child: IconButton(
                           icon: Icon(Icons.chat, color: Colors.black,), // Set the icon color
-                          onPressed: () {},
+                          onPressed: () {Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(taskDescription: widget.taskDescription),
+                              )
+                          );},
                         ),
                       )
                   ),

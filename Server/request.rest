@@ -42,7 +42,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5001/getBiddingTasks
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg2NTQzMzMsImV4cCI6MTY5OTg2MzkzM30.oq1Xk_4V0EQXmDX9l0sZ-ES5hc3zfJfaFVzFQ2pAgPQ
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODg3MzY3OCwiZXhwIjoxNzAwMDgzMjc4fQ.vwsvAALEeSShyrsFY9BJ9SDNs9jpS2tU9pVw8CfcG2A
 
 ###
 POST http://localhost:5001/addCategory
@@ -126,7 +126,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2Vy
 
 ###
 POST http://localhost:5001/addBankDetails
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODY5MjU4MywiZXhwIjoxNjk5OTAyMTgzfQ.CviBrfZb5gSA8WUeZZvWk1uBLgmYlXTg2DdjNHFgVqk
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODg0NjIzOSwiZXhwIjoxNzAwMDU1ODM5fQ.eujvsp9MbfEv0OO6NUmw1LVwhPbP_x_Rh7kXph89BV4
 Content-Type: application/json
 
 {
@@ -176,3 +176,22 @@ Content-Type: application/json
   "longitude" : "6.927079",
   "latitude" : "79.861244"
 }
+
+###
+POST http://localhost:5001/convertPoints
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODg0NjIzOSwiZXhwIjoxNzAwMDU1ODM5fQ.eujvsp9MbfEv0OO6NUmw1LVwhPbP_x_Rh7kXph89BV4
+Content-Type: application/json
+
+{
+  "points" : 10
+}
+
+###
+GET http://localhost:5001/getPoints
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODg0NjIzOSwiZXhwIjoxNzAwMDU1ODM5fQ.eujvsp9MbfEv0OO6NUmw1LVwhPbP_x_Rh7kXph89BV4
+
+###
+GET http://localhost:5001/getBankDetails
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODg0NjIzOSwiZXhwIjoxNzAwMDU1ODM5fQ.eujvsp9MbfEv0OO6NUmw1LVwhPbP_x_Rh7kXph89BV4
+
+

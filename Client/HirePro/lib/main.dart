@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/ChatScreen.dart';
+import 'package:hire_pro/screens/Job/biddingDoneTasks.dart';
 import 'package:hire_pro/screens/Job/progress.dart';
 import 'package:hire_pro/screens/Profile/editCategories.dart';
 import 'package:hire_pro/screens/Profile/viewReviews.dart';
@@ -105,6 +106,7 @@ class HirePro extends StatelessWidget {
         '/bidding_successful': (context) => BiddingSuccessfulScreen(),
         '/customer_profile': (context) => CustomerProfile(),
         '/bidding_tasks': (context) => BiddingTasks(),
+        '/bidding_done_tasks': (context) => BiddingDoneTasks(),
         // '/start_job': (context) => StartJob(),
         // '/progress_start': (context) => ProgressStart(),
         // '/progress_step_one': (context) => ProgressStepOne(),
