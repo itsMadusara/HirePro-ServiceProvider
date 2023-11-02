@@ -56,7 +56,7 @@ router.get('/', authTocken, async (req, res) => {
                 }
                 const finalBid = await pool.query(query6);
                 
-                const time = bidServices.rows[0].date;
+                const time = bidServices.rows[0].posted_timestamp;
 
                 cards.push({
                     time : time,

@@ -122,7 +122,7 @@ class _UpcomingTasksState extends State<UpcomingTasks> {
                             tasks[index]['customerName'],
                             tasks[index]['bidValues']['amount'].toDouble(),
                             4.5,
-                            'images/task1.png',
+                            tasks[index]['serviceValue']['id'],
                           ),
                         )
                   );
