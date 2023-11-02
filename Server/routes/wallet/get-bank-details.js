@@ -16,6 +16,7 @@ router.get('/', authTocken, async (req, res) => {
         };
         const transactionDetails = await pool.query(query1);
         console.log(transactionDetails.rows);
+        console.log(req.user.user_id);
 
         // const query2 = {
         //     text: `SELECT "Payment"."amount", "Payment"."status", "Payment"."serviceid", "Payment"."timestamp", "Bid"."serviceProviderId", "Bid"."accept_customerid"
@@ -31,7 +32,7 @@ router.get('/', authTocken, async (req, res) => {
             text: `SELECT SUM("Payment"."amount") AS "TotalServiceAmount"
             FROM public."Payment" 
             INNER JOIN public."Bid" ON "Payment"."serviceid" = "Bid"."serviceId" 
-            WHERE "Bid"."accept_timestamp" IS NOT NULL AND "Bid"."serviceProviderId" = $1 AND "Payment"."status" = 'tip';`,
+            WHERE "Bid"."accept_timestamp" IS NOT NULL AND "Bid"."serviceProviderId" = $1 AND "Payment"."status" = 'service';`,
             values: [req.user.user_id]
         };
         const totalServiceAmount = await pool.query(query3);
@@ -41,13 +42,13 @@ router.get('/', authTocken, async (req, res) => {
             text: `SELECT SUM("Payment"."amount") AS "TotalTipAmount"
             FROM public."Payment" 
             INNER JOIN public."Bid" ON "Payment"."serviceid" = "Bid"."serviceId" 
-            WHERE "Bid"."accept_timestamp" IS NOT NULL AND "Bid"."serviceProviderId" = $1 AND "Payment"."status" = 'service';`,
+            WHERE "Bid"."accept_timestamp" IS NOT NULL AND "Bid"."serviceProviderId" = $1 AND "Payment"."status" = 'tip';`,
             values: [req.user.user_id]
         };
         const totalTipAmount = await pool.query(query4);
         console.log(totalTipAmount.rows);
         
-
+        res.json({"transaction" : transactionDetails.rows,"serviceTotal" : totalServiceAmount.rows[0],"tipTotal" : totalTipAmount.rows[0]});
         // res.json(isAccountDetailsAdded.rows[0])
 
     } catch (error) {

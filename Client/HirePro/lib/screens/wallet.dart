@@ -10,6 +10,7 @@ import 'package:hire_pro/widgets/TopNavigation.dart';
 import 'package:hire_pro/widgets/BottomNavbar.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
@@ -23,16 +24,18 @@ class Wallet extends StatefulWidget {
   State<Wallet> createState() => _WalletState();
 }
 
-String jsondata =
-    '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890", "points" : "20000"}';
-var userData = jsonDecode(jsondata);
+// String jsondata =
+//     '{"full_name": "John Doe", "email": "sachinimuthugala@gmail.com", "phone_number": "123-456-7890", "points" : "20000"}';
+// var userData = jsonDecode(jsondata);
 
 class _WalletState extends State<Wallet> {
+  Map<String,dynamic> walletDetails = {};
 
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _loadPoints();
+      await _loadWallet();
     });
   }
 
@@ -75,13 +78,33 @@ class _WalletState extends State<Wallet> {
         var jsonResponse = jsonDecode(response.body);
         print(jsonResponse['tokens']);
         await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
-        convertPoints();
+        fetchPoints();
       }
-      throw Exception('Failed to convert points');
+      throw Exception('Failed to fetch points');
     }
   }
 
-  String points = '';
+  Future<String> fetchWalletDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response = await http.get(Uri.parse(urlCreate('getBankDetails')),
+      headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['accessToken']},
+    );
+    if (response.statusCode == 200) {
+      return (response.body);
+    } else {
+      if(jsonDecode(response.body)['error'] == 'TokenExpiredError'){
+        response = await http.get(Uri.parse(urlCreate('refreshToken')),
+            headers: {'Content-Type': 'application/json' , 'authorization' : jsonDecode(prefs.getString('tokens') ?? '')['refreshToken']});
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['tokens']);
+        await prefs.setString('tokens', jsonEncode(jsonResponse['tokens']));
+        fetchWalletDetails();
+      }
+      throw Exception('Failed to fetch wallet');
+    }
+  }
+
+  String points = '0';
 
   Future<void> _loadPoints() async {
     try {
@@ -97,6 +120,27 @@ class _WalletState extends State<Wallet> {
       setState(() {
       });
     }
+  }
+
+  Future<void> _loadWallet() async {
+    try {
+      final userData = await fetchWalletDetails();
+      print(userData);
+      Map<String, dynamic> userDataMap = jsonDecode(userData);
+      setState(() {
+        walletDetails = userDataMap;
+      });
+    } catch (error) {
+      print('Error fetching Wallet data: $error');
+      setState(() {
+      });
+    }
+  }
+
+  String toDate(String utcTimestamp) {
+    DateTime dateTime = DateTime.parse(utcTimestamp);
+    String formattedDateTime = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedDateTime;
   }
 
   @override
@@ -190,9 +234,9 @@ class _WalletState extends State<Wallet> {
                               SizedBox(height: 30,),
                               Row(
                                 children: [
-                                  Expanded(child: Walletcard('Services','Points 120,000')),
+                                  Expanded(child: Walletcard('Services','Points '+ (walletDetails["serviceTotal"]?["TotalServiceAmount"] ?? 0).toString())),
                                   SizedBox(width: 15,),
-                                  Expanded(child: Walletcard('Tips','Points 30,000')),
+                                  Expanded(child: Walletcard('Tips','Points '+ (walletDetails["tipTotal"]?["TotalTipAmount"] ?? 0).toString())),
                                 ],
                               )
                             ],
@@ -206,11 +250,11 @@ class _WalletState extends State<Wallet> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Recent Transactions', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                                // Text('Recent Transactions', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                                 GestureDetector(
                                   onTap: () {
                                     // Navigator.push(context, MaterialPageRoute(builder: (context) => SeeAllTransactionsPage()));
-                                    Navigator.pushNamed(context,'/');
+                                    // Navigator.pushNamed(context,'/');
                                   },
                                   child: Text(
                                     'See all',
@@ -225,9 +269,23 @@ class _WalletState extends State<Wallet> {
                               ],
                             ),
                             SizedBox(height: 10,),
-                            TransactionCards('images/profile_pic.png', 'Sachini Muthugala', '02 July, 2023', 'LKR 4,000'),
-                            TransactionCards('images/profile_pic.png', 'Harini Samali', '05 July, 2023', 'LKR 7,000'),
-                            TransactionCards('images/profile_pic.png', 'Chathu Silva', '10 July, 2023', 'LKR 15,000'),
+                            // ListView.builder(
+                            //   shrinkWrap: true,
+                            //   physics: NeverScrollableScrollPhysics(),
+                            //   itemCount: walletDetails["transaction"].length,
+                            //   itemBuilder: (BuildContext context, int index) {
+                            //     var transaction = walletDetails["transaction"][index];
+                            //     return TransactionCards(
+                            //       'images/profile_pic.png', // Assuming this is a placeholder for the profile picture
+                            //       transaction['name'],
+                            //       toDate(transaction['timestamp']),
+                            //       'LKR ${transaction['amount']}',
+                            //     );
+                            //   },
+                            // ),
+                            // TransactionCards('images/profile_pic.png', 'Sachini Muthugala', '02 July, 2023', 'LKR 4,000'),
+                            // TransactionCards('images/profile_pic.png', 'Harini Samali', '05 July, 2023', 'LKR 7,000'),
+                            // TransactionCards('images/profile_pic.png', 'Chathu Silva', '10 July, 2023', 'LKR 15,000'),
                           ],
                         )
                       ),
