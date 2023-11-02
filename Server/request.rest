@@ -14,8 +14,8 @@ POST http://localhost:5001/loginSP
 Content-Type: application/json
 
 {
-  "email" : "s@gmail.com", 
-  "password" : "example@123"
+  "email" : "madusara@gmail.com", 
+  "password" : "example123"
 }
 
 ###
@@ -192,6 +192,4 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2Vy
 
 ###
 GET http://localhost:5001/getBankDetails
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX25hbWUiOiJzYWNoaW5pIG11dGh1Z2FsYSIsInVzZXJfZW1haWwiOiJzQGdtYWlsLmNvbSIsImlhdCI6MTY5ODg0NjIzOSwiZXhwIjoxNzAwMDU1ODM5fQ.eujvsp9MbfEv0OO6NUmw1LVwhPbP_x_Rh7kXph89BV4
-
-
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTUiLCJ1c2VyX25hbWUiOiJKb2huIERvZSIsInVzZXJfZW1haWwiOiJtYWR1c2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2OTg4ODM5MTIsImV4cCI6MTcwMDA5MzUxMn0.alZGsmF_vW1MNQwBRr4DwWfCSVCyIXKs_Wrvh740SQU
