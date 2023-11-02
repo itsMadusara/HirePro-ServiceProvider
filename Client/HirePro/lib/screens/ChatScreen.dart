@@ -18,21 +18,24 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   // receiverId --> CustomerId
-  String receiverId = '1';
-  String taskId = '138';
-  String currentUserId = '15';
+  late String receiverId;
+  late String taskId;
+  late String currentUserId;
+  bool isLoading = true;
 
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await setId();
+      isLoading = false;
+    });
     // Scroll to the bottom when the widget first loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await setId();
-    });
+
   }
 
   Future<String> setId() async{
@@ -113,8 +116,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setId();
+    isLoading = false;
     return SafeArea(
-        child: Scaffold(
+        child: isLoading ? Center(child: CircularProgressIndicator()) :
+        Scaffold(
             appBar: AppBar(
               elevation: 0,
               automaticallyImplyLeading: false,
